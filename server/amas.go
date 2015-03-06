@@ -17,7 +17,7 @@ func apiAmaGet(w http.ResponseWriter, r *http.Request) {
 		id := bson.ObjectIdHex(id)
 		err := db.Makers.FindId(id).One(&ama)
 		if err != nil {
-			log.Fatal(err)
+			panic(err)
 		}
 
 		WriteJSON(w, ama)

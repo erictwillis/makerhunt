@@ -6,6 +6,7 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"path"
 	"text/template"
 	"time"
 
@@ -60,19 +61,23 @@ func showUser(w http.ResponseWriter, r *http.Request) {
 
 }
 
-var templates = template.Must(template.ParseGlob("client/*.html"))
+const (
+	STATIC = "client"
+)
+
+var templates = template.Must(template.ParseGlob(path.Join(STATIC, "*.html")))
 
 func main() {
 	r := mux.NewRouter()
-	r.PathPrefix("/assets/").Handler(http.FileServer(http.Dir("client/")))
-	r.PathPrefix("/fonts/").Handler(http.FileServer(http.Dir("client/")))
-	r.PathPrefix("/app/").Handler(http.FileServer(http.Dir("client/")))
-	r.PathPrefix("/components/").Handler(http.FileServer(http.Dir("client/")))
-	r.PathPrefix("/bower_components/").Handler(http.FileServer(http.Dir("client/")))
-	r.PathPrefix("/robots.txt").Handler(http.FileServer(http.Dir("client/")))
-	r.PathPrefix("/scripts/").Handler(http.FileServer(http.Dir("client/")))
-	r.PathPrefix("/js/").Handler(http.FileServer(http.Dir("client/")))
-	r.PathPrefix("/css/").Handler(http.FileServer(http.Dir("client/")))
+	r.PathPrefix("/assets/").Handler(http.FileServer(http.Dir(STATIC)))
+	r.PathPrefix("/fonts/").Handler(http.FileServer(http.Dir(STATIC)))
+	r.PathPrefix("/app/").Handler(http.FileServer(http.Dir(STATIC)))
+	r.PathPrefix("/components/").Handler(http.FileServer(http.Dir(STATIC)))
+	r.PathPrefix("/bower_components/").Handler(http.FileServer(http.Dir(STATIC)))
+	r.PathPrefix("/robots.txt").Handler(http.FileServer(http.Dir(STATIC)))
+	r.PathPrefix("/scripts/").Handler(http.FileServer(http.Dir(STATIC)))
+	r.PathPrefix("/js/").Handler(http.FileServer(http.Dir(STATIC)))
+	r.PathPrefix("/css/").Handler(http.FileServer(http.Dir(STATIC)))
 	r.NotFoundHandler = http.HandlerFunc(notFoundHandler)
 
 	api := r.PathPrefix("/api/v1").Subrouter()
@@ -82,7 +87,7 @@ func main() {
 	api.HandleFunc("/amas/{id}", apiAmaUpdate).Methods("PUT")
 	api.HandleFunc("/amas/{id}", apiAmaPatch).Methods("PATCH")
 	api.HandleFunc("/amas/{id}", apiAmaDelete).Methods("DELETE")
-	api.HandleFunc("/users/", apiUsers)
+	api.HandleFunc("/makers", apiMakersAll)
 
 	r.HandleFunc("/login", handleLogin)
 	r.HandleFunc("/test", handleRedirect)

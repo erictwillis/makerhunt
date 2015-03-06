@@ -8,10 +8,10 @@ angular.module('makerhuntApp')
     $scope.makers = [];
 
 
-    $http.get('https://slack.com/api/users.list?token=xoxp-3803026192-3840122016-3877261274-4d0a43')
+    $http.get('/api/v1/makers')
       .success(function(data){
         console.log(data);
-        var members = utilities.shuffle(data.members);
+        var members = utilities.shuffle(data);
         var makers = members.slice(0, 60);
 
         angular.forEach(makers, function(value, key) {
