@@ -1,11 +1,48 @@
 'use strict';
 
 angular.module('makerhuntApp')
-  .controller('MainCtrl', function ($scope, $http) {
-    $scope.awesomeThings = [];
+  .controller('MainCtrl', function ($scope, $http, utilities, $interval, $timeout) {
 
-    $http.get('/api/things').success(function(awesomeThings) {
-      $scope.awesomeThings = awesomeThings;
-    });
+    //makerFaces
+
+    $scope.makers = [];
+
+
+    $http.get('https://slack.com/api/users.list?token=xoxp-3803026192-3840122016-3877261274-4d0a43')
+      .success(function(data){
+        console.log(data);
+        var members = utilities.shuffle(data.members);
+        var makers = members.slice(0, 60);
+
+        angular.forEach(makers, function(value, key) {
+
+          this.push(value);
+
+
+        }, $scope.makers);
+
+        console.log($scope.makers);
+
+
+
+        $scope.makerPool = members.slice(60);
+
+        console.log($scope.makerPool);
+      })
+      .error(function(data){
+        console.log(data);
+      });
+
+    $interval(function(){
+
+      utilities.switchUser($scope.makers, $scope.makerPool);
+
+
+    }, 5000);
+
+
+
+
+
 
   });
