@@ -12,7 +12,7 @@ type Database struct {
 }
 
 func (d *Database) Open() error {
-	session, err := mgo.Dial(os.Getenv("DSN"))
+	session, err := mgo.Dial(os.Getenv("MONGOLAB_URI"))
 	if err != nil {
 		return err
 	}

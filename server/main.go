@@ -32,7 +32,10 @@ func init() {
 
 	api = slack.New(config.SlackToken)
 
-	db.Open()
+	if err := db.Open(); err != nil {
+		// panic(err)
+		log.Println(err)
+	}
 }
 
 func handleLogin(w http.ResponseWriter, r *http.Request) {
@@ -62,7 +65,7 @@ func showUser(w http.ResponseWriter, r *http.Request) {
 }
 
 const (
-	STATIC = "client"
+	STATIC = "public"
 )
 
 var templates = template.Must(template.ParseGlob(path.Join(STATIC, "*.html")))

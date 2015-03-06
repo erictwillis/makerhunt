@@ -1,11 +1,9 @@
 node_modules
-public
 .gopath
 .tmp
 .sass-cache
 .idea
 client/bower_components
-dist
 /server/config/local.env.js
 run.sh
 
