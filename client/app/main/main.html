@@ -3,9 +3,8 @@
 
   <div class="makerFaces">
 
-    <img id="{{maker.id}}" class="makerFaces-face animated" ng-src="{{maker.profile.image_192}}"
+    <img preload id="{{maker.id}}" class="makerFaces-face animated" ng-src="{{maker.profile.image_192}}"
          ng-repeat="maker in makers" ng-class-even="'flipInX'" ng-class-odd="'flipInY'" alt=""/>
-
   </div>
 
 

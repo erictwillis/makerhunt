@@ -19,7 +19,7 @@ import (
 )
 
 const (
-	STATIC = "public"
+	STATIC = "client"
 )
 
 var (
