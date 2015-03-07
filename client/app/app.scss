@@ -14,7 +14,24 @@ body{
 img{
   vertical-align: bottom;
 }
+button{
+  display: block;
+  margin: 0 auto;
+}
 
+
+/**
+ * Font Includes
+ */
+@import url(http://fonts.googleapis.com/css?family=Lato:300,400,700);
+
+/**
+ * Typography
+ */
+
+html, body{
+  font-family: 'Lato', sans-serif;
+}
 
 
 // Component styles are injected through grunt
