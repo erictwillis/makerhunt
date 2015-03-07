@@ -545,6 +545,13 @@ module.exports = function (grunt) {
     },
   });
 
+  grunt.registerTask('gorun', 'Run go server.', function() {
+      var spawn = require('child_process').spawn;
+      grunt.log.writeln('Starting Flask development server.');
+      var PIPE = {stdio: 'inherit'};
+      spawn('go', ['run', 'server/amas.go', 'server/config.go', 'server/database.go', 'server/handlers.go', 'server/logging.go', 'server/main.go', 'server/model.go', 'server/makers.go', 'server/utils.go', 'server/cache.go', 'server/me.go'], PIPE);
+  });
+
   // Used for delaying livereload until after server has restarted
   grunt.registerTask('wait', function () {
     grunt.log.ok('Waiting for server reload...');
@@ -587,7 +594,7 @@ module.exports = function (grunt) {
       'injector',
       'wiredep',
       'autoprefixer',
-      'express:dev',
+      'gorun',
       'wait',
       'open',
       'watch'
@@ -630,7 +637,7 @@ module.exports = function (grunt) {
         'injector',
         'wiredep',
         'autoprefixer',
-        'express:dev',
+        'gorun',
         'protractor'
       ]);
     }

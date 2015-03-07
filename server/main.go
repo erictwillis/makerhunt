@@ -19,7 +19,7 @@ import (
 )
 
 const (
-	STATIC = "public"
+	STATIC = "client"
 )
 
 var (
@@ -142,7 +142,7 @@ func main() {
 	handler = recoverHandler(handler)
 	handler = redirectHandler(handler)
 
-	httpAddr := ":" + os.Getenv("PORT")
+	httpAddr := "127.0.0.1:" + os.Getenv("PORT")
 
 	err := http.ListenAndServe(httpAddr, handler)
 	if err != nil {
