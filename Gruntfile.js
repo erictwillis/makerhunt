@@ -372,11 +372,24 @@ module.exports = function (grunt) {
           ]
         }]
       },
+      html: {
+        expand: true,
+        dot: true,
+        cwd: '<%= yeoman.client %>',
+        dest: '.tmp/',
+        src: ['index.html']
+      },
       styles: {
         expand: true,
         cwd: '<%= yeoman.client %>',
         dest: '.tmp/',
-        src: ['{app,components}/**/*.css']
+        src: [
+        '{app,components}/**/*.css',
+        '{app,components}/**/*.js',
+        '{app,components}/**/*.html',
+        'bower_components/**',
+        'index.html'
+        ]
       }
     },
 
@@ -594,6 +607,7 @@ module.exports = function (grunt) {
       'injector',
       'wiredep',
       'autoprefixer',
+      'copy:styles',
       'gorun',
       'wait',
       'open',

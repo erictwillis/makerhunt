@@ -19,7 +19,7 @@ import (
 )
 
 const (
-	STATIC = "client"
+	STATIC = ".tmp"
 )
 
 var (
