@@ -13,12 +13,10 @@ func apiMeGet(w http.ResponseWriter, r *http.Request) {
 	session, _ := store.Get(r, config.SessionName)
 
 	userid := session.Values["userid"]
-	if userid == "" {
-		http.Error(w, "Unauthorized", 403)
+	if userid == nil {
+		http.Error(w, "Unauthorized", 401)
 		return
 	}
-
-	log.Printf("Userid %s", userid)
 
 	var maker gohunt.User
 	if err := db.Makers.Find(bson.M{"id": userid}).One(&maker); err == mgo.ErrNotFound {

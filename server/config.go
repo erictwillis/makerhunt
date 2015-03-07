@@ -20,6 +20,6 @@ func NewConfig() Config {
 	c.RedirectUrl = os.Getenv("REDIRECT_URL")
 	c.AuthenticationKey = os.Getenv("AUTHENTICATION_KEY")
 	c.EncryptionKey = os.Getenv("ENCRYPTION_KEY")
-	c.SessionName = "ticket"
+	c.SessionName = "token"
 	return c
 }

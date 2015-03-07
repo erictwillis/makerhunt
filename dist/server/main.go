@@ -60,10 +60,10 @@ func signoutHandler(w http.ResponseWriter, req *http.Request) {
 func loginHandler(w http.ResponseWriter, r *http.Request) {
 	state := randSeq(12)
 
-	session, _ := store.Get(r, config.SessionName)
+	session, _ := store.Get(r, "state")
 	session.Options = &sessions.Options{
 		Path:     "/",
-		MaxAge:   86400 * 7,
+		MaxAge:   0,
 		HttpOnly: true,
 	}
 	session.Values["state"] = state
@@ -73,7 +73,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func authHandler(w http.ResponseWriter, r *http.Request) {
-	session, _ := store.Get(r, config.SessionName)
+	session, _ := store.Get(r, "state")
 
 	if r.FormValue("state") != session.Values["state"] {
 		http.Error(w, "Invalid state", 403)
@@ -86,16 +86,15 @@ func authHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// client.Token
-	// gohunt.GenAuthClient(token)
+	session, _ = store.Get(r, config.SessionName)
 	settings, err := client.GetSettings()
 	session.Options = &sessions.Options{
 		Path:     "/",
 		MaxAge:   86400 * 7,
-		HttpOnly: true,
+		HttpOnly: false,
 	}
 	session.Values["userid"] = settings.ID
-	session.Values["token"] = client.AuthToken.AccessToken
+	session.Values["access_token"] = client.AuthToken.AccessToken
 	session.Save(r, w)
 
 	if _, err = db.Makers.Upsert(bson.M{"userid": settings.ID}, settings); err != nil {
@@ -103,20 +102,6 @@ func authHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.Redirect(w, r, "/me", 302)
-}
-
-func apiPHUser(w http.ResponseWriter, r *http.Request) {
-	var makerId string
-	maker, err := api.GetUserInfo(makerId)
-
-	//	ama.Maker = maker
-	_ = err
-	_ = maker
-
-}
-
-func showUser(w http.ResponseWriter, r *http.Request) {
-
 }
 
 func main() {
@@ -147,7 +132,7 @@ func main() {
 	r.HandleFunc("/signout", signoutHandler)
 	r.HandleFunc("/login", loginHandler)
 	r.HandleFunc("/auth", authHandler)
-	r.HandleFunc("/me", showUser)
+	r.HandleFunc("/me", pageHandler("index.html"))
 	r.HandleFunc("/", pageHandler("index.html"))
 
 	var handler http.Handler = r
