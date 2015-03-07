@@ -11,8 +11,17 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <link rel="stylesheet" href="app/ecd42328.vendor.css"/>
-    <link rel="stylesheet" href="app/5fae707f.app.css"/>
+    <!-- build:css(client) app/vendor.css -->
+      <!-- bower:css -->
+      <link rel="stylesheet" href="bower_components/skeleton/css/skeleton.css" />
+      <link rel="stylesheet" href="bower_components/animate.css/animate.css" />
+      <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css({.tmp,client}) app/app.css -->
+    <link rel="stylesheet" href="app/app.css">
+      <!-- injector:css -->
+      <!-- endinjector -->
+    <!-- endbuild -->
   </head>
   <body ng-app="makerhuntApp">
     <!--[if lt IE 7]>
@@ -37,8 +46,31 @@
     <script src="bower_components/es5-shim/es5-shim.js"></script>
     <script src="bower_components/json3/lib/json3.min.js"></script>
     <![endif]-->
-    <script src="app/1098e76e.vendor.js"></script>
+    <!-- build:js({client,node_modules}) app/vendor.js -->
+      <!-- bower:js -->
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+      <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.0-beta.2/angular.min.js"></script>
+      <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.0-beta.2/angular-resource.min.js"></script>
+      <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.0-beta.2/angular-cookies.min.js"></script>
+      <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.0-beta.2/angular-sanitize.min.js"></script>
+      <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.0-beta.2/angular-route.min.js"></script>
+      <script src="bower_components/lodash/dist/lodash.compat.js"></script>
+      <!-- endbower -->
+    <!-- endbuild -->
 
-        <script src="app/594d68da.app.js"></script>
+        <!-- build:js({.tmp,client}) app/app.js -->
+        <script src="app/app.js"></script>
+          <!-- injector:js -->
+          <script src="app/directives/preload/preload.directive.js"></script>
+          <script src="app/main/main.controller.js"></script>
+          <script src="app/main/main.js"></script>
+          <script src="app/services/ama.service.js"></script>
+          <script src="app/services/auth.service.js"></script>
+          <script src="app/services/maker.service.js"></script>
+          <script src="app/services/user.service.js"></script>
+          <script src="app/services/utilities/utilities.service.js"></script>
+          <script src="components/navbar/navbar.controller.js"></script>
+          <!-- endinjector -->
+        <!-- endbuild -->
 </body>
 </html>

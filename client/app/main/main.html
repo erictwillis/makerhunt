@@ -3,7 +3,7 @@
 
   <div class="makerFaces">
     <img preload id="{{maker.id}}" class="makerFaces-face animated" ng-src="{{maker.profile.image_192}}"
-         ng-repeat="maker in makers" ng-class-even="'flipInX'" ng-class-odd="'flipInY'" alt=""/>
+         ng-repeat="maker in makers" alt=""/>
   </div>
 
   <nav>
@@ -26,7 +26,7 @@
         <div class="offset-by-two eight columns">
           <h1 class="logo">Maker Hunt</h1>
 
-          <h3 class="tagline">A diverse group of product driven makers from the Product Hunt community</h3>
+          <h3 class="tagline">The slack chat for product driven makers from the Product Hunt community</h3>
 
           <button class="btn-requestInvite">Request Invite</button>
 
@@ -37,16 +37,97 @@
 
   </header>
 
+  <section class="main">
+
+    <div class="container">
+      <div class="row">
+        <div class="offset-by-two eight columns">
+
+          <h2 class="amas-headline">Our Maker AMA's</h2>
+
+          <h4 class="amas-tagline">From product and business to work-life balance,<br/>come ask the makers anything</h4>
+
+        </div>
+      </div>
+      <div class="row">
+        <div class="twelve columns">
+          <div class="switch-wrapper">
+
+            <button class="btn-amas btn-amas--upcoming active">upcoming</button>
+            <button class="btn-amas btn-amas--previous">previous</button>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="offset-by-one ten columns">
+          <div class="amaList">
+
+            <div class="ama-wrapper" ng-repeat="ama in amas">
+
+              <div class="row">
+                <div class="six columns">
+                  <h5 class="ama--timestamp">Mar 10, 2015 at 9:00PM CET</h5>
+                </div>
+                <div class="six columns">
+
+                </div>
+              </div>
+
+
+                  <div class="ama">
+
+                    <div class="row">
+                      <div class="twelve columns">
+
+                        <div class="ama--pic--wrapper">
+                          <img class="u-max-full-width ama--pic" ng-src="{{ama.ph_profile.image_url}}" alt="@{{ama.username}}"/>
+                        </div>
+                        <div class="ama--content--wrapper">
+
+                        <h2 class="ama--maker-name">{{ama.ph_profile.name}}</h2>
+                        <h4 class="ama--maker-username"><a ng-href="https://twitter.com/{{ama.username}}" target="_blank">@{{ama.username}}</a></h4>
+
+                        <p class="ama--description">{{ama.ph_profile.headline}}</p>
+
+                        <h6 class="ama--maker-headline" ng-show="ama.ph_profile.maker_of.length">Maker</h6>
+
+                        <ul class="maker-of-list">
+                          <li class="maker-of-list--item" ng-repeat="product in ama.ph_profile.maker_of">
+                            <a ng-href="{{product.discussion_url}}">{{product.name}}</a>
+                          </li>
+                        </ul>
+
+                        </div>
+
+                      </div>
+                    </div>
+
+                  </div>
+
+
+
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
 
 
 
 
 </div>
-<div>
-  Hi, {{ currentUser.name }} 
+<div class="hidden">
+  Hi, {{ currentUser.name }}
 
 
-  {{ currentUser }} 
+  {{ currentUser }}
 
 
   <ul>
