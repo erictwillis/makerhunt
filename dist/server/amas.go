@@ -101,6 +101,14 @@ func apiAmasAll(w http.ResponseWriter, r *http.Request) {
 	if err := iter.Close(); err != nil {
 	}
 
+	amas = append(amas, AMA{
+		Title: "The best cities to live and work remotely",
+	})
+
+	amas = append(amas, AMA{
+		Title: "Marvel — Turn sketches into prototypes (new iOS & Android apps)",
+	})
+
 	WriteJSON(w, amas)
 }
 

@@ -12,6 +12,8 @@ type AMA struct {
 	FromDate *time.Time `bson:"from_date" json:"from_date"`
 	EndDate  *time.Time `bson:"end_date" json:"end_date"`
 
+	Title string `bson:"title" json:"title"`
+
 	Maker Maker `bson:"maker"`
 }
 

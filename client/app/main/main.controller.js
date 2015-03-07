@@ -11,7 +11,9 @@ angular.module('makerhuntApp')
 
     $scope.amas = [];
 
-    Ama.query();
+    Ama.query(function(data) {
+        $scope.amas = data;
+    });
 
     Maker.query(function(data){ 
         console.log(data);
