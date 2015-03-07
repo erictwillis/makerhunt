@@ -8,6 +8,7 @@ import (
 
 type Database struct {
 	*mgo.Database
+	Amas   *mgo.Collection
 	Makers *mgo.Collection
 }
 
@@ -29,5 +30,6 @@ func (d *Database) Open() error {
 	*/
 	d.Database = session.DB("")
 	d.Makers = d.Database.C("makers")
+	d.Amas = d.Database.C("amas")
 	return nil
 }

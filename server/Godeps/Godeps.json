@@ -19,6 +19,14 @@
 			"Rev": "8a875a034c69b940914d83ea03d3f1299b4d094b"
 		},
 		{
+			"ImportPath": "github.com/gorilla/securecookie",
+			"Rev": "5f171f42328bdd573211bb82bdee8f259c4c61ae"
+		},
+		{
+			"ImportPath": "github.com/gorilla/sessions",
+			"Rev": "1f45645972a051deb63c8e8e3c594041a6145e35"
+		},
+		{
 			"ImportPath": "github.com/kyeah/gohunt/gohunt",
 			"Rev": "276985559750522ce35f631047b39e146af4cd08"
 		},

@@ -15,7 +15,7 @@ func apiAmaGet(w http.ResponseWriter, r *http.Request) {
 	if id, ok := vars["id"]; ok {
 		ama := AMA{}
 		id := bson.ObjectIdHex(id)
-		err := db.Makers.FindId(id).One(&ama)
+		err := db.Amas.FindId(id).One(&ama)
 		if err != nil {
 			panic(err)
 		}
@@ -32,7 +32,7 @@ func apiAmaUpdate(w http.ResponseWriter, r *http.Request) {
 	if id, ok := vars["id"]; ok {
 		ama := AMA{}
 		id := bson.ObjectIdHex(id)
-		err := db.Makers.UpdateId(id, ama)
+		err := db.Amas.UpdateId(id, ama)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -48,7 +48,7 @@ func apiAmaDelete(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	if id, ok := vars["id"]; ok {
 		id := bson.ObjectIdHex(id)
-		if err := db.Makers.RemoveId(id); err == mgo.ErrNotFound {
+		if err := db.Amas.RemoveId(id); err == mgo.ErrNotFound {
 			http.NotFound(w, r)
 			return
 		} else if err != nil {
@@ -67,7 +67,7 @@ func apiAmaPatch(w http.ResponseWriter, r *http.Request) {
 	if id, ok := vars["id"]; ok {
 		ama := AMA{}
 		id := bson.ObjectIdHex(id)
-		if err := db.Makers.FindId(id).One(&ama); err == mgo.ErrNotFound {
+		if err := db.Amas.FindId(id).One(&ama); err == mgo.ErrNotFound {
 			http.NotFound(w, r)
 			return
 		} else if err != nil {
@@ -75,7 +75,7 @@ func apiAmaPatch(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// Merge(AMA with resp)
-		if err := db.Makers.UpdateId(id, ama); err == mgo.ErrNotFound {
+		if err := db.Amas.UpdateId(id, ama); err == mgo.ErrNotFound {
 			http.NotFound(w, r)
 			return
 		} else if err != nil {
@@ -91,7 +91,7 @@ func apiAmaPatch(w http.ResponseWriter, r *http.Request) {
 func apiAmasAll(w http.ResponseWriter, r *http.Request) {
 	amas := []AMA{}
 
-	iter := db.Makers.Find(nil).Iter()
+	iter := db.Amas.Find(nil).Iter()
 	defer iter.Close()
 
 	ama := AMA{}
@@ -106,7 +106,7 @@ func apiAmasAll(w http.ResponseWriter, r *http.Request) {
 
 func apiAmasNew(w http.ResponseWriter, r *http.Request) {
 	ama := AMA{AmaId: bson.NewObjectId()}
-	err := db.Makers.Insert(&ama)
+	err := db.Amas.Insert(&ama)
 	if err != nil {
 		log.Fatal(err)
 	}

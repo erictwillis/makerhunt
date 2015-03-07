@@ -10,22 +10,30 @@ import (
 	"text/template"
 	"time"
 
-	"gopkg.in/mgo.v2"
-
 	"github.com/kyeah/gohunt/gohunt"
 	"github.com/nlopes/slack"
+	"gopkg.in/mgo.v2/bson"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
+	"github.com/gorilla/sessions"
 )
 
-var clientID string
-var clientSecret string
-var state string
-var api *slack.Slack
-var session *mgo.Session
-var db Database
-var config Config = NewConfig()
+const (
+	STATIC = "public"
+)
+
+var (
+	clientID     string
+	clientSecret string
+	state        string
+	api          *slack.Slack
+	db           Database
+	config       Config = NewConfig()
+	store        *sessions.CookieStore
+)
+
+var templates = template.Must(template.ParseGlob(path.Join(STATIC, "*.html")))
 
 func init() {
 	rand.Seed(time.Now().UTC().UnixNano())
@@ -33,18 +41,63 @@ func init() {
 	api = slack.New(config.SlackToken)
 
 	if err := db.Open(); err != nil {
-		// panic(err)
-		log.Println(err)
+		panic(err)
 	}
+
+	store = sessions.NewCookieStore(
+		[]byte(config.AuthenticationKey),
+		[]byte(config.EncryptionKey),
+	)
 }
 
-func handleLogin(w http.ResponseWriter, r *http.Request) {
+func signoutHandler(w http.ResponseWriter, req *http.Request) {
+	session, _ := store.Get(req, config.SessionName)
+	session.Options.MaxAge = -1
+	session.Save(req, w)
+
+	http.Redirect(w, req, "/", 302)
+}
+
+func loginHandler(w http.ResponseWriter, r *http.Request) {
 	state := randSeq(12)
+
+	session, _ := store.Get(r, config.SessionName)
+	session.Options = &sessions.Options{
+		Path:     "/",
+		MaxAge:   86400 * 7,
+		HttpOnly: true,
+	}
+	session.Values["state"] = state
+	session.Save(r, w)
+
 	gohunt.RequestUserOAuthCode(w, r, config.ClientId, config.RedirectUrl, state)
 }
 
-func handleRedirect(w http.ResponseWriter, r *http.Request) {
+func authHandler(w http.ResponseWriter, r *http.Request) {
+	session, _ := store.Get(r, config.SessionName)
+
+	if r.FormValue("state") != session.Values["state"] {
+		http.Error(w, "Invalid state", 403)
+		return
+	}
+
 	client, err := gohunt.NewUserOAuthClient(config.ClientId, config.ClientSecret, config.RedirectUrl, r.FormValue("code"))
+	if err != nil {
+		http.Error(w, err.Error(), 403)
+		return
+	}
+
+	// client.Token
+	// gohunt.GenAuthClient(token)
+	settings, err := client.GetSettings()
+	session.Values["username"] = settings.Username
+	session.Save(r, w)
+
+	if _, err = db.Makers.Upsert(bson.M{"username": settings.Username}, settings); err != nil {
+		log.Fatal(err)
+	}
+
+	// save to database?
 	fmt.Println(client.GetSettings())
 	fmt.Println(client)
 	fmt.Println(err)
@@ -64,13 +117,9 @@ func showUser(w http.ResponseWriter, r *http.Request) {
 
 }
 
-const (
-	STATIC = "public"
-)
-
-var templates = template.Must(template.ParseGlob(path.Join(STATIC, "*.html")))
-
 func main() {
+	go cache.Worker()
+
 	r := mux.NewRouter()
 	r.PathPrefix("/assets/").Handler(http.FileServer(http.Dir(STATIC)))
 	r.PathPrefix("/fonts/").Handler(http.FileServer(http.Dir(STATIC)))
@@ -92,10 +141,11 @@ func main() {
 	api.HandleFunc("/amas/{id}", apiAmaDelete).Methods("DELETE")
 	api.HandleFunc("/makers", apiMakersAll)
 
-	r.HandleFunc("/login", handleLogin)
-	r.HandleFunc("/test", handleRedirect)
+	r.HandleFunc("/signout", signoutHandler)
+	r.HandleFunc("/login", loginHandler)
+	r.HandleFunc("/auth", authHandler)
 	r.HandleFunc("/me", showUser)
-	r.HandleFunc("/", PageHandler("index.html"))
+	r.HandleFunc("/", pageHandler("index.html"))
 
 	var handler http.Handler = r
 

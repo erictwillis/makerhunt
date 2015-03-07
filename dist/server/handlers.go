@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func PageHandler(page string) func(w http.ResponseWriter, req *http.Request) {
+func pageHandler(page string) func(w http.ResponseWriter, req *http.Request) {
 	return func(w http.ResponseWriter, req *http.Request) {
 		if err := templates.ExecuteTemplate(w, page, nil); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
