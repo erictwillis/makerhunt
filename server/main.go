@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"math/rand"
 	"net/http"
@@ -90,17 +89,20 @@ func authHandler(w http.ResponseWriter, r *http.Request) {
 	// client.Token
 	// gohunt.GenAuthClient(token)
 	settings, err := client.GetSettings()
-	session.Values["username"] = settings.Username
+	session.Options = &sessions.Options{
+		Path:     "/",
+		MaxAge:   86400 * 7,
+		HttpOnly: true,
+	}
+	session.Values["userid"] = settings.ID
+	session.Values["token"] = client.AuthToken.AccessToken
 	session.Save(r, w)
 
-	if _, err = db.Makers.Upsert(bson.M{"username": settings.Username}, settings); err != nil {
+	if _, err = db.Makers.Upsert(bson.M{"userid": settings.ID}, settings); err != nil {
 		log.Fatal(err)
 	}
 
-	// save to database?
-	fmt.Println(client.GetSettings())
-	fmt.Println(client)
-	fmt.Println(err)
+	http.Redirect(w, r, "/me", 302)
 }
 
 func apiPHUser(w http.ResponseWriter, r *http.Request) {
@@ -133,6 +135,7 @@ func main() {
 	r.NotFoundHandler = http.HandlerFunc(notFoundHandler)
 
 	api := r.PathPrefix("/api/v1").Subrouter()
+	api.HandleFunc("/me", apiMeGet).Methods("GET")
 	api.HandleFunc("/amas", apiAmasNew).Methods("POST")
 	api.HandleFunc("/amas", apiAmasAll).Methods("GET")
 	api.HandleFunc("/amas/{id}", apiAmaGet).Methods("GET")
