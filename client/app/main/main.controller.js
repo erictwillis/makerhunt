@@ -78,8 +78,8 @@ angular.module('makerhuntApp')
       }, 4000);
       $timeout(function(){
         $scope.modal.button.status = 'Invite sent!';
-        //$(target).removeClass('busy');
-        //$(target).addClass('done');
+        $(target).removeClass('busy');
+        $(target).addClass('done');
       }, 5000);
     }
 
