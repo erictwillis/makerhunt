@@ -123,6 +123,33 @@
 
 
 </div>
+
+<div class="overlay">
+
+  <div class="modal">
+
+    <div class="modal-img--wrapper">
+      <img class="modal-user--pic" ng-src="https://pbs.twimg.com/profile_images/542004858744602624/qT_jO1YF.jpeg" alt=""/>
+      <div class="modal-makerBadge">M</div>
+    </div>
+
+    <h2 class="modal-headline">Hey Cat,</h2>
+
+    <p class="modal-message">If the email adress below is correct, click to request your invite. If not, click to change it.</p>
+
+    <input class="modal-input" type="email" value="thecat@makerhunt.co"/>
+
+    <button class="modal-button" ng-click="evaluateModal($event);"><span class="spinner"></span><span class="modal-button-inner">{{modal.button.status}}</span></button>
+
+    <a class="modal-secondary-action" href="#">Is this not you? Let us know.</a>
+
+
+
+  </div>
+
+</div>
+
+
 <div class="hidden">
   Hi, {{ currentUser.name }}
 

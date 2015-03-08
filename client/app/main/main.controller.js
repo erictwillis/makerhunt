@@ -55,6 +55,35 @@ angular.module('makerhuntApp')
     }, 5000);
 
 
+    //MODAL THINGS (we should probably write a directive for the modal, tbh...)
+
+    $scope.modal= {};
+    $scope.modal.button = {};
+
+    $scope.modal.button.status = 'Send Invite';
+
+    $scope.evaluateModal = function($event){
+
+      var target = $event.target;
+      $(target).addClass('busy');
+
+
+
+      $scope.modal.button.status = 'Writing Invitation...';
+      $timeout(function(){
+        $scope.modal.button.status = 'Fetching envelope...';
+      }, 2000);
+      $timeout(function(){
+        $scope.modal.button.status = 'Sending...';
+      }, 4000);
+      $timeout(function(){
+        $scope.modal.button.status = 'Invite sent!';
+        //$(target).removeClass('busy');
+        //$(target).addClass('done');
+      }, 5000);
+    }
+
+
 
 
 

@@ -408,3 +408,128 @@
   }
 
 }
+
+body{
+
+  .overlay{
+    display: none;
+  }
+
+  &.open-overlay{
+
+    position: fixed;
+    width: 100%;
+
+    .overlay{
+      display: block;
+    }
+
+  }
+
+}
+
+.overlay{
+  position: fixed;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+
+  .modal {
+    width: 460px;
+    max-width: 85%;
+    background: rgba(255,255,255,1);
+    padding: 20px;
+    text-align: center;
+    margin: 10vh auto;
+    border-radius: 4px;
+    border: 1px solid rgba(216,216,216,.2);
+
+    .modal-img--wrapper {
+      position: relative;
+      max-width: 100px;
+      margin: 0 auto;
+    }
+
+    .modal-user--pic {
+      max-width: 100%;
+      max-height: 100px;
+      border-radius: 50%;
+    }
+    .modal-makerBadge {
+      position: absolute;
+      top: 2px;
+      right: -2px;
+      padding: 1px;
+      width: 25px;
+      height: 25px;
+      background: #51ac7d;
+      color: white;
+      border-radius: 50%;
+    }
+
+    .modal-headline {
+      font-size: 32px;
+      margin: 20px 0 10px;
+      line-height: 1;
+      color: rgba(48, 48, 48, 1);
+    }
+
+    .modal-message {
+      font-size: 18px;
+      line-height: 145%;
+      max-width: 80%;
+      margin: 0 auto 20px;
+      color: rgba(168,168,168,1);
+      font-weight: 300;
+    }
+
+    .modal-input {
+      width: 100%;
+      line-height: 143%;
+      text-align: center;
+      height: 81px!important;
+      font-size: 28px;
+      font-weight: 500;
+      color: rgba(48,48,48,1);
+    }
+
+    .modal-button {
+      font-size: 20px;
+      text-transform: none;
+      font-weight: 400;
+      width: 100%;
+      background: rgba(89,167,87,1);
+      color: rgba(255,255,255,1);
+      margin: 10px 0 20px;
+      height: 63px;
+      border: 1px solid rgba(89,167,87,1);
+      outline: none!important;
+      &:hover, &:active{
+        color: rgba(255,255,255,1);
+      }
+      .spinner{
+        display: none;
+      }
+    }
+    .busy {
+      cursor: initial;
+      background: rgba(133,133,133,1)!important;
+      border: 1px solid rgba(133,133,133,1)!important;
+      .spinner{
+        display: inline-block;
+      }
+    }
+    .modal-secondary-action {
+      font-size: 14px;
+      line-height: 186%;
+      color: rgba(168,168,168,1);
+      text-decoration: none;
+      &:hover, &:active{
+        border-bottom: 1px solid;
+      }
+    }
+  }
+}
