@@ -92,7 +92,7 @@
   header{
     text-align: center;
     position: relative;
-    height: calc(100vw / 12 * 5);
+    height: calc(100vw / 6 * 10);
 
     .logo{
       margin-top: 10rem;
@@ -181,6 +181,26 @@
     bottom: 0;
   }
 
+  /* Larger than tablet */
+  @media (min-width: 750px) {
+    header{
+      height: calc(100vw / 10 * 6);
+    }
+  }
+
+  /* Larger than desktop */
+  @media (min-width: 1000px) {
+    header {
+      height: calc(100vw / 12 * 5);
+    }
+  }
+  /* Even Larger than desktop */
+  @media (min-width: 1200px) {
+    header {
+      height: calc(100vw / 12 * 5);
+    }
+  }
+
   .main{
     margin-top: 48px;
   }
@@ -213,9 +233,9 @@
     .switch-wrapper:before{
       content: '';
       position: absolute;
-      height: 1px;
+      //height: 1px;
       width: 30%;
-      padding-top: 13px;
+      padding-top: 14px;
       border-bottom: 2px solid rgba(228,228,228,.4);
       left: 0;
       z-index: -1;
@@ -223,9 +243,9 @@
     .switch-wrapper:after{
       content: '';
       position: absolute;
-      height: 1px;
+      //height: 1px;
       width: 30%;
-      padding-top: 13px;
+      padding-top: 14px;
       border-bottom: 2px solid rgba(228,228,228,.4);
       right: 0;
       z-index: -1;
@@ -247,12 +267,12 @@
     }
     .btn-amas--upcoming{
       border-radius: 100px 0 0 100px;
-      margin-right: -1px;
+      //margin-right: -1px;
       padding-left: 10px;
     }
     .btn-amas--previous{
       border-radius: 0 100px 100px 0;
-      margin-left: -1px;
+      //margin-left: -1px;
       padding-right: 10px;
     }
 
@@ -277,20 +297,29 @@
 
           .ama--pic{
             border-radius: 50%;
+            max-width: 100px;
+            margin-right: 20px;
+            float: left;
+          }
+          /* Larger than tablet */
+          @media (min-width: 750px) {
+            .ama--pic{
+              max-width: 120px;
+            }
           }
           .ama--maker-name {
             font-size: 24px;
             color: rgba(76,76,76,1);
-            display: inline-block;
-            padding-right: 8px;
+            display: inline;
             line-height: 121%;
             margin-bottom: 5px;
           }
           .ama--maker-username {
             font-size: 14px;
-            display: inline-block;
+            display: inline;
             line-height: 122%;
             margin-bottom: 5px;
+            padding-left: 8px;
             a{
               color: rgba(89,166,186,1);
               text-decoration: none!important;
@@ -305,11 +334,20 @@
             font-size: 18px;
             color: rgba(166,166,166,1);
             line-height: 123%;
+            margin-bottom: 10px;
+          }
+          .maker-of--wrapper {
+            position: relative;
+            float: left;
+            margin-top: 10px;
+            min-width: 80%;
+            max-width: 610px;
           }
           .ama--maker-headline {
             font-weight: bold;
             font-size: 14px;
             line-height: 143%;
+            margin-bottom: 5px;
           }
           .maker-of-list {
             margin: 0;
