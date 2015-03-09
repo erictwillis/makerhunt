@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('makerhuntApp')
-  .directive('modal', function ($timeout) {
+  .directive('modal', function ($timeout, $interval, Me) {
     return {
       templateUrl: 'app/directives/modal/modal.html',
       restrict: 'A',
@@ -10,7 +10,7 @@ angular.module('makerhuntApp')
       },
       controller: function ($scope) {
           $scope.isMaker= function() {
-              if (angular.isDefined($scope.response.user.ph_settings.maker_of_count)) {
+              if ($scope.response.user.$resolved) {
                   return ($scope.response.user.ph_settings.maker_of_count > 0);
               } else {
                   return false;
@@ -18,61 +18,88 @@ angular.module('makerhuntApp')
           };
       },
       link: function (scope, element, attrs) {
-        //MODAL functionality -- the evaluate function needs to actually do something. (other than animating the button) :D
-
-          console.debug("modal", scope);
+          // this needs to be moved to appropriate controller
 
         scope.modal= {};
+
+        scope.response.user.$promise.then(function() {
+              scope.email = scope.response.user.email;
+
+              if (scope.isMaker()){
+                  scope.modal.button.status = "Send Invite";
+              } else {
+                  scope.modal.button.status = "Subscribe";
+              }
+        });
+
         scope.modal.button = { status: "" };
+        scope.state = "normal";
 
-        //evaluate function start
-
-        scope.evaluateModal = function($event){
+        scope.submit = function($event){
 
           if(scope.modalEvaluated === true){
-            return false;
+            // return false;
           }
 
           scope.modalEvaluated = true;
 
-          var target = $event.target;
+          // var target = $event.target;
+          var wait = null;
+
+        scope.$on('$destroy', function() {
+            if (wait !== null) {
+                return;
+            }
+
+            $interval.cancel(wait);
+        });
+
 
           if(scope.isMaker()){
-            $(target).addClass('busy');
+            // $(target).addClass('busy');
 
-            scope.modal.button.status = 'Writing Invitation...';
-            $timeout(function(){
-              scope.modal.button.status = 'Fetching envelope...';
-            }, 2000);
-            $timeout(function(){
-              scope.modal.button.status = 'Sending...';
-            }, 4000);
-            $timeout(function(){
+            var i = 0;
+
+            // need to make proper object for this
+            wait = $interval(function() {
+                var messages = ["Fetching envelope...", "Sending..."];
+
+                scope.modal.button.status = messages[i];
+
+                if (i < messages.length - 1) {
+                    i++;
+                };
+            }, 600);
+
+            Me.invite({ email: scope.email }).$promise.then(function() {
               scope.modal.button.status = 'Invite sent!';
-              $(target).removeClass('busy');
-              $(target).addClass('done');
-            }, 5000);
-          }
-          if(!scope.isMaker() && scope.response === 'success'){
-            $(target).addClass('busy');
-            scope.modal.button.status = 'Contacting servers...';
-            $timeout(function(){
-              scope.modal.button.status = 'Filling out application...';
-            }, 2000);
-            $timeout(function(){
-              scope.modal.button.status = 'Checking lists...';
-            }, 4000);
-            $timeout(function(){
-              scope.modal.button.status = 'Success!';
-              $(target).removeClass('busy');
-              $(target).addClass('done');
-            }, 5000);
-          }
-          else{
-            scope.modal.button.status = "On it! Thank you!";
+            }).catch(function(e) {
+              scope.modal.button.status = 'Error sending invite!';
+            }).finally(function() {
+                $interval.cancel(wait);
+            });
+          } else {
+            var i = 0;
+
+            wait = $interval(function() {
+                var messages = ["Contacting servers..", "Filling out application...", "Checking lists..."];
+
+                scope.modal.button.status = messages[i];
+
+                if (i < messages.length) {
+                    i++;
+                };
+            }, 200);
+
+            Me.subscribe({email: scope.email}).$promise.then(function() {
+                scope.modal.button.status = 'Success!';
+            }).catch(function(e) {
+                scope.modal.button.status = 'Error!';
+            }).finally(function() {
+                $interval.cancel(wait);
+            });;
           }
         }
-
       }
     };
   });

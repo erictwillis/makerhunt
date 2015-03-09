@@ -20,6 +20,7 @@ import (
 )
 
 const (
+	// STATIC = "public"
 	STATIC = "public"
 )
 
@@ -155,6 +156,8 @@ func main() {
 
 	api := r.PathPrefix("/api/v1").Subrouter()
 	api.HandleFunc("/me", apiMeGet).Methods("GET")
+	api.HandleFunc("/me/subscribe", apiMeSubscribe).Methods("POST")
+	api.HandleFunc("/me/invite", apiMeInvite).Methods("POST")
 	api.HandleFunc("/events", apiEventsNew).Methods("POST")
 	api.HandleFunc("/events", apiEventsAll).Methods("GET")
 	api.HandleFunc("/events/{id}", apiEventGet).Methods("GET")

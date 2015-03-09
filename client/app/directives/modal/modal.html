@@ -1,5 +1,6 @@
 <div ng-switch="response.status">
 <div class="modal" ng-switch-when="success">
+  <form name="form" ng-submit="submit()" novalidate>
 
   <div class="modal-img--wrapper">
     <img class="modal-user--pic" ng-src="{{response.user.image['88px@3X']}}" alt="{{response.user.username}}"/>
@@ -11,25 +12,24 @@
   <p class="modal-message" ng-show="isMaker()">If the email adress below is correct, click to request your invite. If not, click to change it.</p>
   <p class="modal-message" ng-show="!isMaker()">It seems like you don't have a product on ProductHunt yet. You can still sign up for our newsletter below.</p>
 
-  <input class="modal-input" type="email" value="{{ response.user.email }}"/>
-
-  <button class="modal-button" ng-class="{subscribe : !isMaker()}" ng-click="evaluateModal($event);">
-
+  <input class="modal-input" type="email" name='email' ng-model="email" required />
+  <span class="error" ng-show="form.email.$error.required">Required!</span>
+  <span class="error" ng-show="form.email.$error.email">Not a valid email</span>
+  <button class="modal-button" ng-class="{subscribe : !isMaker()}" type='submit' ng-disabled='form.$invalid'>
       <span class="spinner">
-      <svg version="1.1" x="0" y="0" width="150px" height="150px" viewBox="-10 -10 120 120" enable-background="new 0 0 200 200" xml:space="preserve">
-        <path class="circle" d="M0,50 A50,50,0 1 1 100,50 A50,50,0 1 1 0,50" />
-      </svg>
+          <svg version="1.1" x="0" y="0" width="150px" height="150px" viewBox="-10 -10 120 120" enable-background="new 0 0 200 200" xml:space="preserve">
+          <path class="circle" d="M0,50 A50,50,0 1 1 100,50 A50,50,0 1 1 0,50" />
+          </svg>
       </span>
       <span class="success">
-
         <svg version="1.1" x="0px" y="0px" width="611.99px" height="611.99px" viewBox="0 0 611.99 611.99" enable-background="new 0 0 611.99 611.99" xml:space="preserve">
-	 		    <path class="checkMark" d="M606.453,101.171c-7.422-7.384-19.436-7.384-26.856,0L209.688,470.353L32.71,293.719c-7.499-7.46-19.626-7.46-27.086,0     c-7.499,7.46-7.499,19.588,0,27.048L195.341,510.14c0.115,0.115,0.306,0.153,0.421,0.269c0.115,0.114,0.153,0.268,0.229,0.382     c7.422,7.422,19.435,7.422,26.856,0l383.605-382.84C613.836,120.566,613.836,108.554,606.453,101.171z"/>
+        <path class="checkMark" d="M606.453,101.171c-7.422-7.384-19.436-7.384-26.856,0L209.688,470.353L32.71,293.719c-7.499-7.46-19.626-7.46-27.086,0     c-7.499,7.46-7.499,19.588,0,27.048L195.341,510.14c0.115,0.115,0.306,0.153,0.421,0.269c0.115,0.114,0.153,0.268,0.229,0.382     c7.422,7.422,19.435,7.422,26.856,0l383.605-382.84C613.836,120.566,613.836,108.554,606.453,101.171z"/>
         </svg>
-
       </span>
-    <span class="modal-button-inner" ng-show="isMaker()" ng-text="modal.button.status">Send Invite</span>
-    <span class="modal-button-inner" ng-show="!isMaker()" ng-text="modal.button.status">Subscribe</span>
+    <span class="modal-button-inner" ng-show="isMaker()" ng-bind="modal.button.status">Send Invite</span>
+    <span class="modal-button-inner" ng-show="!isMaker()" ng-bind="modal.button.status">Subscribe</span>
   </button>
+  </form>
 
   <a class="modal-secondary-action" ng-show="isMaker()" href="#">Is this not you? Let us know.</a>
   <a class="modal-secondary-action" ng-show="!isMaker()" href="#">Not listed as a Maker yet? Let us know.</a>
