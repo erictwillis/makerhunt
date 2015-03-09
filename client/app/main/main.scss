@@ -140,15 +140,19 @@
     .btn-requestInvite{
       font-weight: 700;
       font-size: 20px;
-      line-height: 120%;
-      color: rgba(255,255,255,1);
+      color: white;
       max-width: 460px;
       width: 90%;
       height: 66px;
-      background: rgba(84, 182, 208, 1);
-      border: 1px solid rgba(42, 111, 130, 1);
+      background: #54b6d0;
+      border: 1px solid #2a6f82;
       text-transform: none;
-      outline: none!important;
+      outline: none !important;
+      display: block;
+      margin: 0 auto;
+      text-decoration: none;
+      box-sizing: border-box;
+      line-height: 64px;
       margin-bottom: 32px;
 
       &:hover, &:active{
@@ -281,6 +285,30 @@
       text-align: left;
 
       .ama-wrapper{
+
+        .action-menu {
+          font-size: 14px;
+          font-weight: 400;
+          margin-bottom: 16px;
+          line-height: 1;
+          text-align: right;
+          cursor: initial;
+
+          .action-item{
+            color: rgba(193,193,193,1);
+            margin-right: 10px;
+            cursor: pointer;
+          }
+          .twitter:hover{
+            color: #55acee;
+          }
+          .facebook:hover{
+            color: #3b5998;
+          }
+          .calendar:hover{
+            color: rgba(193,53,53,1);
+          }
+        }
 
         .ama--timestamp{
           font-size: 14px;
