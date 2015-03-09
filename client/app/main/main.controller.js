@@ -34,7 +34,9 @@ angular.module('makerhuntApp')
 
     $scope.state = 'upcoming';
 
-    $scope.events = [];
+    //this is a hack but it works! :D
+    $scope.events = [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}];
+
     Event.query(function(data) {
         $scope.events = data;
     });
