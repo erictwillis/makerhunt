@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/kyeah/gohunt/gohunt"
+	"github.com/dutchcoders/gohunt/gohunt"
 	"gopkg.in/mgo.v2/bson"
 )
 

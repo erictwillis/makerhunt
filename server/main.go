@@ -9,7 +9,7 @@ import (
 	"text/template"
 	"time"
 
-	"github.com/kyeah/gohunt/gohunt"
+	"github.com/dutchcoders/gohunt/gohunt"
 	"github.com/nlopes/slack"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
@@ -20,8 +20,8 @@ import (
 )
 
 const (
-	 STATIC = "dist/public"
-  //STATIC = "public"
+	STATIC = "dist/public"
+	//STATIC = "public"
 )
 
 var (
