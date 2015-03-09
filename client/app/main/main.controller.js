@@ -34,32 +34,29 @@ angular.module('makerhuntApp')
 
     $scope.state = 'upcoming';
 
-    console.log($scope.currentUser);
-
     $scope.events = [];
     Event.query(function(data) {
         $scope.events = data;
     });
 
     $scope.makers = [];
-    Maker.query(function(data){
-        var members = utilities.shuffle(data);
-        var makers = members.slice(0, 60);
+    $timeout(function() {
+        Maker.query(function(data){
+            var members = utilities.shuffle(data);
+            var makers = members.slice(0, 60);
 
-        angular.forEach(makers, function(value, key) {
-          this.push(value);
-        }, $scope.makers);
-        $scope.makerPool = members.slice(60);
-    }, function(error){
-        console.log(error);
-     });
+            angular.forEach(makers, function(value, key) {
+              this.push(value);
+            }, $scope.makers);
+            $scope.makerPool = members.slice(60);
+        }, function(error){
+            console.log(error);
+        });
 
-    $interval(function(){
-
-      utilities.switchUser($scope.makers, $scope.makerPool);
-
-
-    }, 5000);
+        $interval(function(){
+          utilities.switchUser($scope.makers, $scope.makerPool);
+        }, 5000);
+    }, 0);
 
     $scope.eventsFilter = function( item) {
             if ($scope.state == 'upcoming') {
