@@ -5,8 +5,8 @@ angular.module('makerhuntApp')
 
     var currentUser = {};
     if(angular.isDefined($cookies.token)) {
-      currentUser = User.get();
     }
+    currentUser = User.get();
 
     return {
 

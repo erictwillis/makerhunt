@@ -30,7 +30,7 @@
 
           <a href="/login" target="_self" class="btn-requestInvite">Request Invite</a>
 
-          <a href="#" class="login-with-PH">Login with ProductHunt</a>
+          <a href="/login" target="_self" class="login-with-PH">Login with ProductHunt</a>
         </div>
       </div>
     </div>
@@ -52,10 +52,8 @@
       <div class="row">
         <div class="twelve columns">
           <div class="switch-wrapper">
-
-            <button class="btn-amas btn-amas--upcoming active">upcoming</button><!--
-            --><button class="btn-amas btn-amas--previous">previous</button>
-
+              <button class="btn-amas btn-amas--upcoming active" data-ng-class='{"active": state=="upcoming"}' ng-click='state = "upcoming";'>upcoming</button>
+              <button class="btn-amas btn-amas--previous"data-ng-class='{"active": state=="previous"}' ng-click='state = "previous";'>previous</button>
           </div>
         </div>
       </div>
@@ -64,11 +62,11 @@
         <div class="offset-by-one ten columns">
           <div class="amaList">
 
-            <div class="ama-wrapper" ng-repeat="ama in amas">
+            <div class="ama-wrapper" ng-repeat="event in events | filter:eventsFilter">
 
               <div class="row">
                 <div class="six columns">
-                  <h5 class="ama--timestamp">Mar 10, 2015 at 9:00PM CET</h5>
+                    <h5 class="ama--timestamp">{{event.from_date | amDateFormat:'dddd, MMMM Do YYYY, h:mm:ss a'}}</h5>
                 </div>
                 <div class="six columns">
 
@@ -90,20 +88,20 @@
                   <div class="twelve columns">
 
                     <!--<div class="ama--pic--wrapper">-->
-                    <img class="u-max-full-width ama--pic" ng-src="{{ama.ph_profile.image_url}}" alt="@{{ama.username}}"/>
+                    <img class="u-max-full-width ama--pic" ng-src="{{event.ph_profile.image_url}}" alt="@{{event.username}}"/>
                     <!--</div>
                     <div class="ama--content--wrapper">-->
 
-                    <h2 class="ama--maker-name">{{ama.ph_profile.name}} <small class="ama--maker-username"><a ng-href="https://twitter.com/{{ama.username}}" target="_blank">@{{ama.username}}</a></small></h2>
+                    <h2 class="ama--maker-name">{{event.ph_profile.name}} <small class="ama--maker-username"><a ng-href="https://twitter.com/{{event.username}}" target="_blank">@{{event.username}}</a></small></h2>
 
-                    <p class="ama--description">{{ama.ph_profile.headline}}</p>
+                    <p class="ama--description">{{event.ph_profile.headline}}</p>
 
 
                     <!--</div>-->
                     <div class="maker-of--wrapper">
-                      <h6 class="ama--maker-headline" ng-show="ama.ph_profile.maker_of.length">Maker</h6>
+                      <h6 class="ama--maker-headline" ng-show="event.ph_profile.maker_of.length">Maker</h6>
                       <ul class="maker-of-list">
-                        <li class="maker-of-list--item" ng-repeat="product in ama.ph_profile.maker_of">
+                        <li class="maker-of-list--item" ng-repeat="product in event.ph_profile.maker_of">
                           <a ng-href="{{product.discussion_url}}">{{product.name}}</a>
                         </li>
                       </ul>
@@ -130,24 +128,4 @@
 
 
 
-</div>
-
-<div class="overlay" ng-click="closeModal();">
-
-  <div modal ng-click="$event.stopPropagation();"></div>
-
-
-</div>
-
-
-<div class="hidden">
-  Hi, {{ currentUser.name }}
-
-
-  {{ currentUser }}
-
-
-  <ul>
-    <li ng-repeat="ama in amas">{{ ama.title }}</li>
-  </ul>
 </div>

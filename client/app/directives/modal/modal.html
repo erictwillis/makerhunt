@@ -2,18 +2,18 @@
 <div class="modal" ng-switch-when="success">
 
   <div class="modal-img--wrapper">
-    <img class="modal-user--pic" ng-src="{{response.user.imgURI}}" alt="{{response.user.username}}"/>
-    <div class="modal-makerBadge" ng-show="response.isMaker">M</div>
+    <img class="modal-user--pic" ng-src="{{response.user.image['88px@3X']}}" alt="{{response.user.username}}"/>
+    <div class="modal-makerBadge" ng-show="isMaker()">M</div>
   </div>
 
-  <h2 class="modal-headline">Hey {{response.user.firstName}},</h2>
+  <h2 class="modal-headline">Hey {{response.user.name | firstname}},</h2>
 
-  <p class="modal-message" ng-show="response.isMaker">If the email adress below is correct, click to request your invite. If not, click to change it.</p>
-  <p class="modal-message" ng-show="!response.isMaker">It seems like you don't have a product on ProductHunt yet. You can still sign up for our newsletter below.</p>
+  <p class="modal-message" ng-show="isMaker()">If the email adress below is correct, click to request your invite. If not, click to change it.</p>
+  <p class="modal-message" ng-show="!isMaker()">It seems like you don't have a product on ProductHunt yet. You can still sign up for our newsletter below.</p>
 
-  <input class="modal-input" type="email" value="thecat@makerhunt.co"/>
+  <input class="modal-input" type="email" value="{{ response.user.email }}"/>
 
-  <button class="modal-button" ng-class="{subscribe : !response.isMaker}" ng-click="evaluateModal($event);">
+  <button class="modal-button" ng-class="{subscribe : !isMaker()}" ng-click="evaluateModal($event);">
 
       <span class="spinner">
       <svg version="1.1" x="0" y="0" width="150px" height="150px" viewBox="-10 -10 120 120" enable-background="new 0 0 200 200" xml:space="preserve">
@@ -27,11 +27,12 @@
         </svg>
 
       </span>
-    <span class="modal-button-inner">{{modal.button.status}}</span>
+    <span class="modal-button-inner" ng-show="isMaker()" ng-text="modal.button.status">Send Invite</span>
+    <span class="modal-button-inner" ng-show="!isMaker()" ng-text="modal.button.status">Subscribe</span>
   </button>
 
-  <a class="modal-secondary-action" ng-show="response.isMaker" href="#">Is this not you? Let us know.</a>
-  <a class="modal-secondary-action" ng-show="!response.isMaker" href="#">Not listed as a Maker yet? Let us know.</a>
+  <a class="modal-secondary-action" ng-show="isMaker()" href="#">Is this not you? Let us know.</a>
+  <a class="modal-secondary-action" ng-show="!isMaker()" href="#">Not listed as a Maker yet? Let us know.</a>
 
 
 
@@ -60,7 +61,7 @@
         </svg>
 
       </span>
-      <span class="modal-button-inner">{{modal.button.status}}</span>
+      <span class="modal-button-inner">Report this to us!</span>
     </button>
 
 

@@ -5,51 +5,25 @@ angular.module('makerhuntApp')
     return {
       templateUrl: 'app/directives/modal/modal.html',
       restrict: 'A',
-      scope: {},
+      scope: {
+          response: '=response'
+      },
+      controller: function ($scope) {
+          $scope.isMaker= function() {
+              if (angular.isDefined($scope.response.user.ph_settings.maker_of_count)) {
+                  return ($scope.response.user.ph_settings.maker_of_count > 0);
+              } else {
+                  return false;
+              }
+          };
+      },
       link: function (scope, element, attrs) {
-
-        //DRAFT RESPONSE OBJECT FOR SUCCESS + MAKER
-        /*
-         scope.response = {
-         status: 'success',
-         isMaker: true,
-         user: {id: 1, username: 'imcatnoone', firstName: 'Cat', imgURI: 'https://pbs.twimg.com/profile_images/542004858744602624/qT_jO1YF.jpeg', emailAdress: 'thecat@makerhunt.co'}
-         };
-
-        //DRAFT RESPONSE OBJECT FOR SUCCESS - MAKER
-
-
-        scope.response = {
-          status: 'success',
-          isMaker: false,
-          user: {id: 1, username: 'imcatnoone', firstName: 'Cat', imgURI: 'https://pbs.twimg.com/profile_images/542004858744602624/qT_jO1YF.jpeg', emailAdress: 'thecat@makerhunt.co'}
-        };
-         */
-
-
-        //DRAFT RESPONSE OBJECT FOR ERROR
-
-        scope.response = {status: 'error', code: 'errorCode'};
-
-
-
-
         //MODAL functionality -- the evaluate function needs to actually do something. (other than animating the button) :D
 
+          console.debug("modal", scope);
+
         scope.modal= {};
-        scope.modal.button = {};
-
-        if(scope.response.isMaker) {
-
-          scope.modal.button.status = 'Send Invite';
-
-        }
-        if(!scope.response.isMaker){
-          scope.modal.button.status = 'Subscribe';
-        }
-        if(scope.response.status === 'error'){
-          scope.modal.button.status = 'Report this to us!';
-        }
+        scope.modal.button = { status: "" };
 
         //evaluate function start
 
@@ -63,9 +37,7 @@ angular.module('makerhuntApp')
 
           var target = $event.target;
 
-
-
-          if(scope.response.isMaker){
+          if(scope.isMaker()){
             $(target).addClass('busy');
 
             scope.modal.button.status = 'Writing Invitation...';
@@ -81,7 +53,7 @@ angular.module('makerhuntApp')
               $(target).addClass('done');
             }, 5000);
           }
-          if(!scope.response.isMaker && scope.response === 'success'){
+          if(!scope.isMaker() && scope.response === 'success'){
             $(target).addClass('busy');
             scope.modal.button.status = 'Contacting servers...';
             $timeout(function(){

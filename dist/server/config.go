@@ -10,6 +10,7 @@ type Config struct {
 	AuthenticationKey string
 	EncryptionKey     string
 	SessionName       string
+	MongoUri          string
 }
 
 func NewConfig() Config {
@@ -20,6 +21,7 @@ func NewConfig() Config {
 	c.RedirectUrl = os.Getenv("REDIRECT_URL")
 	c.AuthenticationKey = os.Getenv("AUTHENTICATION_KEY")
 	c.EncryptionKey = os.Getenv("ENCRYPTION_KEY")
+	c.MongoUri = os.Getenv("MONGOLAB_URI")
 	c.SessionName = "token"
 	return c
 }

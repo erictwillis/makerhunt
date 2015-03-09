@@ -1,10 +1,9 @@
 package main
 
 import (
-	"log"
+	"fmt"
 	"net/http"
 
-	"github.com/kyeah/gohunt/gohunt"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
@@ -18,15 +17,15 @@ func apiMeGet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var maker gohunt.User
-	if err := db.Makers.Find(bson.M{"id": userid}).One(&maker); err == mgo.ErrNotFound {
+	fmt.Printf("Userid %#v", userid)
+
+	var user User
+	if err := db.Users.FindId(bson.ObjectIdHex(userid.(string))).One(&user); err == mgo.ErrNotFound {
 		http.NotFound(w, r)
 		return
 	} else if err != nil {
 		panic(err)
 	}
 
-	log.Printf("Userid %s", maker)
-
-	WriteJSON(w, maker)
+	WriteJSON(w, user)
 }

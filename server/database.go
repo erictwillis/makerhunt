@@ -1,19 +1,16 @@
 package main
 
-import (
-	"os"
-
-	"gopkg.in/mgo.v2"
-)
+import "gopkg.in/mgo.v2"
 
 type Database struct {
 	*mgo.Database
-	Amas   *mgo.Collection
+	Events *mgo.Collection
 	Makers *mgo.Collection
+	Users  *mgo.Collection
 }
 
 func (d *Database) Open() error {
-	session, err := mgo.Dial(os.Getenv("MONGOLAB_URI"))
+	session, err := mgo.Dial(config.MongoUri)
 	if err != nil {
 		return err
 	}
@@ -30,6 +27,7 @@ func (d *Database) Open() error {
 	*/
 	d.Database = session.DB("")
 	d.Makers = d.Database.C("makers")
-	d.Amas = d.Database.C("amas")
+	d.Users = d.Database.C("users")
+	d.Events = d.Database.C("events")
 	return nil
 }

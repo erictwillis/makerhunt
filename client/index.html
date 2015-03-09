@@ -29,7 +29,8 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    <div ng-view=""></div>
+    <div ui-view="main"></div>
+    <div ui-view="modal"></div>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
     <script>
@@ -55,6 +56,10 @@
       <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
       <script src="bower_components/angular-route/angular-route.js"></script>
       <script src="bower_components/lodash/dist/lodash.compat.js"></script>
+      <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+      <script src="bower_components/moment/moment.js"></script>
+      <script src="bower_components/momentjs/moment.js"></script>
+      <script src="bower_components/angular-moment/angular-moment.js"></script>
       <!-- endbower -->
     <!-- endbuild -->
 
@@ -67,8 +72,8 @@
           <script src="app/directives/preload/preload.directive.js"></script>
           <script src="app/main/main.controller.js"></script>
           <script src="app/main/main.js"></script>
-          <script src="app/services/ama.service.js"></script>
           <script src="app/services/auth.service.js"></script>
+          <script src="app/services/event.service.js"></script>
           <script src="app/services/maker.service.js"></script>
           <script src="app/services/user.service.js"></script>
           <script src="app/services/utilities/utilities.service.js"></script>

@@ -1,5 +1,6 @@
 'use strict';
 
+/*
 angular.module('makerhuntApp')
   .config(function ($routeProvider) {
     $routeProvider
@@ -8,3 +9,4 @@ angular.module('makerhuntApp')
         controller: 'AdminCtrl'
       });
   });
+*/

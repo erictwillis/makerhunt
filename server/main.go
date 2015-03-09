@@ -11,6 +11,7 @@ import (
 
 	"github.com/kyeah/gohunt/gohunt"
 	"github.com/nlopes/slack"
+	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -19,7 +20,7 @@ import (
 )
 
 const (
-	STATIC = ".tmp"
+	STATIC = "dist/public"
 )
 
 var (
@@ -60,10 +61,9 @@ func signoutHandler(w http.ResponseWriter, req *http.Request) {
 func loginHandler(w http.ResponseWriter, r *http.Request) {
 	state := randSeq(12)
 
-	session, _ := store.Get(r, "state")
+	session, _ := store.Get(r, "oauth")
 	session.Options = &sessions.Options{
 		Path:     "/",
-		MaxAge:   0,
 		HttpOnly: true,
 	}
 	session.Values["state"] = state
@@ -73,7 +73,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func authHandler(w http.ResponseWriter, r *http.Request) {
-	session, _ := store.Get(r, "state")
+	session, _ := store.Get(r, "oauth")
 
 	if r.FormValue("state") != session.Values["state"] {
 		http.Error(w, "Invalid state", 403)
@@ -86,20 +86,54 @@ func authHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	session, _ = store.Get(r, config.SessionName)
 	settings, err := client.GetSettings()
+	if err != nil {
+		http.Error(w, err.Error(), 403)
+		return
+	}
+
+	username := settings.Username
+
+	var user User
+	if err := db.Users.Find(bson.M{"username": username}).One(&user); err == mgo.ErrNotFound {
+		// user = NewUser() // import
+		user.UserId = bson.NewObjectId()
+		user.Name = settings.Name
+		user.Username = settings.Username
+		user.Email = settings.Email
+		user.Headline = settings.Headline
+		user.CreatedAt = time.Now()
+		user.Image = settings.Image
+		user.ProfileUrl = settings.ProfileUrl
+		user.WebsiteUrl = settings.WebsiteUrl
+		user.PHSettings = settings
+		err = db.Users.Insert(&user)
+	} else if err != nil {
+		http.Error(w, err.Error(), 403)
+		return
+	} else if err == nil {
+		// update settings with latest info
+		user.Image = settings.Image
+		user.PHSettings = settings
+		if err = db.Users.UpdateId(user.UserId, &user); err != nil {
+			http.Error(w, err.Error(), 403)
+			return
+		}
+	}
+
+	// find
+	// or merge?
+
+	session, _ = store.Get(r, config.SessionName)
 	session.Options = &sessions.Options{
 		Path:     "/",
 		MaxAge:   86400 * 7,
 		HttpOnly: false,
 	}
-	session.Values["userid"] = settings.ID
+
+	session.Values["userid"] = user.UserId.Hex()
 	session.Values["access_token"] = client.AuthToken.AccessToken
 	session.Save(r, w)
-
-	if _, err = db.Makers.Upsert(bson.M{"userid": settings.ID}, settings); err != nil {
-		log.Fatal(err)
-	}
 
 	http.Redirect(w, r, "/me", 302)
 }
@@ -121,18 +155,19 @@ func main() {
 
 	api := r.PathPrefix("/api/v1").Subrouter()
 	api.HandleFunc("/me", apiMeGet).Methods("GET")
-	api.HandleFunc("/amas", apiAmasNew).Methods("POST")
-	api.HandleFunc("/amas", apiAmasAll).Methods("GET")
-	api.HandleFunc("/amas/{id}", apiAmaGet).Methods("GET")
-	api.HandleFunc("/amas/{id}", apiAmaUpdate).Methods("PUT")
-	api.HandleFunc("/amas/{id}", apiAmaPatch).Methods("PATCH")
-	api.HandleFunc("/amas/{id}", apiAmaDelete).Methods("DELETE")
+	api.HandleFunc("/events", apiEventsNew).Methods("POST")
+	api.HandleFunc("/events", apiEventsAll).Methods("GET")
+	api.HandleFunc("/events/{id}", apiEventGet).Methods("GET")
+	api.HandleFunc("/events/{id}", apiEventUpdate).Methods("PUT")
+	api.HandleFunc("/events/{id}", apiEventPatch).Methods("PATCH")
+	api.HandleFunc("/events/{id}", apiEventDelete).Methods("DELETE")
 	api.HandleFunc("/makers", apiMakersAll)
 
 	r.HandleFunc("/signout", signoutHandler)
 	r.HandleFunc("/login", loginHandler)
 	r.HandleFunc("/auth", authHandler)
 	r.HandleFunc("/me", pageHandler("index.html"))
+	r.HandleFunc("/error", pageHandler("index.html"))
 	r.HandleFunc("/", pageHandler("index.html"))
 
 	var handler http.Handler = r
@@ -142,7 +177,7 @@ func main() {
 	handler = recoverHandler(handler)
 	handler = redirectHandler(handler)
 
-	httpAddr := "127.0.0.1:" + os.Getenv("PORT")
+	httpAddr := ":" + os.Getenv("PORT")
 
 	err := http.ListenAndServe(httpAddr, handler)
 	if err != nil {
