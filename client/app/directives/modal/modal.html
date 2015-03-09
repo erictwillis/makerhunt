@@ -13,9 +13,9 @@
   <p class="modal-message" ng-show="!isMaker()">It seems like you don't have a product on ProductHunt yet. You can still sign up for our newsletter below.</p>
 
   <input class="modal-input" type="email" name='email' ng-model="email" required />
-  <span class="error" ng-show="form.email.$error.required">Required!</span>
-  <span class="error" ng-show="form.email.$error.email">Not a valid email</span>
-  <button class="modal-button" ng-class="{subscribe : !isMaker()}" type='submit' ng-disabled='form.$invalid'>
+  <span class="error-txt" ng-show="form.email.$error.required">Please enter a valid email address.</span>
+  <span class="error-txt" ng-show="form.email.$error.email">Please enter a valid email address.</span>
+  <button class="modal-button" ng-class="{subscribe : !isMaker(), disabled: form.$invalid}" type='submit' ng-disabled='form.$invalid'>
       <span class="spinner">
           <svg version="1.1" x="0" y="0" width="150px" height="150px" viewBox="-10 -10 120 120" enable-background="new 0 0 200 200" xml:space="preserve">
           <path class="circle" d="M0,50 A50,50,0 1 1 100,50 A50,50,0 1 1 0,50" />

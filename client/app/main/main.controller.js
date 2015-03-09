@@ -46,9 +46,8 @@ angular.module('makerhuntApp')
             var members = utilities.shuffle(data);
             var makers = members.slice(0, 60);
 
-            angular.forEach(makers, function(value, key) {
-              this.push(value);
-            }, $scope.makers);
+            $scope.makers = makers;
+
             $scope.makerPool = members.slice(60);
         }, function(error){
             console.log(error);

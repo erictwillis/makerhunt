@@ -35,6 +35,10 @@ button{
 html, body, a, button, span{
   font-family: 'Lato', sans-serif!important;
 }
+body{
+  //hack to get safari to be nice to css animations (fuck safari, seriously!)
+  -webkit-transform: translateZ(0);
+}
 
 
 // Component styles are injected through grunt
