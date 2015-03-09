@@ -34,14 +34,13 @@ angular.module('makerhuntApp')
 
     $scope.state = 'upcoming';
 
-    //this is a hack but it works! :D
-    $scope.events = [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}];
+    $scope.events = [];
 
     Event.query(function(data) {
         $scope.events = data;
     });
 
-    $scope.makers = [];
+    $scope.makers = [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}];
     $timeout(function() {
         Maker.query(function(data){
             var members = utilities.shuffle(data);

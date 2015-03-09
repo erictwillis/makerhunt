@@ -10,6 +10,27 @@
     <title>Maker Hunt</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
+
+    <meta name="keywords" content="" />
+
+    <meta name="author" content="MakerHunt" />
+    <meta name="copyright" content="MakerHunt.co" />
+    <meta name="application-name" content="MakerHunt" />
+
+    <!-- for Facebook -->
+    <meta property="og:title" content="" />
+    <meta property="og:type" content="article" />
+    <meta property="og:image" content="" />
+    <meta property="og:url" content="http://makerhunt.co" />
+    <meta property="og:description" content="" />
+    <meta property="og:site_name" content="Maker Hunt"/>
+
+    <!-- for Twitter -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="" />
+    <meta name="twitter:description" content="" />
+    <meta name="twitter:image" content="" />
+
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(client) app/vendor.css -->
       <!-- bower:css -->
@@ -24,6 +45,25 @@
     <!-- endbuild -->
   </head>
   <body ng-app="makerhuntApp">
+
+  <script>
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId      : '673766526078470',
+        xfbml      : true,
+        version    : 'v2.2'
+      });
+    };
+
+    (function(d, s, id){
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) {return;}
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+  </script>
+
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
