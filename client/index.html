@@ -14,7 +14,7 @@
     <!-- build:css(client) app/vendor.css -->
       <!-- bower:css -->
       <link rel="stylesheet" href="bower_components/skeleton/css/skeleton.css" />
-      <link rel="stylesheet" href="bower_components/animate.css/animate.css" />
+      <link rel="stylesheet" href="bower_components/animate-css/animate.css" />
       <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,client}) app/app.css -->
@@ -23,7 +23,7 @@
       <!-- endinjector -->
     <!-- endbuild -->
   </head>
-  <body ng-app="makerhuntApp" class="open-modal">
+  <body ng-app="makerhuntApp" class="open-overlay">
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -61,6 +61,7 @@
         <!-- build:js({.tmp,client}) app/app.js -->
         <script src="app/app.js"></script>
           <!-- injector:js -->
+          <script src="app/directives/modal/modal.directive.js"></script>
           <script src="app/directives/preload/preload.directive.js"></script>
           <script src="app/main/main.controller.js"></script>
           <script src="app/main/main.js"></script>
@@ -79,5 +80,7 @@
     + (location.host || 'localhost').split(':')[0]
     + ':35729/livereload.js?snipver=1" type="text/javascript"><\/script>')
     </script>
+
+
 </body>
 </html>

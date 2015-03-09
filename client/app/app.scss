@@ -39,5 +39,6 @@ html, body{
 
 // Component styles are injected through grunt
 // injector
+@import 'directives/modal/modal.scss';
 @import 'main/main.scss';
 // endinjector
