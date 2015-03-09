@@ -7,9 +7,9 @@ angular.module('makerhuntApp')
       scope: false,
       priority: 0,
       link: function (scope, element, attrs) {
-        element.addClass('hidden');
+        //element.addClass('hidden');
         element.on('load', function () {
-          element.addClass('flipInY');
+          element.addClass('fadeIn');
         });
       }
     }

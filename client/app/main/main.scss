@@ -18,13 +18,17 @@
 
     .makerFaces-face{
       display: inline-block;
-      width: calc(100% / 6);
+      width: calc(100vw / 6);
+      height: calc(100vw / 6);
+      background-image: url('../assets/images/slack_bg.png');
+      background-size: cover;
     }
 
     /* Larger than mobile */
     @media (min-width: 400px) {
       .makerFaces-face{
-        width: calc(100% / 6);
+        width: calc(100vw / 6);
+        height: calc(100vw / 6);
       }
     }
 
@@ -32,14 +36,16 @@
     /* Larger than tablet */
     @media (min-width: 750px) {
       .makerFaces-face{
-        width: calc(100% / 10);
+        width: calc(100vw / 10);
+        height: calc(100vw / 10);
       }
     }
 
     /* Larger than desktop */
     @media (min-width: 1000px) {
       .makerFaces-face {
-        width: calc(100% / 12);
+        width: calc(100vw / 12);
+        height: calc(100vw / 12);
       }
     }
   }
@@ -107,7 +113,7 @@
       font-size: 25px;
       margin-bottom: 48px;
       color: rgba(255,255,255,1);
-      font-weight: 300;
+      font-weight: 100;
     }
 
 
@@ -138,7 +144,7 @@
 
 
     .btn-requestInvite{
-      font-weight: 700;
+      font-weight: 400;
       font-size: 20px;
       color: white;
       max-width: 460px;
@@ -175,7 +181,7 @@
 
   }
   header:after{
-    background: rgba(68, 94, 87, 0.50);
+    //background: rgba(68, 94, 87, 0.50);
     z-index: -2;
     content: '';
     position: absolute;
@@ -214,7 +220,7 @@
 
     .amas-headline{
       color: rgba(0,0,0,1);
-      margin-bottom: 22px;
+      margin-bottom: 11px;
       font-size: 36px;
       line-height: 1;
     }
@@ -238,7 +244,7 @@
       content: '';
       position: absolute;
       //height: 1px;
-      width: 30%;
+      width: 40%;
       padding-top: 14px;
       border-bottom: 2px solid rgba(228,228,228,.4);
       left: 0;
@@ -248,7 +254,7 @@
       content: '';
       position: absolute;
       //height: 1px;
-      width: 30%;
+      width: 40%;
       padding-top: 14px;
       border-bottom: 2px solid rgba(228,228,228,.4);
       right: 0;
@@ -358,7 +364,7 @@
             }
           }
           .ama--description {
-            font-weight: 400;
+            font-weight: 300;
             font-size: 18px;
             color: rgba(166,166,166,1);
             line-height: 123%;

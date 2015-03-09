@@ -33,7 +33,7 @@ angular.module('makerhuntApp')
 
         //console.log(user1);
 
-        $('#'+user1.id).addClass('flipOutX');
+        $('#'+user1.id).addClass('fadeOut');
 
         $timeout(function(){
           array1[rnd1] = user2;
