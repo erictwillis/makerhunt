@@ -33,13 +33,19 @@ angular.module('makerhuntApp', [
             }
         }
     };
-}).run(function ($rootScope, $location, Auth) {
+}).run(function ($rootScope, $location, $state, Auth) {
     // Redirect to login if route requires auth and you're not logged in
-    $rootScope.$on('$routeChangeStart', function (event, next) {
+    $rootScope.$on('$stateChangeStart', function (event, next) {
         Auth.isLoggedInAsync(function(loggedIn) {
-            if (next.authenticate && !loggedIn) {
-                $location.path('/login');
+            if (!angular.isDefined(next.roles)) {
+                return;
             }
+
+            if (loggedIn) {
+                return;
+            }
+
+            $state.go("main");
         });
     });
 });

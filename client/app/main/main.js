@@ -14,6 +14,7 @@ angular.module('makerhuntApp')
           })
           .state('main:me', {
               url: "/me",
+              roles: ['user', 'maker'],
               views: {
                   main : {
                       templateUrl: "app/main/main.html",
