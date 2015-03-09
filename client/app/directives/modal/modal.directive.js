@@ -97,7 +97,7 @@ angular.module('makerhuntApp')
                 scope.modal.button.status = 'Error!';
             }).finally(function() {
                 $interval.cancel(wait);
-            });;
+            });
           }
         }
       }

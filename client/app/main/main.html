@@ -52,8 +52,8 @@
       <div class="row">
         <div class="twelve columns">
           <div class="switch-wrapper">
-              <button class="btn-amas btn-amas--upcoming active" data-ng-class='{"active": state=="upcoming"}' ng-click='state = "upcoming";'>upcoming</button>
-              <button class="btn-amas btn-amas--previous"data-ng-class='{"active": state=="previous"}' ng-click='state = "previous";'>previous</button>
+              <button class="btn-amas btn-amas--upcoming active" data-ng-class='{"active": state=="upcoming"}' ng-click='state = "upcoming";'>upcoming</button><!--
+              --><button class="btn-amas btn-amas--previous"data-ng-class='{"active": state=="previous"}' ng-click='state = "previous";'>previous</button>
           </div>
         </div>
       </div>
@@ -66,15 +66,15 @@
 
               <div class="row">
                 <div class="six columns">
-                    <h5 class="ama--timestamp">{{event.from_date | amDateFormat:'dddd, MMMM Do YYYY, h:mm:ss a'}}</h5>
+                    <h5 class="ama--timestamp">{{event.from_date | amDateFormat:"dddd, MMMM Do YYYY @ h:mma"}}</h5>
                 </div>
                 <div class="six columns">
 
                  <div class="action-menu">
 
-                   <a ng-href="#" class="action-item twitter"><i class="fa fa-twitter"></i></a>
-                   <a ng-href="#" class="action-item facebook"><i class="fa fa-facebook-official"></i></a>
-                   <a ng-href="#" class="action-item calendar"><i class="fa fa-calendar-o"></i></a>
+                   <a ng-href="https://twitter.com/intent/tweet?text=.@{{event.username}} is having an AMA on {{event.from_date | amDateFormat:'dddd, MMMM Do YYYY @ h:mma'}} with makerhunt.co" class="action-item twitter"><i class="fa fa-twitter"></i></a>
+                   <a target="_blank" ng-href="https://www.facebook.com/dialog/share?app_id=673766526078470&display=popup&href=http://makerhunt.co&redirect_uri=http://makerhunt.co" class="action-item facebook"><i class="fa fa-facebook-official"></i></a>
+                   <a ng-href="#" class="action-item calendar" ng-if="state==='upcoming'"><i class="fa fa-calendar-o"></i></a>
 
                  </div>
 
