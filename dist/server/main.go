@@ -104,7 +104,7 @@ func authHandler(w http.ResponseWriter, r *http.Request) {
 		user.Email = settings.Email
 		user.Headline = settings.Headline
 		user.CreatedAt = time.Now()
-		// user.ImageUrl = settings.ImageUrl
+		user.ImageUrl = settings.ImageUrl
 		user.ProfileUrl = settings.ProfileUrl
 		user.WebsiteUrl = settings.WebsiteUrl
 		user.PHSettings = settings
@@ -114,7 +114,7 @@ func authHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	} else if err == nil {
 		// update settings with latest info
-		// user.ImageUrl = settings.ImageUrl
+		user.ImageUrl = settings.ImageUrl
 		user.PHSettings = settings
 		if err = db.Users.UpdateId(user.UserId, &user); err != nil {
 			http.Error(w, err.Error(), 500)
