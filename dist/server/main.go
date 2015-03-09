@@ -20,8 +20,8 @@ import (
 )
 
 const (
-	STATIC = "dist/public"
-	//STATIC = "public"
+	// STATIC = "dist/public"
+	STATIC = "public"
 )
 
 var (
