@@ -1,12 +1,12 @@
 'use strict';
 
 angular.module('makerhuntApp')
-  .factory('Auth', function Auth($location, $rootScope, $http, User, $cookies, $q) {
+  .factory('Auth', function Auth($location, $rootScope, $http, Me, $cookies, $q) {
 
     var currentUser = {};
     if(angular.isDefined($cookies.token)) {
     }
-    currentUser = User.get();
+    currentUser = Me.get();
 
     return {
 
