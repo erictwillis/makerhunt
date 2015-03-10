@@ -51,6 +51,12 @@ angular.module('makerhuntApp', [
             $state.go("main");
         });
     });
+}).run(function($window){
+
+  if ($window.navigator.userAgent.match(/OS X.*Safari/) && ! $window.navigator.userAgent.match(/Chrome/)) {
+    $('body').addClass('safari');
+  }
+
 });
 
 
