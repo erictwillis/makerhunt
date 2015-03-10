@@ -21,8 +21,8 @@ angular.module('makerhuntApp')
           // $scope.newEvent.user = data;
           $scope.newEvent.username = data.username;
           $scope.newEvent.title = data.name;
-          $scope.newEvent.headline = data.twitter_profile.description;
-          // $scope.newEvent.ph_profile = data.ph_settings;
+          $scope.newEvent.description = data.twitter_profile.description;
+          $scope.newEvent.ph_profile = data.ph_settings;
         }).catch(function(e) {
           console.log(e);
           alert('error');

@@ -18,13 +18,13 @@ type Event struct {
 	FromDate *time.Time `bson:"from_date" json:"from_date"`
 	EndDate  *time.Time `bson:"end_date" json:"end_date"`
 
-	Title       string    `bson:"title" json:"title"`
-	WebsiteUrl  string    `bson:"website_url" json:"website_url"`
-	ImageUrl    string    `bson:"image_url" json:"image_url"`
-	Headline    string    `bson:"headline" json:"headline"`
-	Description string    `bson:"description" json:"description"`
-	Username    string    `bson:"username" json:"username"`
-	PhProfile   PHProfile `bson:"ph_profile" json:"ph_profile"`
+	Title       string      `bson:"title" json:"title"`
+	WebsiteUrl  string      `bson:"website_url" json:"website_url"`
+	ImageUrl    string      `bson:"image_url" json:"image_url"`
+	Headline    string      `bson:"headline" json:"headline"`
+	Description string      `bson:"description" json:"description"`
+	Username    string      `bson:"username" json:"username"`
+	PhProfile   gohunt.User `bson:"ph_profile" json:"ph_profile"`
 }
 
 type PHProduct struct {

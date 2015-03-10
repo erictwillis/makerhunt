@@ -34,12 +34,14 @@ func apiEventUpdate(w http.ResponseWriter, r *http.Request) {
 	if id, ok := vars["id"]; ok {
 		event := Event{}
 		if err := json.NewDecoder(r.Body).Decode(&event); err != nil {
-			log.Fatal(err)
+			http.Error(w, "Error", 500)
+			return
 		}
 
 		err := db.Events.UpdateId(bson.ObjectIdHex(id), event)
 		if err != nil {
-			log.Fatal(err)
+			http.Error(w, "Error", 500)
+			return
 		}
 
 		WriteJSON(w, event)

@@ -101,13 +101,13 @@
                   <div class="twelve columns">
 
                     <!--<div class="ama--pic--wrapper">-->
-                    <img class="u-max-full-width ama--pic" ng-src="{{event.ph_profile.image_url}}" alt="@{{event.username}}"/>
+                    <img class="u-max-full-width ama--pic" ng-src="{{event.ph_profile.image_url['88px@3X']}}" alt="@{{event.username}}"/>
                     <!--</div>
                     <div class="ama--content--wrapper">-->
 
                     <h2 class="ama--maker-name">{{event.ph_profile.name}} <small class="ama--maker-username"><a ng-href="https://twitter.com/{{event.username}}" target="_blank">@{{event.username}}</a></small></h2>
 
-                    <p class="ama--description">{{event.ph_profile.headline}}</p>
+                    <p class="ama--description">{{event.description}}</p>
 
 
                     <!--</div>-->

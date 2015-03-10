@@ -154,6 +154,39 @@ func authHandler(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/me", 302)
 }
 
+func accessHandler(h http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		session, _ := store.Get(r, config.SessionName)
+
+		userid := session.Values["userid"]
+		if userid == nil {
+			http.Error(w, "Unauthorized", 401)
+			return
+		}
+
+		var user User
+		if err := db.Users.FindId(bson.ObjectIdHex(userid.(string))).One(&user); err == mgo.ErrNotFound {
+			http.NotFound(w, r)
+			return
+		} else if err != nil {
+			panic(err)
+		}
+
+		switch user.Username {
+		case "erictwillis":
+			fallthrough
+		case "remco_verhoef":
+			fallthrough
+		case "sleinadsanoj":
+			h(w, r)
+		default:
+			http.Error(w, "Unauthorized", 401)
+			return
+		}
+
+	}
+}
+
 func main() {
 	go cache.Worker()
 
@@ -173,13 +206,13 @@ func main() {
 	api.HandleFunc("/me", apiMeGet).Methods("GET")
 	api.HandleFunc("/me/subscribe", apiMeSubscribe).Methods("POST")
 	api.HandleFunc("/me/invite", apiMeInvite).Methods("POST")
-	api.HandleFunc("/users", apiUsersNew).Methods("POST")
-	api.HandleFunc("/events", apiEventsNew).Methods("POST")
+	api.HandleFunc("/users", accessHandler(apiUsersNew)).Methods("POST")
+	api.HandleFunc("/events", accessHandler(apiEventsNew)).Methods("POST")
 	api.HandleFunc("/events", apiEventsAll).Methods("GET")
-	api.HandleFunc("/events/{id}", apiEventGet).Methods("GET")
-	api.HandleFunc("/events/{id}", apiEventUpdate).Methods("PUT")
-	api.HandleFunc("/events/{id}", apiEventPatch).Methods("PATCH")
-	api.HandleFunc("/events/{id}", apiEventDelete).Methods("DELETE")
+	api.HandleFunc("/events/{id}", accessHandler(apiEventGet)).Methods("GET")
+	api.HandleFunc("/events/{id}", accessHandler(apiEventUpdate)).Methods("PUT")
+	api.HandleFunc("/events/{id}", accessHandler(apiEventPatch)).Methods("PATCH")
+	api.HandleFunc("/events/{id}", accessHandler(apiEventDelete)).Methods("DELETE")
 	api.HandleFunc("/makers", apiMakersAll)
 
 	r.HandleFunc("/signout", signoutHandler)

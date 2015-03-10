@@ -44,9 +44,18 @@ angular.module('makerhuntApp', [
                 return;
             }
 
+            /*
+            if (next.roles.indexOf('admin')!=-1) {
+                // check admins
+                if (Auth.isAdmin() || false) {
+                    return;
+                }
+            }*/
+
             if (loggedIn) {
                 return;
             }
+
 
             $state.go("main");
         });
@@ -80,3 +89,35 @@ angular.module('makerhuntApp').filter('utc', function() {
     };
 });
 
+
+var regexIso8601 = /^(\d{4}|\+\d{6})(?:-(\d{2})(?:-(\d{2})(?:T(\d{2}):(\d{2}):(\d{2})\.(\d{1,})(Z|([\-+])(\d{2}):(\d{2}))?)?)?)?$/;
+
+
+function convertDateStringsToDates(input) {
+    // Ignore things that aren't objects.
+    if (typeof input !== "object") return input;
+
+    for (var key in input) {
+        if (!input.hasOwnProperty(key)) continue;
+
+        var value = input[key];
+        var match;
+        // Check for string properties which look like dates.
+        if (typeof value === "string" && (match = value.match(/\d{4}\-\d{2}\-\d{2}T\d{2}\:\d{2}\:\d{2}(\.\d{3})?[+-]\d{2}\:\d{2}/))) {
+            input[key] = moment(value).toDate();
+        } else if (typeof value === "object") {
+            // Recurse into object
+            convertDateStringsToDates(value);
+        }
+    }
+}
+
+
+angular.module('makerhuntApp').config(["$httpProvider", function ($httpProvider) {
+    $httpProvider.defaults.transformResponse.push(function(responseData, headers){
+        if (headers()['content-type']==='application/json') {
+        convertDateStringsToDates(responseData);
+        }
+        return responseData;
+    });
+}]);
