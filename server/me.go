@@ -143,11 +143,13 @@ func apiMeInvite(w http.ResponseWriter, r *http.Request) {
 	v.Set("_attempts", "-1")
 
 	url := fmt.Sprintf("https://makerhunt.slack.com/api/users.admin.invite?t=", time.Now().Unix())
-	if _, err := http.PostForm(url, v); err != nil {
+	if resp, err := http.PostForm(url, v); err != nil {
 		panic(err)
+	} else {
+		b, _ := ioutil.ReadAll(resp.Body)
+		fmt.Printf("Userid %#v %s", userid, string(b))
 	}
 
-	fmt.Printf("Userid %#v", userid)
 	WriteJSON(w, user)
 }
 
