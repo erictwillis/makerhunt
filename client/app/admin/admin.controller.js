@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('makerhuntApp')
-  .controller('AdminCtrl', function ($scope, Ama) {
+  .controller('AdminCtrl', function ($scope, Ama, $http) {
 
   //default {{action}}
     $scope.action = 'Add';
@@ -28,7 +28,20 @@ angular.module('makerhuntApp')
 
       console.log($scope.newEvent.username);
 
+      if(!$scope.newEvent.username){
+        return false;
+      }
+
       //make necessary API calls here (PH & twitter)
+
+      $http.post('/api/v1/users', {screen_name: $scope.newEvent.username})
+        .success(function(data){
+          $scope.newEvent.user = data;
+        })
+        .error(function(response){
+          console.log(response);
+          alert('error');
+        });
 
       //$scope.newEvent.user = data; <-- add the relevant fields into the data
       //$scope.newEvent.description = twitter bio;
