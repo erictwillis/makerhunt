@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('makerhuntApp')
-  .controller('AdminCtrl', function ($scope, Ama, $http) {
+  .controller('AdminCtrl', function ($scope, Ama, $http, Event) {
 
   //default {{action}}
     $scope.action = 'Add';
@@ -12,7 +12,7 @@ angular.module('makerhuntApp')
 
   //make API call to fill events from ama/event endpoint
 
-    Ama.query(function(data) {
+    Event.query(function(data) {
       $scope.events = data;
     });
 
@@ -37,6 +37,7 @@ angular.module('makerhuntApp')
       $http.post('/api/v1/users', {screen_name: $scope.newEvent.username})
         .success(function(data){
           $scope.newEvent.user = data;
+          $scope.newEvent.description = data.twitter_profile.description;
         })
         .error(function(response){
           console.log(response);
@@ -48,8 +49,8 @@ angular.module('makerhuntApp')
 
       //draft newEvent user object & newEvent description
 
-      $scope.newEvent.user = {id: 12345, username: 'levelsio', img_URI: 'https://pbs.twimg.com/profile_images/493609499886776320/I66hzR_K.jpeg', maker_of: [{name: 'nomadlist', url: 'http://link to PH post'}]}
-      $scope.newEvent.description = 'I make http://remoteok.io  http://nomadlist.com  http://hashtagnomads.com  http://gofuckingdoit.com  http://tubelytics.com  / 12 startups in 12 months';
+      //$scope.newEvent.user = {id: 12345, username: 'levelsio', img_URI: 'https://pbs.twimg.com/profile_images/493609499886776320/I66hzR_K.jpeg', maker_of: [{name: 'nomadlist', url: 'http://link to PH post'}]}
+      //$scope.newEvent.description = 'I make http://remoteok.io  http://nomadlist.com  http://hashtagnomads.com  http://gofuckingdoit.com  http://tubelytics.com  / 12 startups in 12 months';
     };
 
     //post new AMA or put edited AMA
