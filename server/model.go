@@ -12,9 +12,10 @@ import (
 )
 
 type Event struct {
-	EventId bson.ObjectId `bson:"_id"`
+	EventId bson.ObjectId `bson:"_id" json:"event_id"`
 
-	FromDate *jTime     `bson:"from_date" json:"from_date"`
+	// FromDate *jTime     `bson:"from_date" json:"from_date"`
+	FromDate *time.Time `bson:"from_date" json:"from_date"`
 	EndDate  *time.Time `bson:"end_date" json:"end_date"`
 
 	Title       string    `bson:"title" json:"title"`
@@ -99,7 +100,7 @@ func (p* Person) Products() *mgo.Query {
 */
 type User struct {
 	Username string        `bson:"username" json:"username"`
-	UserId   bson.ObjectId `bson:"_id"`
+	UserId   bson.ObjectId `bson:"_id" json:"user_id"`
 	Name     string        `bson:"name" json:"name"`
 	Email    string        `bson:"email" json:"email"`
 	// FirstName  string            `bson:"first_name" json:"first_name"`
@@ -114,7 +115,7 @@ type User struct {
 	// ProductsRef   mgo.DBRef         // []Product     `bson:"products" json:"products"`
 	//Credentials[]
 	PHSettings gohunt.UserSettings `bson:"ph_settings" json:"ph_settings"`
-	Twitter    TwitterUser         `bson:"twitter" json:"twitter"`
+	Twitter    TwitterUser         `bson:"twitter" json:"twitter_profile"`
 }
 
 type Product struct {

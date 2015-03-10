@@ -26,11 +26,11 @@ angular.module('makerhuntApp')
 
 angular.module('makerhuntApp')
   .factory('User', function ($resource) {
-    return $resource('/api/v1/me', {
+    return $resource('/api/v1/users', {
     },
     {
-      get: {
-        method: 'GET'
+      create: {
+        method: 'POST'
       }
   });
 });

@@ -1,12 +1,15 @@
 'use strict';
 
-/*
 angular.module('makerhuntApp')
-  .config(function ($routeProvider) {
-    $routeProvider
-      .when('/admin', {
-        templateUrl: 'app/admin/admin.html',
-        controller: 'AdminCtrl'
-      });
+  .config(function ($stateProvider) {
+      $stateProvider
+          .state('admin', {
+              url: "/admin",
+              views: {
+                  main : {
+                      templateUrl: "app/admin/admin.html",
+                      controller: 'AdminCtrl'
+                  } 
+              }
+          })
   });
-*/

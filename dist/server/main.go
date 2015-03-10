@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"path"
+	"strings"
 	"text/template"
 	"time"
 
@@ -109,6 +110,12 @@ func authHandler(w http.ResponseWriter, r *http.Request) {
 		user.ProfileUrl = settings.ProfileUrl
 		user.WebsiteUrl = settings.WebsiteUrl
 		user.PHSettings = settings
+
+		// convert to https
+		for k, imageUrl := range user.ImageUrl {
+			user.ImageUrl[k] = strings.Replace(imageUrl, "http://", "https://", -1)
+		}
+
 		err = db.Users.Insert(&user)
 	} else if err != nil {
 		http.Error(w, err.Error(), 500)
@@ -116,6 +123,12 @@ func authHandler(w http.ResponseWriter, r *http.Request) {
 	} else if err == nil {
 		// update settings with latest info
 		user.ImageUrl = settings.ImageUrl
+
+		// convert to https
+		for k, imageUrl := range user.ImageUrl {
+			user.ImageUrl[k] = strings.Replace(imageUrl, "http://", "https://", -1)
+		}
+
 		user.PHSettings = settings
 		if err = db.Users.UpdateId(user.UserId, &user); err != nil {
 			http.Error(w, err.Error(), 500)
@@ -159,6 +172,7 @@ func main() {
 	api.HandleFunc("/me", apiMeGet).Methods("GET")
 	api.HandleFunc("/me/subscribe", apiMeSubscribe).Methods("POST")
 	api.HandleFunc("/me/invite", apiMeInvite).Methods("POST")
+	api.HandleFunc("/users", apiUsersNew).Methods("POST")
 	api.HandleFunc("/events", apiEventsNew).Methods("POST")
 	api.HandleFunc("/events", apiEventsAll).Methods("GET")
 	api.HandleFunc("/events/{id}", apiEventGet).Methods("GET")

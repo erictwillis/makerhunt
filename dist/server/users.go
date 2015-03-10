@@ -1,8 +1,6 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"strings"
@@ -13,16 +11,7 @@ import (
 )
 
 func apiUsersNew(w http.ResponseWriter, r *http.Request) {
-	var input struct {
-		Username string `json:"screen_name"`
-	}
-
-	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
-		http.Error(w, err.Error(), 500)
-		return
-	}
-
-	username := input.Username
+	username := "twitterapi"
 
 	// find user with username
 	var user User
@@ -32,10 +21,9 @@ func apiUsersNew(w http.ResponseWriter, r *http.Request) {
 	} else if err != mgo.ErrNotFound {
 		http.Error(w, err.Error(), 500)
 		return
-	} else {
-		user = User{UserId: bson.NewObjectId()}
 	}
 
+	user = User{UserId: bson.NewObjectId()}
 	// parse json input
 
 	// get twitter data
@@ -49,7 +37,6 @@ func apiUsersNew(w http.ResponseWriter, r *http.Request) {
 			return err
 		}
 
-		fmt.Println(user.Twitter)
 		return nil
 	}()
 
@@ -69,8 +56,6 @@ func apiUsersNew(w http.ResponseWriter, r *http.Request) {
 			return err
 		}
 
-		fmt.Println(u)
-
 		user.PHSettings.ID = u.ID
 		user.PHSettings.Name = u.Name
 		user.PHSettings.Headline = u.Headline
@@ -85,41 +70,12 @@ func apiUsersNew(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 	}
 
-	settings := user.PHSettings
-
-	if user.Name == "" {
-		user.Name = settings.Name
-	}
-
-	if user.Username == "" {
-		user.Username = settings.Username
-	}
-
-	if user.Email == "" {
-		user.Email = settings.Email
-	}
-
-	if user.Headline == "" {
-		user.Headline = user.Twitter.Description
-	}
-
-	if len(user.ImageUrl) == 0 {
-		user.ImageUrl = settings.ImageUrl
-	}
-
-	if user.WebsiteUrl == "" {
-		user.WebsiteUrl = settings.WebsiteUrl
-	}
-
-	if user.ProfileUrl == "" {
-		user.ProfileUrl = settings.ProfileUrl
-	}
-
 	for k, imageUrl := range user.ImageUrl {
 		user.ImageUrl[k] = strings.Replace(imageUrl, "http://", "https://", -1)
 	}
 
-	if _, err = db.Users.UpsertId(user.UserId, &user); err != nil {
+	err = db.Users.Insert(&user)
+	if err != nil {
 		log.Fatal(err)
 	}
 

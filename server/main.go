@@ -22,8 +22,8 @@ import (
 
 const (
 	// STATIC = "dist/public"
-	STATIC = "public"
-	// STATIC = ".tmp"
+	// STATIC = "public"
+	STATIC = ".tmp"
 )
 
 var (
@@ -51,6 +51,7 @@ func init() {
 		[]byte(config.AuthenticationKey),
 		[]byte(config.EncryptionKey),
 	)
+
 }
 
 func signoutHandler(w http.ResponseWriter, req *http.Request) {

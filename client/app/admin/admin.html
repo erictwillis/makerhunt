@@ -19,11 +19,12 @@
             </div>
             <div class="twelve columns">
               <label for="full-name">Full Name (pre-filled on search)</label>
-              <input class="u-full-width" type="text" placeholder="Full Name" id="full-name" ng-model="newEvent.user.name">
+              <input class="u-full-width" type="text" placeholder="Full Name" id="full-name" ng-model="newEvent.title">
             </div>
             <div class="twelve columns">
               <label for="event-date">AMA Date (local time)</label>
-              <input class="u-full-width input--event-date" type="datetime-local" placeholder="username (no @)" id="event-date" ng-model="newEvent.datetime">
+              <input class="u-full-width input--event-date" type="datetime-local" placeholder="username (no @)" id="event-date" ng-model="newEvent.from_date">
+              {{ newEvent }}
             </div>
           </div>
           <label for="description">Description</label>
@@ -42,7 +43,7 @@
 
           <div class="row">
             <div class="six columns">
-              <h5 class="ama--timestamp">Mar 10, 2015 at 9:00PM CET</h5>
+                <h5 class="ama--timestamp">{{ ama.from_date }} </h5>
             </div>
             <div class="six columns">
 
@@ -59,13 +60,13 @@
               <div class="twelve columns">
 
                 <!--<div class="ama--pic--wrapper">-->
-                <img class="u-max-full-width ama--pic" ng-src="{{ama.ph_profile.image_url}}" alt="@{{ama.username}}"/>
+                <img class="u-max-full-width ama--pic" ng-src="{{ama.image_url}}" alt="@{{ama.username}}"/>
                 <!--</div>
                 <div class="ama--content--wrapper">-->
 
-                <h2 class="ama--maker-name">{{ama.ph_profile.name}} <small class="ama--maker-username"><a ng-href="https://twitter.com/{{ama.username}}" target="_blank">@{{ama.username}}</a></small></h2>
+                <h2 class="ama--maker-name">{{ama.title}} <small class="ama--maker-username"><a ng-href="https://twitter.com/{{ama.username}}" target="_blank">@{{ama.username}}</a></small></h2>
 
-                <p class="ama--description">{{ama.ph_profile.headline}}</p>
+                <p class="ama--description">{{ama.description}}</p>
 
 
                 <!--</div>-->
