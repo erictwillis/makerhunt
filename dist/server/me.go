@@ -142,7 +142,7 @@ func apiMeInvite(w http.ResponseWriter, r *http.Request) {
 	v.Set("set_active", "true")
 	v.Set("_attempts", "1")
 
-	url := fmt.Sprintf("https://makerhunt.slack.com/api/users.admin.invite?t=", time.Now().Unix())
+	url := fmt.Sprintf("https://makerhunt.slack.com/api/users.admin.invite?t=%d", time.Now().Unix())
 	if resp, err := http.PostForm(url, v); err != nil {
 		panic(err)
 	} else {
