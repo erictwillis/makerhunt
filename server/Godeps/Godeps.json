@@ -6,8 +6,20 @@
 	],
 	"Deps": [
 		{
+			"ImportPath": "github.com/PuerkitoBio/ghost",
+			"Rev": "a0146f2f931611b8bfe40f07018c97a7c881c76a"
+		},
+		{
 			"ImportPath": "github.com/dutchcoders/gohunt/gohunt",
 			"Rev": "f15907efeec444708ec6cdb570ad9ba43ee04efe"
+		},
+		{
+			"ImportPath": "github.com/garyburd/redigo/internal",
+			"Rev": "535138d7bcd717d6531c701ef5933d98b1866257"
+		},
+		{
+			"ImportPath": "github.com/garyburd/redigo/redis",
+			"Rev": "535138d7bcd717d6531c701ef5933d98b1866257"
 		},
 		{
 			"ImportPath": "github.com/go-sql-driver/mysql",
@@ -31,12 +43,12 @@
 			"Rev": "1f45645972a051deb63c8e8e3c594041a6145e35"
 		},
 		{
-			"ImportPath": "github.com/kyeah/gohunt/gohunt",
-			"Rev": "acd2ea2af9f41c66857545a7bc4c37e567476aab"
-		},
-		{
 			"ImportPath": "github.com/nlopes/slack",
 			"Rev": "4a78045ef8aabf726224c19fb2c91fc01a98a3c6"
+		},
+		{
+			"ImportPath": "github.com/nu7hatch/gouuid",
+			"Rev": "179d4d0c4d8d407a32af483c2354df1d2c91e6c3"
 		},
 		{
 			"ImportPath": "golang.org/x/net/context",

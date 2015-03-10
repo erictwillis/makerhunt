@@ -10,6 +10,8 @@ import (
 	"text/template"
 	"time"
 
+	"github.com/PuerkitoBio/ghost/handlers"
+
 	"github.com/dutchcoders/gohunt/gohunt"
 	"github.com/nlopes/slack"
 	"gopkg.in/mgo.v2"
@@ -228,6 +230,7 @@ func main() {
 	handler = loggingHandler(handler)
 	handler = recoverHandler(handler)
 	handler = redirectHandler(handler)
+	handler = handlers.GZIPHandler(handler, nil)
 
 	httpAddr := ":" + os.Getenv("PORT")
 

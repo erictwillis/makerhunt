@@ -150,6 +150,7 @@ func apiMeInvite(w http.ResponseWriter, r *http.Request) {
 		b, _ := ioutil.ReadAll(resp.Body)
 		fmt.Printf("Userid %#v %s", userid, string(b))
 	}
+	// check {"ok":false,"error":"already_in_team"}
 	WriteJSON(w, user)
 }
 
