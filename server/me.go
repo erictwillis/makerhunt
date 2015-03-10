@@ -106,8 +106,6 @@ func apiMeInvite(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	time.Sleep(time.Second * 4)
-
 	var user User
 	if err := db.Users.FindId(bson.ObjectIdHex(userid.(string))).One(&user); err == mgo.ErrNotFound {
 		http.NotFound(w, r)
@@ -163,6 +161,7 @@ func apiMeGet(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Printf("Userid %#v", userid)
+	//time.Sleep(time.Second * 10)
 
 	var user User
 	if err := db.Users.FindId(bson.ObjectIdHex(userid.(string))).One(&user); err == mgo.ErrNotFound {

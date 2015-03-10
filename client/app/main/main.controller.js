@@ -37,7 +37,10 @@ angular.module('makerhuntApp')
     $scope.events = [];
 
     Event.query(function(data) {
-        $scope.events = data;
+        angular.forEach(data, function(event) {
+            event = angular.extend(event, { till_date: moment(event.from_date).add(1,'hour') });
+            $scope.events.push(event);
+        });
     });
 
     $scope.makers = [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}];
