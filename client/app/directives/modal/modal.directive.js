@@ -71,10 +71,11 @@ angular.module('makerhuntApp')
                 if (i < messages.length - 1) {
                     i++;
                 };
-            }, 600);
+            }, 1000);
 
             Me.invite({ email: scope.email }).$promise.then(function() {
               scope.modal.button.status = 'Invite sent!';
+              $(scope.target).removeClass('busy');
               $(scope.target).addClass('done');
             }).catch(function(e) {
               scope.modal.button.status = 'Error sending invite!';
@@ -96,6 +97,7 @@ angular.module('makerhuntApp')
 
             Me.subscribe({email: scope.email}).$promise.then(function() {
                 scope.modal.button.status = 'Success!';
+              $(scope.target).removeClass('busy');
                 $(scope.target).addClass('done');
             }).catch(function(e) {
                 scope.modal.button.status = 'Error!';
