@@ -18,6 +18,10 @@
               <input class="button-default btn-search" type="submit" value="Search for User" ng-click="searchForUser();">
             </div>
             <div class="twelve columns">
+              <label for="full-name">Full Name (pre-filled on search)</label>
+              <input class="u-full-width" type="text" placeholder="Full Name" id="full-name" ng-model="newEvent.user.name">
+            </div>
+            <div class="twelve columns">
               <label for="event-date">AMA Date (local time)</label>
               <input class="u-full-width input--event-date" type="datetime-local" placeholder="username (no @)" id="event-date" ng-model="newEvent.datetime">
             </div>

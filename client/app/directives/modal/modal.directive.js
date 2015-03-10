@@ -46,7 +46,7 @@ angular.module('makerhuntApp')
            scope.target = $('#modal-submit-btn');
           var wait = null;
 
-          $(target).addClass('busy');
+          $(scope.target).addClass('busy');
 
         scope.$on('$destroy', function() {
             if (wait !== null) {
