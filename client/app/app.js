@@ -1,6 +1,7 @@
 'use strict';
 
 angular.module('makerhuntApp', [
+        'ng',
         'ngCookies',
         'ngResource',
         'ngSanitize',
