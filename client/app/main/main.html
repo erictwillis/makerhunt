@@ -79,10 +79,10 @@
                       <div class="calendar-options" ng-show="openCalendar === event">
                         <ul class="calendar-options-list">
                           <li class="calendar-option-item">
-                            <a ng-href="data:text/calendar;charset=utf-8,%0D%0ABEGIN:VCALENDAR%0D%0ADTSTAMP:{{event.from_date | amDateFormat:'YYYYMMDDTHHmmss'}}Z%0D%0ADTSTART:{{event.from_date | amDateFormat:'YYYYMMDDTHHmmss'}}Z%0D%0ADTEND:{{event.till_date | amDateFormat:'YYYYMMDDTHHmmss'}}Z%0D%0ASUMMARY:{{event.ph_profile.name}}%0D%0AEND:VEVENT%0D%0A" download='event.ics' target="_blank">iCal</a>
+                            <a ng-href="data:text/calendar;charset=utf-8,%0ABEGIN:VCALENDAR%0D%0ABEGIN:VEVENT%0AADTSTAMP:{{event.from_date | utc | amDateFormat:'YYYYMMDDTHHmmss'}}Z%0ADTSTART:{{event.from_date | utc | amDateFormat:'YYYYMMDDTHHmmss'}}Z%0ADTEND:{{event.till_date | utc | amDateFormat:'YYYYMMDDTHHmmss'}}Z%0ASUMMARY:AMA with {{event.ph_profile.name}}%0AEND:VEVENT%0AEND:VCALENDAR" download='event.ics' target="_blank">iCal</a>
                           </li>
                           <li class="calendar-option-item">
-                            <a ng-href="http://www.google.com/calendar/event?action=TEMPLATE&text=AMA with {{event.ph_profile.name}}&dates={{event.from_date | amDateFormat:'YYYYMMDDTHHmmss'}}Z/{{event.till_date | amDateFormat:'YYYYMMDDTHHmmss'}}Z&details={{event.ph_profile.headline}}&location=Makerhunt&trp=false&sprop=&sprop=name:" target="_blank">Google Calendar</a>
+                            <a ng-href="http://www.google.com/calendar/event?action=TEMPLATE&text=AMA with {{event.ph_profile.name}}&dates={{event.from_date | utc | amDateFormat:'YYYYMMDDTHHmmss'}}Z/{{event.till_date | utc | amDateFormat:'YYYYMMDDTHHmmss'}}Z&details={{event.ph_profile.headline}}&location=Makerhunt&trp=false&sprop=&sprop=name:" target="_blank">Google Calendar</a>
                           </li>
                         </ul>
                       </div>

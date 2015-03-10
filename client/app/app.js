@@ -64,3 +64,13 @@ angular.module('makerhuntApp').filter('firstname', function() {
     };
 });
 
+angular.module('makerhuntApp').filter('utc', function() {
+      return function(input) {
+          if (angular.isUndefined(input)) {
+              return "";
+          }
+
+          return moment(input).utc();
+    };
+});
+
