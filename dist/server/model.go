@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/kyeah/gohunt/gohunt"
+	"github.com/dutchcoders/gohunt/gohunt"
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -108,7 +108,7 @@ type User struct {
 	Headline   string            `bson:"headline" json:"headline"`
 	ProfileUrl string            `bson:"profile_url" json:"profile_url"`
 	WebsiteUrl string            `bson:"website_url" json:"website_url"`
-	Image      map[string]string `bson:"image" json:"image"`
+	ImageUrl   map[string]string `bson:"image_url" json:"image_url"`
 	// Images     map[string]string `bson:"images" json:"image"`
 	CreatedAt time.Time `bson:"created_at" json:"created_at"`
 	// ProductsRef   mgo.DBRef         // []Product     `bson:"products" json:"products"`

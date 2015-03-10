@@ -53,11 +53,11 @@ angular.module('makerhuntApp', [
 
 angular.module('makerhuntApp').filter('firstname', function() {
       return function(input) {
+          if (angular.isUndefined(input)) {
+              return "";
+          }
 
-              if(!input){
-                return false;
-              }
-              return input.split(' ')[0];
+          return input.split(' ')[0];
     };
 });
 

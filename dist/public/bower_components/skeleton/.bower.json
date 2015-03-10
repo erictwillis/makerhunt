@@ -26,6 +26,5 @@
   },
   "_source": "git://github.com/dhgamache/Skeleton.git",
   "_target": "~2.0.4",
-  "_originalSource": "skeleton",
-  "_direct": true
+  "_originalSource": "skeleton"
 }

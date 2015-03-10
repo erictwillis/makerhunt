@@ -6,6 +6,10 @@
 	],
 	"Deps": [
 		{
+			"ImportPath": "github.com/dutchcoders/gohunt/gohunt",
+			"Rev": "f15907efeec444708ec6cdb570ad9ba43ee04efe"
+		},
+		{
 			"ImportPath": "github.com/go-sql-driver/mysql",
 			"Comment": "v1.2-88-ga197e5d",
 			"Rev": "a197e5d40516f2e9f74dcee085a5f2d4604e94df"
@@ -25,10 +29,6 @@
 		{
 			"ImportPath": "github.com/gorilla/sessions",
 			"Rev": "1f45645972a051deb63c8e8e3c594041a6145e35"
-		},
-		{
-			"ImportPath": "github.com/kyeah/gohunt/gohunt",
-			"Rev": "276985559750522ce35f631047b39e146af4cd08"
 		},
 		{
 			"ImportPath": "github.com/nlopes/slack",
