@@ -6,7 +6,7 @@
          ng-repeat="maker in makers" alt=""/>
   </div>
 
-  <nav>
+  <nav class="hidden">
     <div class="container">
       <div class="row">
         <div class="twelve columns">
@@ -73,7 +73,7 @@
                  <div class="action-menu" ng-if="state==='upcoming'">
 
                    <a ng-href="https://twitter.com/intent/tweet?text=.@{{event.username}} is having an AMA on {{event.from_date | amDateFormat:'dddd, MMMM Do YYYY @ h:mma'}} with makerhunt.co" class="action-item twitter"><i class="fa fa-twitter"></i></a>
-                   <a target="_blank" ng-href="https://www.facebook.com/dialog/share?app_id=673766526078470&display=popup&href=http://makerhunt.co&redirect_uri=http://makerhunt.co" class="action-item facebook"><i class="fa fa-facebook-official"></i></a>
+                   <a target="_blank" ng-href="https://www.facebook.com/dialog/share?app_id=673766526078470&display=popup&href=http://makerhunt.co&redirect_uri=http://makerhunt.co" class="action-item facebook hidden"><i class="fa fa-facebook-official"></i></a>
                    <div class="calendar-wrapper">
                       <a ng-href="#" ng-click="openCalendarOptions(event);" class="action-item calendar"><i class="fa fa-calendar-o"></i></a>
                       <div class="calendar-options" ng-show="openCalendar === event">
@@ -115,7 +115,7 @@
                       <h6 class="ama--maker-headline" ng-show="event.ph_profile.maker_of.length">Maker</h6>
                       <ul class="maker-of-list">
                         <li class="maker-of-list--item" ng-repeat="product in event.ph_profile.maker_of">
-                          <a ng-href="{{product.discussion_url}}">{{product.name}}</a>
+                          <a target="_blank" ng-href="{{product.discussion_url}}">{{product.name}}</a>
                         </li>
                       </ul>
                     </div>
