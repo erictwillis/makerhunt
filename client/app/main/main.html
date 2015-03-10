@@ -74,10 +74,19 @@
 
                    <a ng-href="https://twitter.com/intent/tweet?text=.@{{event.username}} is having an AMA on {{event.from_date | amDateFormat:'dddd, MMMM Do YYYY @ h:mma'}} with makerhunt.co" class="action-item twitter"><i class="fa fa-twitter"></i></a>
                    <a target="_blank" ng-href="https://www.facebook.com/dialog/share?app_id=673766526078470&display=popup&href=http://makerhunt.co&redirect_uri=http://makerhunt.co" class="action-item facebook"><i class="fa fa-facebook-official"></i></a>
-                   <a ng-href="#" class="action-item calendar" ng-if="state==='upcoming'"><i class="fa fa-calendar-o"></i></a>
-                   <a ng-href="http://www.google.com/calendar/event?action=TEMPLATE&text=AMA with {{event.ph_profile.name}}&dates={{event.from_date | amDateFormat:'YYYYMMDDTHHmmss'}}Z/{{event.till_date | amDateFormat:'YYYYMMDDTHHmmss'}}Z&details={{event.ph_profile.headline}}&location=Makerhunt&trp=false&sprop=&sprop=name:" target="_blank">gmail</a>
-                   <a href="">ics</a>
-
+                   <div class="calendar-wrapper">
+                      <a ng-href="#" ng-click="openCalendarOptions(event);" class="action-item calendar" ng-if="state==='upcoming'"><i class="fa fa-calendar-o"></i></a>
+                      <div class="calendar-options" ng-show="openCalendar === event">
+                        <ul class="calendar-options-list">
+                          <li class="calendar-option-item">
+                            <a ng-href="data:text/calendar;charset=utf-8,\nBEGIN:VCALENDAR\nDTSTAMP:{{event.from_date | amDateFormat:'YYYYMMDDTHHmmss'}}\nDTSTART:{{event.from_date | amDateFormat:'YYYYMMDDTHHmmss'}}\nDTEND:{{event.till_date | amDateFormat:'YYYYMMDDTHHmmss'}}\nSUMMARY:{{event.ph_profile.name}}\nEND:VEVENT\n" download='event.ics' target="_blank">iCal</a>
+                          </li>
+                          <li class="calendar-option-item">
+                            <a ng-href="http://www.google.com/calendar/event?action=TEMPLATE&text=AMA with {{event.ph_profile.name}}&dates={{event.from_date | amDateFormat:'YYYYMMDDTHHmmss'}}Z/{{event.till_date | amDateFormat:'YYYYMMDDTHHmmss'}}Z&details={{event.ph_profile.headline}}&location=Makerhunt&trp=false&sprop=&sprop=name:" target="_blank">Google Calendar</a>
+                          </li>
+                        </ul>
+                      </div>
+                   </div>
                  </div>
 
                 </div>

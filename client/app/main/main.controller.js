@@ -70,4 +70,17 @@ angular.module('makerhuntApp')
                 return false;
             }
     };
+
+    //open the individual calendar options
+
+    $scope.openCalendarOptions = function(event){
+      if($scope.openCalendar === event){
+        $scope.openCalendar = false;
+        return false;
+      }
+      else{
+        $scope.openCalendar = false;
+        $scope.openCalendar = event;
+      }
+    }
 });

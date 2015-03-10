@@ -21,7 +21,7 @@ import (
 
 const (
 	// STATIC = "dist/public"
-	STATIC = "public"
+	STATIC = ".tmp"
 )
 
 var (
