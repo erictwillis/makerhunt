@@ -11,7 +11,12 @@ type Config struct {
 	EncryptionKey     string
 	SessionName       string
 	MongoUri          string
-	Mailchimp         struct {
+	Twitter           struct {
+		ClientId     string
+		ClientSecret string
+	}
+
+	Mailchimp struct {
 		Apikey string
 	}
 }
@@ -27,5 +32,7 @@ func NewConfig() Config {
 	c.MongoUri = os.Getenv("MONGOLAB_URI")
 	c.Mailchimp.Apikey = os.Getenv("MAILCHIMP_APIKEY")
 	c.SessionName = "token"
+	c.Twitter.ClientId = os.Getenv("TWITTER_CLIENTID")
+	c.Twitter.ClientSecret = os.Getenv("TWITTER_CLIENTSECRET")
 	return c
 }

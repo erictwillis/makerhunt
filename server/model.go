@@ -114,6 +114,7 @@ type User struct {
 	// ProductsRef   mgo.DBRef         // []Product     `bson:"products" json:"products"`
 	//Credentials[]
 	PHSettings gohunt.UserSettings `bson:"ph_settings" json:"ph_settings"`
+	Twitter    TwitterUser         `bson:"twitter" json:"twitter"`
 }
 
 type Product struct {
