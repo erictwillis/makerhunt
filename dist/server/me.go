@@ -1,8 +1,10 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
@@ -32,7 +34,67 @@ func apiMeSubscribe(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	WriteJSON(w, user)
+	var input struct {
+		Email string `json:"email" valid:"email"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
+		panic(err)
+	}
+
+	user.Email = input.Email
+
+	if err := db.Users.UpdateId(user.UserId, &user); err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	// subscrbe
+	var MailchimpSubscribe struct {
+		Apikey      string `json:"apikey"`
+		DoubleOptin bool   `json:"double_optin"`
+		Email       struct {
+			Email string `json:"email,omitempty"`
+			Euid  string `json:"euid,omitempty"`
+			Leid  string `json:"leid,omitempty"`
+		} `json:"email,omitempty"`
+		EmailType        string            `json:"email_type,omitempty"`
+		Id               string            `json:"id,omitempty"`
+		MergeVars        map[string]string `json:"merge_vars"`
+		ReplaceInterests bool              `json:"replace_interests"`
+		SendWelcome      bool              `json:"send_welcome"`
+		UpdateExisting   bool              `json:"update_existing"`
+	}
+
+	MailchimpSubscribe.Id = "b728b0f47a"
+	MailchimpSubscribe.Apikey = config.Mailchimp.Apikey
+
+	MailchimpSubscribe.ReplaceInterests = false
+	MailchimpSubscribe.SendWelcome = true
+	MailchimpSubscribe.UpdateExisting = true
+	MailchimpSubscribe.EmailType = "html"
+	firstname := strings.Split(user.Name, " ")[0]
+	name := user.Name
+	MailchimpSubscribe.MergeVars = map[string]string{"FNAME": firstname, "NAME": name}
+	MailchimpSubscribe.Email.Email = input.Email
+
+	url := "https://us10.api.mailchimp.com/2.0/lists/subscribe.json"
+
+	buf, _ := json.Marshal(MailchimpSubscribe)
+	body := bytes.NewBuffer(buf)
+
+	resp, err := http.Post(url, "text/json", body)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	b2, err := ioutil.ReadAll(resp.Body)
+	fmt.Println(string(b2))
+
+	// todo check status
+	//{"status":"error","code":200,"name":"List_DoesNotExist","error":"Invalid MailChimp List ID: 57413"}
+	// WriteJSON(w, user)
 }
 
 func apiMeInvite(w http.ResponseWriter, r *http.Request) {
@@ -43,8 +105,6 @@ func apiMeInvite(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Unauthorized", 401)
 		return
 	}
-
-	time.Sleep(time.Second * 4)
 
 	var user User
 	if err := db.Users.FindId(bson.ObjectIdHex(userid.(string))).One(&user); err == mgo.ErrNotFound {
@@ -101,6 +161,7 @@ func apiMeGet(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Printf("Userid %#v", userid)
+	//time.Sleep(time.Second * 10)
 
 	var user User
 	if err := db.Users.FindId(bson.ObjectIdHex(userid.(string))).One(&user); err == mgo.ErrNotFound {

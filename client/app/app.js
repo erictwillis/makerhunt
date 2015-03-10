@@ -7,9 +7,11 @@ angular.module('makerhuntApp', [
         'ngSanitize',
         'angularMoment',
         'ui.router'
-]).config(function ($locationProvider, $httpProvider, $stateProvider, $urlRouterProvider) {
+]).config(function ($locationProvider, $httpProvider, $stateProvider, $urlRouterProvider, $compileProvider) {
     $urlRouterProvider
         .otherwise("/");
+
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|data):/);
 
     $locationProvider.html5Mode(true);
     $httpProvider.interceptors.push('authInterceptor');

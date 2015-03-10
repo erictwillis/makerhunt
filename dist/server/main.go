@@ -22,6 +22,7 @@ import (
 const (
 	// STATIC = "dist/public"
 	STATIC = "public"
+	// STATIC = ".tmp"
 )
 
 var (
@@ -83,13 +84,13 @@ func authHandler(w http.ResponseWriter, r *http.Request) {
 
 	client, err := gohunt.NewUserOAuthClient(config.ClientId, config.ClientSecret, config.RedirectUrl, r.FormValue("code"))
 	if err != nil {
-		http.Error(w, err.Error(), 403)
+		http.Error(w, err.Error(), 500)
 		return
 	}
 
 	settings, err := client.GetSettings()
 	if err != nil {
-		http.Error(w, err.Error(), 403)
+		http.Error(w, err.Error(), 500)
 		return
 	}
 
