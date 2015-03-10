@@ -42,7 +42,7 @@
     .modal-message {
       font-size: 18px;
       line-height: 145%;
-      max-width: 80%;
+      max-width: 90%;
       margin: 0 auto 20px;
       color: rgba(168,168,168,1);
       font-weight: 300;
@@ -100,6 +100,16 @@
       border: 1px solid rgba(89,167,87,1);
       .success{
         display:inline-block;
+        top: calc(50% - 16px);
+        height: 24px;
+        left: 25%;
+
+        svg{
+          width: 20px;
+          height: 20px;
+          display: inline-block;
+          padding: 0;
+        }
       }
     }
     .modal-secondary-action {
