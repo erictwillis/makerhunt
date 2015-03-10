@@ -17,7 +17,7 @@ angular.module('makerhuntApp')
       }
 
       //make necessary API calls here (PH & twitter)
-      user = User.create({screen_name: $scope.newEvent.username}).$promise.then(function(data) {
+      var user = User.create({screen_name: $scope.newEvent.username}).$promise.then(function(data) {
           // $scope.newEvent.user = data;
           $scope.newEvent.username = data.username;
           $scope.newEvent.title = data.name;
@@ -48,8 +48,8 @@ angular.module('makerhuntApp')
     $scope.deleteEvent = function(event){
         event.$delete().then(function() {
           var i = $scope.events.indexOf(event);
-          if (i == -1) 
-            return 
+          if (i == -1)
+            return;
 
           $scope.events.splice(i, 1);
         });
