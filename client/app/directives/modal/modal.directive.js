@@ -10,8 +10,6 @@ angular.module('makerhuntApp')
       },
       controller: function ($scope) {
           $scope.isMaker= function() {
-              return false;
-
               if ($scope.response.user.$resolved) {
                   return ($scope.response.user.ph_settings.maker_of_count > 0);
               } else {
