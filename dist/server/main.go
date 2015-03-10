@@ -51,6 +51,7 @@ func init() {
 		[]byte(config.AuthenticationKey),
 		[]byte(config.EncryptionKey),
 	)
+
 }
 
 func signoutHandler(w http.ResponseWriter, req *http.Request) {

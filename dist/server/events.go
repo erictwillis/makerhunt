@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
-	"path"
 
 	"github.com/gorilla/mux"
 	"gopkg.in/mgo.v2"
@@ -32,10 +30,14 @@ func apiEventGet(w http.ResponseWriter, r *http.Request) {
 
 func apiEventUpdate(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
+	fmt.Println(vars)
 	if id, ok := vars["id"]; ok {
 		event := Event{}
-		id := bson.ObjectIdHex(id)
-		err := db.Events.UpdateId(id, event)
+		if err := json.NewDecoder(r.Body).Decode(&event); err != nil {
+			log.Fatal(err)
+		}
+
+		err := db.Events.UpdateId(bson.ObjectIdHex(id), event)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -104,24 +106,36 @@ func apiEventsAll(w http.ResponseWriter, r *http.Request) {
 	if err := iter.Close(); err != nil {
 	}
 
-	f, err := os.Open(path.Join(STATIC, "../server/events.json"))
-	if err != nil {
-		fmt.Println(err)
-	}
+	/*
+		f, err := os.Open(path.Join(STATIC, "../server/events.json"))
+		if err != nil {
+			fmt.Println(err)
+		}
 
-	defer f.Close()
+		defer f.Close()
+	*/
 
-	err = json.NewDecoder(f).Decode(&events)
-	fmt.Println(err)
+	//err = json.NewDecoder(f).Decode(&events)
+	// fmt.Println(err)
 	WriteJSON(w, events)
 }
 
 func apiEventsNew(w http.ResponseWriter, r *http.Request) {
-	event := Event{EventId: bson.NewObjectId()}
+	event := Event{}
+	if err := json.NewDecoder(r.Body).Decode(&event); err != nil {
+		log.Println(err)
+		http.Error(w, "Error", 500)
+		return
+	}
+
+	event.EventId = bson.NewObjectId()
+	fmt.Println(event)
+
 	err := db.Events.Insert(&event)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		http.Error(w, "Error", 500)
+		return
 	}
-	fmt.Println(event.EventId)
 	WriteJSON(w, event)
 }
