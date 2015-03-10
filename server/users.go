@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/kyeah/gohunt/gohunt"
+	"github.com/dutchcoders/gohunt/gohunt"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
@@ -27,8 +27,8 @@ func apiUsersNew(w http.ResponseWriter, r *http.Request) {
 	// find user with username
 	var user User
 	if err := db.Users.Find(bson.M{"username": username}).One(&user); err == nil {
-		WriteJSON(w, user)
-		return
+		//WriteJSON(w, user)
+		//return
 	} else if err != mgo.ErrNotFound {
 		http.Error(w, err.Error(), 500)
 		return
@@ -71,14 +71,20 @@ func apiUsersNew(w http.ResponseWriter, r *http.Request) {
 
 		fmt.Println(u)
 
+		user.PHSettings = gohunt.UserSettings{}
 		user.PHSettings.ID = u.ID
 		user.PHSettings.Name = u.Name
+		user.PHSettings.Username = u.Username
 		user.PHSettings.Headline = u.Headline
 		user.PHSettings.Created = u.Created
-		user.PHSettings.ImageUrl = u.Image
+		user.PHSettings.ImageUrl = u.ImageUrl
 		user.PHSettings.ProfileUrl = u.ProfileUrl
 		user.PHSettings.WebsiteUrl = u.WebsiteUrl
-
+		user.PHSettings.Votes = u.Votes
+		user.PHSettings.Posts = u.Posts
+		user.PHSettings.MakerOf = u.MakerOf
+		user.PHSettings.Followers = u.Followers
+		user.PHSettings.Following = u.Following
 		return nil
 	}()
 

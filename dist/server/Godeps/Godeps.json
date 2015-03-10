@@ -31,6 +31,10 @@
 			"Rev": "1f45645972a051deb63c8e8e3c594041a6145e35"
 		},
 		{
+			"ImportPath": "github.com/kyeah/gohunt/gohunt",
+			"Rev": "acd2ea2af9f41c66857545a7bc4c37e567476aab"
+		},
+		{
 			"ImportPath": "github.com/nlopes/slack",
 			"Rev": "4a78045ef8aabf726224c19fb2c91fc01a98a3c6"
 		},
