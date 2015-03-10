@@ -5,6 +5,7 @@ angular.module('makerhuntApp')
       $stateProvider
           .state('admin', {
               url: "/admin",
+              roles: ['admin'],
               views: {
                   main : {
                       templateUrl: "app/admin/admin.html",

@@ -3,10 +3,7 @@
 angular.module('makerhuntApp')
   .factory('Auth', function Auth($location, $rootScope, $http, Me, $cookies, $q) {
 
-    var currentUser = {};
-    if(angular.isDefined($cookies.token)) {
-    }
-    currentUser = Me.get();
+    var currentUser = Me.get();
 
     return {
 
@@ -51,49 +48,6 @@ angular.module('makerhuntApp')
       },
 
       /**
-       * Create a new user
-       *
-       * @param  {Object}   user     - user info
-       * @param  {Function} callback - optional
-       * @return {Promise}
-       */
-      createUser: function(user, callback) {
-        var cb = callback || angular.noop;
-
-        return User.save(user,
-          function(data) {
-            $cookies.put('token', data.token);
-            currentUser = User.get();
-            return cb(user);
-          },
-          function(err) {
-            this.logout();
-            return cb(err);
-          }.bind(this)).$promise;
-      },
-
-      /**
-       * Change password
-       *
-       * @param  {String}   oldPassword
-       * @param  {String}   newPassword
-       * @param  {Function} callback    - optional
-       * @return {Promise}
-       */
-      changePassword: function(oldPassword, newPassword, callback) {
-        var cb = callback || angular.noop;
-
-        return User.changePassword({ id: currentUser._id }, {
-          oldPassword: oldPassword,
-          newPassword: newPassword
-        }, function(user) {
-          return cb(user);
-        }, function(err) {
-          return cb(err);
-        }).$promise;
-      },
-
-      /**
        * Gets all available info on authenticated user
        *
        * @return {Object} user
@@ -134,14 +88,7 @@ angular.module('makerhuntApp')
        * @return {Boolean}
        */
       isAdmin: function() {
-        return currentUser.role === 'admin';
-      },
-
-      /**
-       * Get auth token
-       */
-      getToken: function() {
-        return $cookies.get('token');
+        return (['sleinadsanoj', 'erictwillis', 'remco_verhoef'].indexOf(currentUser.username)!=-1);
       }
     };
   });

@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 	"strings"
 
@@ -54,11 +53,12 @@ func apiUsersNew(w http.ResponseWriter, r *http.Request) {
 	}()
 
 	if err != nil {
+		fmt.Println(err)
 	}
 
 	// get product hunt data
 	err = func() error {
-		client, err := gohunt.NewUserOAuthClient(config.ClientId, config.ClientSecret, config.RedirectUrl, r.FormValue("code"))
+		client, err := gohunt.NewOAuthClient(config.ClientId, config.ClientSecret)
 		if err != nil {
 			return err
 		}
@@ -69,7 +69,7 @@ func apiUsersNew(w http.ResponseWriter, r *http.Request) {
 			return err
 		}
 
-		fmt.Println(u)
+		fmt.Printf("%#v", u)
 
 		user.PHSettings = gohunt.UserSettings{}
 		user.PHSettings.ID = u.ID
@@ -89,6 +89,7 @@ func apiUsersNew(w http.ResponseWriter, r *http.Request) {
 	}()
 
 	if err != nil {
+		fmt.Println(err)
 	}
 
 	settings := user.PHSettings
@@ -126,7 +127,8 @@ func apiUsersNew(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if _, err = db.Users.UpsertId(user.UserId, &user); err != nil {
-		log.Fatal(err)
+		http.Error(w, err.Error(), 500)
+		return
 	}
 
 	WriteJSON(w, user)
