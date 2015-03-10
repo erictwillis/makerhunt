@@ -35,7 +35,7 @@ angular.module('makerhuntApp')
         scope.modal.button = { status: "" };
         scope.state = "normal";
 
-        scope.submit = function($event){
+        scope.submit = function(){
 
           if(scope.modalEvaluated === true){
             // return false;
@@ -43,7 +43,7 @@ angular.module('makerhuntApp')
 
           scope.modalEvaluated = true;
 
-           scope.target = $event.target;
+           scope.target = $('#modal-submit-btn');
           var wait = null;
 
           $(target).addClass('busy');
