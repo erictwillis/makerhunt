@@ -1,6 +1,6 @@
 <div ng-switch="response.status">
 <div class="modal" ng-switch-when="success">
-  <form name="form" ng-submit="submit()" novalidate>
+  <form name="form" ng-submit="submit(form)" novalidate>
 
   <div class="modal-img--wrapper">
     <img class="modal-user--pic" ng-src="{{response.user.image_url['88px@3X']}}" alt="{{response.user.username}}"/>
@@ -12,7 +12,7 @@
   <p class="modal-message" ng-show="isMaker()">If the email adress below is correct, click to request your invite. If not, click the box to easily change it.</p>
   <p class="modal-message" ng-show="!isMaker()">It seems like you don't have a product on ProductHunt yet. You can still sign up for our newsletter below.</p>
 
-  <input class="modal-input" type="email" name='email' ng-model="email" required />
+  <input class="modal-input" type="email" name='email' ng-model="response.user.email" required />
   <span class="error-txt" ng-show="form.email.$error.required">Please enter a valid email address.</span>
   <span class="error-txt" ng-show="form.email.$error.email">Please enter a valid email address.</span>
   <button id="modal-submit-btn" class="modal-button" ng-class="{subscribe : !isMaker(), disabled: form.$invalid}" type='submit' ng-disabled='form.$invalid'>

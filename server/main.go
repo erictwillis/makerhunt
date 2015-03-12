@@ -10,9 +10,11 @@ import (
 	"text/template"
 	"time"
 
+	"github.com/PuerkitoBio/ghost/handlers"
+
 	"github.com/dutchcoders/gohunt/gohunt"
 	"github.com/nlopes/slack"
-	"gopkg.in/mgo.v2"
+	mgo "gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -23,7 +25,8 @@ import (
 const (
 	// STATIC = "dist/public"
 	STATIC = "public"
-	// STATIC = ".tmp"
+
+//	STATIC = ".tmp"
 )
 
 var (
@@ -228,6 +231,7 @@ func main() {
 	handler = loggingHandler(handler)
 	handler = recoverHandler(handler)
 	handler = redirectHandler(handler)
+	handler = handlers.GZIPHandler(handler, nil)
 
 	httpAddr := ":" + os.Getenv("PORT")
 

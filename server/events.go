@@ -2,12 +2,15 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
+	"reflect"
 
+	"github.com/dutchcoders/gohunt/gohunt"
 	"github.com/gorilla/mux"
-	"gopkg.in/mgo.v2"
+	mgo "gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -95,6 +98,45 @@ func apiEventPatch(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
+
+var ErrNotSupported = errors.New("Not Supported")
+
+func Filter(value interface{}, fn func(path string, value reflect.Value) error) error {
+	switch reflect.ValueOf(value).Kind() {
+	case reflect.Struct:
+		fallthrough
+	case reflect.Slice:
+	default:
+		return ErrNotSupported
+	}
+	return filter(reflect.ValueOf(value), "", fn)
+}
+
+func filter(value reflect.Value, path string, fn func(path string, value reflect.Value) error) error {
+	if err := fn(path, value); err != nil {
+		return err
+	}
+	switch value.Kind() {
+	case reflect.Struct:
+		for i := 0; i < value.NumField(); i++ {
+			tField := value.Type().Field(i)
+
+			if err := filter(value.Field(i), fmt.Sprintf("%s.%s", path, tField.Name), fn); err != nil {
+				return err
+			}
+		}
+	case reflect.Slice:
+		for i := 0; i < value.Len(); i++ {
+			if err := filter(value.Index(i), fmt.Sprintf("%s[]", path), fn); err != nil {
+				return err
+			}
+		}
+	default:
+	}
+
+	return nil
+}
+
 func apiEventsAll(w http.ResponseWriter, r *http.Request) {
 	events := []Event{}
 
@@ -102,23 +144,39 @@ func apiEventsAll(w http.ResponseWriter, r *http.Request) {
 	defer iter.Close()
 
 	event := Event{}
+
 	for iter.Next(&event) {
 		events = append(events, event)
 	}
+
 	if err := iter.Close(); err != nil {
 	}
 
-	/*
-		f, err := os.Open(path.Join(STATIC, "../server/events.json"))
-		if err != nil {
-			fmt.Println(err)
+	Filter(events, func(path string, value reflect.Value) error {
+		if path == "[].PhProfile.Votes" {
+			v := reflect.ValueOf([]gohunt.Vote{})
+			value.Set(v)
+		}
+		if path == "[].PhProfile.Posts" {
+			v := reflect.ValueOf([]gohunt.Post{})
+			value.Set(v)
+		}
+		if path == "[].PhProfile.Followers" {
+			v := reflect.ValueOf([]gohunt.User{})
+			value.Set(v)
+		}
+		if path == "[].PhProfile.Following" {
+			v := reflect.ValueOf([]gohunt.User{})
+			value.Set(v)
+		}
+		if path == "[].PhProfile.MakerOf[].Makers" {
+			v := reflect.ValueOf([]gohunt.User{})
+			value.Set(v)
 		}
 
-		defer f.Close()
-	*/
+		return nil
+	})
 
-	//err = json.NewDecoder(f).Decode(&events)
-	// fmt.Println(err)
 	WriteJSON(w, events)
 }
 

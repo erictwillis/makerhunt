@@ -35,7 +35,7 @@ angular.module('makerhuntApp')
         scope.modal.button = { status: "" };
         scope.state = "normal";
 
-        scope.submit = function(){
+        scope.submit = function(form){
 
           if(scope.modalEvaluated === true){
             // return false;
@@ -73,7 +73,7 @@ angular.module('makerhuntApp')
                 };
             }, 1000);
 
-            Me.invite({ email: scope.email }).$promise.then(function() {
+            Me.invite({ email: scope.response.user.email }).$promise.then(function() {
               scope.modal.button.status = 'Invite sent!';
               $(scope.target).removeClass('busy');
               $(scope.target).addClass('done');
@@ -95,7 +95,7 @@ angular.module('makerhuntApp')
                 };
             }, 200);
 
-            Me.subscribe({email: scope.email}).$promise.then(function() {
+            Me.subscribe({email: scope.response.user.email}).$promise.then(function() {
                 scope.modal.button.status = 'Success!';
               $(scope.target).removeClass('busy');
                 $(scope.target).addClass('done');
