@@ -62,7 +62,7 @@
         <div class="offset-by-one ten columns">
           <div class="amaList">
 
-            <div class="ama-wrapper" ng-repeat="event in events | filter:eventsFilter">
+            <div class="ama-wrapper" ng-repeat="event in events | filter:eventsFilter | orderBy:sortEvents:(state=='previous')">
 
               <div class="row">
                 <div class="six columns">

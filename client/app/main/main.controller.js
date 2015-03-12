@@ -71,6 +71,10 @@ angular.module('makerhuntApp')
             }
     };
 
+    $scope.sortEvents = function(event) {
+           return event.from_date;
+    };
+
     //open the individual calendar options
 
     $scope.openCalendarOptions = function(event){
