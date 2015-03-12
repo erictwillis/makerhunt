@@ -11,7 +11,7 @@
 		},
 		{
 			"ImportPath": "github.com/dutchcoders/gohunt/gohunt",
-			"Rev": "f15907efeec444708ec6cdb570ad9ba43ee04efe"
+			"Rev": "a66f63398bb5564e56eae3a25a468bfb1259f841"
 		},
 		{
 			"ImportPath": "github.com/garyburd/redigo/internal",
