@@ -114,7 +114,7 @@
                     <div class="maker-of--wrapper">
                       <h6 class="ama--maker-headline" ng-show="event.ph_profile.maker_of.length">Maker</h6>
                       <ul class="maker-of-list">
-                        <li class="maker-of-list--item" ng-repeat="product in event.ph_profile.maker_of">
+                        <li class="maker-of-list--item" ng-repeat="product in event.ph_profile.maker_of | filter: productsFilter">
                           <a target="_blank" ng-href="{{product.discussion_url}}">{{product.name}}</a>
                         </li>
                       </ul>

@@ -61,6 +61,14 @@ angular.module('makerhuntApp')
         }, 5000);
     }, 0);
 
+    $scope.productsFilter = function(product) {
+        if (product.discussion_url==="http://www.producthunt.com/posts/intercom-3") {
+            return false;
+        }
+
+        return true;
+    };
+
     $scope.eventsFilter = function( item) {
             if ($scope.state == 'upcoming') {
                 return (moment(item.from_date).isAfter(moment()));
