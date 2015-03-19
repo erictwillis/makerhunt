@@ -19,6 +19,7 @@ type Event struct {
 	EndDate  *time.Time `bson:"end_date" json:"end_date"`
 
 	Title       string      `bson:"title" json:"title"`
+	Link        string      `bson:"link" json:"link"`
 	WebsiteUrl  string      `bson:"website_url" json:"website_url"`
 	ImageUrl    string      `bson:"image_url" json:"image_url"`
 	Headline    string      `bson:"headline" json:"headline"`

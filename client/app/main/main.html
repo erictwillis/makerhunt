@@ -70,8 +70,11 @@
                 </div>
                 <div class="six columns">
 
+                 <div class="action-menu" ng-if="state==='previous'">
+                   <a ng-href="{{event.link}}" class="action-item link" ng-show="event.link!=''" target="_blank"><i class="fa fa-link"></i></a>
+                 </div>
                  <div class="action-menu" ng-if="state==='upcoming'">
-
+                   <a ng-href="{{event.link}}" class="action-item link" ng-show="event.link!=''" target="_blank"><i class="fa fa-link"></i></a>
                    <a ng-href="https://twitter.com/intent/tweet?text=.@{{event.username}} is having an AMA on {{event.from_date | amDateFormat:'dddd, MMMM Do YYYY @ h:mma'}} with makerhunt.co" class="action-item twitter"><i class="fa fa-twitter"></i></a>
                    <a target="_blank" ng-href="https://www.facebook.com/dialog/share?app_id=673766526078470&display=popup&href=http://makerhunt.co&redirect_uri=http://makerhunt.co" class="action-item facebook hidden"><i class="fa fa-facebook-official"></i></a>
                    <div class="calendar-wrapper">

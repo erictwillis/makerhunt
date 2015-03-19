@@ -26,6 +26,10 @@
               <input class="u-full-width input--event-date" type="datetime-local" placeholder="username (no @)" id="event-date" ng-model="newEvent.from_date">
             </div>
           </div>
+            <div class="twelve columns">
+              <label for="link">Link</label>
+              <input class="u-full-width" type="text" placeholder="Link" id="link" ng-model="newEvent.link">
+            </div>
           <label for="description">Description</label>
           <textarea class="u-full-width" placeholder="will be pre-filled from twitter bio, but can be changed..." id="description" ng-model="newEvent.description"></textarea>
           <input class="button-primary" type="submit" value="Save" ng-click="saveEvent();">
