@@ -33,6 +33,7 @@ func apiHookSmtp(w http.ResponseWriter, r *http.Request) {
 
 	var err error
 	if err := json.NewDecoder(r.Body).Decode(&msg); err != nil {
+		log.Println(err)
 		http.Error(w, err.Error(), 500)
 		return
 	}
