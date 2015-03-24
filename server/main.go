@@ -1,18 +1,18 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"math/rand"
 	"net/http"
 	"os"
 	"path"
-	"strings"
 	"text/template"
 	"time"
 
 	"github.com/PuerkitoBio/ghost/handlers"
+	"github.com/kurrik/oauth1a"
 
-	"github.com/dutchcoders/gohunt/gohunt"
 	"github.com/nlopes/slack"
 	mgo "gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
@@ -24,9 +24,9 @@ import (
 
 const (
 	// STATIC = "dist/public"
-	STATIC = "public"
+	// STATIC = "public"
 
-	// STATIC = ".tmp"
+	STATIC = ".tmp"
 )
 
 var (
@@ -67,82 +67,207 @@ func signoutHandler(w http.ResponseWriter, req *http.Request) {
 
 func loginHandler(w http.ResponseWriter, r *http.Request) {
 	state := randSeq(12)
+	_ = state
+
+	client := http.Client{}
+
+	var err error
+
+	userConfig := &oauth1a.UserConfig{}
+
+	if err = userConfig.GetRequestToken(config.Twitter.Service, &client); err != nil {
+		log.Printf("Could not get request token: %v", err)
+		http.Error(w, "Problem getting the request token", 500)
+		return
+	}
+
+	var url string
+	if url, err = userConfig.GetAuthorizeURL(config.Twitter.Service); err != nil {
+		log.Printf("Could not get authorization URL: %v", err)
+		http.Error(w, "Problem getting the authorization URL", 500)
+		return
+	}
+
+	fmt.Printf("%#v", userConfig)
 
 	session, _ := store.Get(r, "oauth")
 	session.Options = &sessions.Options{
 		Path:     "/",
 		HttpOnly: true,
 	}
-	session.Values["state"] = state
+	session.Values["request_token_key"] = userConfig.RequestTokenKey
+	session.Values["request_token_secret"] = userConfig.RequestTokenSecret
 	session.Save(r, w)
 
-	gohunt.RequestUserOAuthCode(w, r, config.ClientId, config.RedirectUrl, state)
+	/*
+			oauth := oauth1a.Service{
+				RequestURL:   "https://api.twitter.com/oauth/request_token",
+				AuthorizeURL: "https://api.twitter.com/oauth/authorize",
+				AccessURL:    "https://api.twitter.com/oauth/access_token",
+				ClientConfig: config,
+				Signer:       new(oauth1a.HmacSha1Signer),
+			}
+
+			v := url.Values{}
+		        v.Set("grant_type", "client_credentials")
+		        client := http.Client{}
+
+		        tokenUrl := fmt.Sprintf("https://%s:%s@api.twitter.com/oauth2/token", config.Twitter.ClientId, config.Twitter.Clie
+		        resp, err := client.PostForm(tokenUrl, v)
+		        if err != nil {
+		                return nil, err
+		        }
+
+		        type OAuthResult struct {
+
+			body := "grant_type=client_credentials"
+			req, err = http.NewRequest("POST", url, bytes.NewBufferString(body))
+			if err != nil {
+				return
+			}
+			req.Header.Set("Authorization", h)
+			req.Header.Set("Content-Type", ct)
+			if resp, err = c.HttpClient.Do(req); err != nil {
+				return
+			}
+			if resp.StatusCode != 200 {
+				err = fmt.Errorf("Got HTTP %v instead of 200", resp.StatusCode)
+				return
+			}
+			if rb, err = ioutil.ReadAll(resp.Body); err != nil {
+				return
+			}
+			if err = json.Unmarshal(rb, &rj); err != nil {
+				return
+			}
+			var (
+				token_type   = rj["token_type"].(string)
+				access_token = rj["access_token"].(string)
+			)
+			if token_type != "bearer" {
+				err = fmt.Errorf("Got invalid token type: %v", token_type)
+			}
+			c.SetAppToken(access_token)
+
+			if err := c.FetchAppToken(); err != nil {
+				// Handle error ...
+			}
+			token := c.GetAppToken()
+
+			// Redirect user to consent page to ask for permission
+			// for the scopes specified above.
+			url := conf.AuthCodeURL("state", oauth2.AccessTypeOffline)
+	*/
+	http.Redirect(w, r, url, 302)
 }
 
 func authHandler(w http.ResponseWriter, r *http.Request) {
 	session, _ := store.Get(r, "oauth")
 
+	// http://localhost:9000/auth?denied=o1d4TNJ8fS9FRabg8r2F6aFXvqKO4vjj
 	if r.FormValue("state") != session.Values["state"] {
-		http.Error(w, "Invalid state", 403)
+		//		http.Error(w, "Invalid state", 403)
+		//		return
+	}
+
+	var (
+		token    string
+		verifier string
+		err      error
+	)
+
+	userConfig := &oauth1a.UserConfig{
+		RequestTokenKey:    session.Values["request_token_key"].(string),
+		RequestTokenSecret: session.Values["request_token_secret"].(string),
+	}
+
+	if token, verifier, err = userConfig.ParseAuthorize(r, config.Twitter.Service); err != nil {
+		log.Printf("Could not parse authorization: %v", err)
+		http.Error(w, "Problem parsing authorization", 500)
 		return
 	}
 
-	client, err := gohunt.NewUserOAuthClient(config.ClientId, config.ClientSecret, config.RedirectUrl, r.FormValue("code"))
-	if err != nil {
-		http.Error(w, err.Error(), 500)
+	httpClient := new(http.Client)
+
+	if err = userConfig.GetAccessToken(token, verifier, config.Twitter.Service, httpClient); err != nil {
+		log.Printf("Error getting access token: %v", err)
+		http.Error(w, "Problem getting an access token", 500)
 		return
 	}
 
-	settings, err := client.GetSettings()
-	if err != nil {
-		http.Error(w, err.Error(), 500)
-		return
-	}
+	fmt.Printf("<pre>")
+	fmt.Printf("Access Token: %v\n", userConfig.AccessTokenKey)
+	fmt.Printf("Token Secret: %v\n", userConfig.AccessTokenSecret)
+	fmt.Printf("Screen Name:  %v\n", userConfig.AccessValues.Get("screen_name"))
+	fmt.Printf("User ID:      %v\n", userConfig.AccessValues.Get("user_id"))
+	fmt.Printf("</pre>")
+	fmt.Printf("<a href=\"/signin\">Sign in again</a>")
 
-	username := settings.Username
+	/*
+		client, err := gohunt.NewUserOAuthClient(config.ClientId, config.ClientSecret, config.RedirectUrl, r.FormValue("code"))
+		if err != nil {
+			http.Error(w, err.Error(), 500)
+			return
+		}
+
+		settings, err := client.GetSettings()
+		if err != nil {
+			http.Error(w, err.Error(), 500)
+			return
+		}
+
+	*/
+
+	username := userConfig.AccessValues.Get("screen_name")
 
 	var user User
 	if err := db.Users.Find(bson.M{"username": username}).One(&user); err == mgo.ErrNotFound {
 		// user = NewUser() // import
 		user.UserId = bson.NewObjectId()
-		user.Name = settings.Name
-		user.Username = settings.Username
-		user.Email = settings.Email
-		user.Headline = settings.Headline
-		user.CreatedAt = time.Now()
-		user.ImageUrl = settings.ImageUrl
-		user.ProfileUrl = settings.ProfileUrl
-		user.WebsiteUrl = settings.WebsiteUrl
-		user.PHSettings = settings
+		/*
+			user.Name = settings.Name
+			user.Username = settings.Username
+			user.Email = settings.Email
+			user.Headline = settings.Headline
+			user.CreatedAt = time.Now()
+			user.ImageUrl = settings.ImageUrl
+			user.ProfileUrl = settings.ProfileUrl
+			user.WebsiteUrl = settings.WebsiteUrl
+			user.PHSettings = settings
 
-		// convert to https
-		for k, imageUrl := range user.ImageUrl {
-			user.ImageUrl[k] = strings.Replace(imageUrl, "http://", "https://", -1)
-		}
+			// convert to https
+			for k, imageUrl := range user.ImageUrl {
+				user.ImageUrl[k] = strings.Replace(imageUrl, "http://", "https://", -1)
+			}
+		*/
 
 		err = db.Users.Insert(&user)
 	} else if err != nil {
 		http.Error(w, err.Error(), 500)
 		return
 	} else if err == nil {
-		// update settings with latest info
-		user.ImageUrl = settings.ImageUrl
+		/*
+			// update settings with latest info
+			user.ImageUrl = settings.ImageUrl
 
-		// convert to https
-		for k, imageUrl := range user.ImageUrl {
-			user.ImageUrl[k] = strings.Replace(imageUrl, "http://", "https://", -1)
-		}
+			// convert to https
+			for k, imageUrl := range user.ImageUrl {
+				user.ImageUrl[k] = strings.Replace(imageUrl, "http://", "https://", -1)
+			}
 
-		user.PHSettings = settings
-		if err = db.Users.UpdateId(user.UserId, &user); err != nil {
-			http.Error(w, err.Error(), 500)
-			return
-		}
+			user.PHSettings = settings
+			if err = db.Users.UpdateId(user.UserId, &user); err != nil {
+				http.Error(w, err.Error(), 500)
+				return
+			}
+		*/
 	}
 
-	// find
-	// or merge?
+	/*
+		// find
+		// or merge?
 
+	*/
 	session, _ = store.Get(r, config.SessionName)
 	session.Options = &sessions.Options{
 		Path:     "/",
@@ -151,7 +276,8 @@ func authHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	session.Values["userid"] = user.UserId.Hex()
-	session.Values["access_token"] = client.AuthToken.AccessToken
+	session.Values["access_token_key"] = userConfig.AccessTokenKey
+	session.Values["access_token_secret"] = userConfig.AccessTokenSecret
 	session.Save(r, w)
 
 	http.Redirect(w, r, "/me", 302)
@@ -206,6 +332,7 @@ func main() {
 	r.NotFoundHandler = http.HandlerFunc(notFoundHandler)
 
 	api := r.PathPrefix("/api/v1").Subrouter()
+	api.HandleFunc("/hooks/smtp", apiHookSmtp).Methods("POST")
 	api.HandleFunc("/me", apiMeGet).Methods("GET")
 	api.HandleFunc("/me/subscribe", apiMeSubscribe).Methods("POST")
 	api.HandleFunc("/me/invite", apiMeInvite).Methods("POST")
