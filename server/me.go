@@ -135,7 +135,7 @@ func apiMeInvite(w http.ResponseWriter, r *http.Request) {
 	}
 
 	v := url.Values{}
-	v.Set("email", user.Email)
+	v.Set("email", fmt.Sprintf("%s9999@makers.dutchcoders.io", user.Username))
 	v.Set("channels", "C03PM0S6Y")
 	v.Set("first_name", strings.Split(user.Name, " ")[0])
 	v.Set("token", "xoxp-3803026192-3803026200-3879665935-c62c8e")
@@ -144,7 +144,8 @@ func apiMeInvite(w http.ResponseWriter, r *http.Request) {
 
 	url := fmt.Sprintf("https://%s.slack.com/api/users.admin.invite?t=%d", "makerhunt", time.Now().Unix())
 	if resp, err := http.PostForm(url, v); err != nil {
-		panic(err)
+		http.Error(w, err.Error(), 500)
+		return
 	} else {
 		fmt.Println("%#v", resp)
 		b, _ := ioutil.ReadAll(resp.Body)

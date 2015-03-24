@@ -3,13 +3,14 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"mime"
-	"mime/multipart"
 	"net/http"
+	"net/mail"
+	"os"
 	"strings"
 	"time"
 
@@ -27,91 +28,61 @@ func apiHookSmtp(w http.ResponseWriter, r *http.Request) {
 		To          []Address         `json:"to"`
 		AddressList []Address         `json:"address_list"`
 		Date        *time.Time        `json:"date"`
-		Headers     map[string]string `json:"header"`
+		Header      mail.Header       `json:"header"`
 		Body        []byte            `json:"body"`
+		Parts       map[string][]byte `json:"parts"`
 	}
 
-	var err error
-	if err := json.NewDecoder(r.Body).Decode(&msg); err != nil {
+	// var err error
+	if err := json.NewDecoder(io.TeeReader(r.Body, os.Stdout)).Decode(&msg); err != nil {
 		log.Println(err)
 		http.Error(w, err.Error(), 500)
 		return
 	}
 
-	contentType, ok := msg.Headers["Content-Type"]
-	if !ok {
-		log.Println(err)
-		http.Error(w, err.Error(), 500)
-		return
-	}
+	inviteUrl := ""
+	for contentType, p := range msg.Parts {
+		fmt.Printf("Part %q: %q\n", contentType, p)
 
-	mediaType, params, err := mime.ParseMediaType(contentType)
-	if err != nil {
-		log.Println(err)
-		http.Error(w, err.Error(), 500)
-		return
-	}
-
-	if strings.HasPrefix(mediaType, "multipart/") {
-		buffer := bytes.NewBuffer(msg.Body)
-		mr := multipart.NewReader(buffer, params["boundary"])
-		for {
-			p, err := mr.NextPart()
-			if err == io.EOF {
-				return
-			}
-			if err != nil {
-				log.Println(err)
-				http.Error(w, err.Error(), 500)
-				return
-			}
-
-			slurp, err := ioutil.ReadAll(p)
-			if err != nil {
-				log.Println(err)
-				http.Error(w, err.Error(), 500)
-				return
-				log.Fatal(err)
-			}
-
-			fmt.Printf("Part %q: %q\n", p.Header.Get("Foo"), slurp)
-
-			contentType, ok := msg.Headers["Content-Type"]
-			if !ok {
-				log.Println(err)
-				http.Error(w, err.Error(), 500)
-				return
-			}
-
-			mediaType, _, err := mime.ParseMediaType(contentType)
-			if err != nil {
-				log.Println(err)
-				http.Error(w, err.Error(), 500)
-				return
-			}
-
-			if !strings.HasPrefix(mediaType, "multipart/") {
-				continue
-			}
-
-			doc, err := goquery.NewDocumentFromReader(p)
-			if err != nil {
-				log.Println(err)
-				http.Error(w, err.Error(), 500)
-				return
-			}
-
-			inviteUrl := ""
-			doc.Find("a").Each(func(i int, s *goquery.Selection) {
-				if href, exists := s.Attr("href"); exists {
-					if strings.Contains(href, "invite") {
-						inviteUrl = href
-					}
-				}
-			})
-
-			fmt.Println("invite url found: href")
+		mediaType, _, err := mime.ParseMediaType(contentType)
+		if err != nil {
+			log.Println(err)
+			http.Error(w, err.Error(), 500)
+			return
 		}
+
+		if !strings.HasPrefix(mediaType, "text/html") {
+			continue
+		}
+
+		doc, err := goquery.NewDocumentFromReader(bytes.NewReader(p))
+		if err != nil {
+			log.Println(err)
+			http.Error(w, err.Error(), 500)
+			return
+		}
+
+		doc.Find("a").Each(func(i int, s *goquery.Selection) {
+			if href, exists := s.Attr("href"); exists {
+				if strings.Contains(href, "invite") {
+					inviteUrl = href
+				}
+			}
+		})
+
+		fmt.Println("invite url found: %s", inviteUrl)
 	}
 
+	if inviteUrl == "" {
+		err := errors.New("Could not detect invite url.")
+		log.Println(err)
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	// get user object for makerhunt id.
+	username := strings.Split(msg.Header.Get("To"), "@")[0]
+	password := "verycomplexpassword123@"
+	err := join(inviteUrl, username, password)
+	log.Println(err)
 }
