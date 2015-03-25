@@ -9,7 +9,7 @@ angular.module('makerhuntApp')
                   main : {
                       templateUrl: "app/main/main.html",
                       controller: 'MainCtrl'
-                  } 
+                  }
               }
           })
           .state('main:me', {
@@ -37,11 +37,20 @@ angular.module('makerhuntApp')
                   main : {
                       templateUrl: "app/main/main.html",
                       controller: 'MainCtrl'
-                  }, 
+                  },
                   modal: {
                       templateUrl: "app/modals/error.html",
                       controller: 'ErrorCtrl'
                   }
-              },
-          });
+              }
+          })
+        .state('signup', {
+          url: '/signup',
+          views: {
+            main : {
+              templateUrl: "app/signup/signup.html",
+              controller: 'SignupCtrl'
+            }
+          }
+        });
   });

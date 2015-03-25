@@ -1,0 +1,146 @@
+#signupView {
+  border: 12px solid rgba(152,211,227,1);
+  min-height: calc(100vh - 24px);
+
+  .signup--container{
+    width: 500px;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .envelope-container {
+    max-width: 33%;
+    margin: 64px auto 40px;
+
+    .signupEnvelope {
+      max-width: 100%;
+    }
+  }
+
+  .header-container {
+    text-align: center;
+
+    .signup--welcomeHeader {
+      font-size: 32px;
+      font-weight: 300;
+      color: #303030;
+      letter-spacing: normal;
+      line-height: 1;
+      margin-bottom: 15px;
+    }
+
+    .signup--welcomeText {
+      font-size: 18px;
+      line-height: 26px;
+      color: rgb(168,168,168);
+      letter-spacing: normal;
+      margin-bottom: 32px;
+      margin-top: 0;
+    }
+  }
+
+  .userCard {
+    border: 1px solid rgb(216,216,216);
+    border-radius: 4px;
+    overflow: hidden;
+    padding: 20px;
+    margin-bottom: 40px;
+
+    .userCard-userImg {
+      max-width: 100%;
+      border-radius: 50%;
+      vertical-align: bottom;
+    }
+
+    .userCard-userBio {
+      margin: 0;
+      font-size: 16px;
+      line-height: 24px;
+      color: rgb(204,204,204);
+      font-weight: 400;
+      letter-spacing: normal;
+      padding-top: 10px;
+    }
+  }
+
+  .processDescription {
+    font-size: 14px;
+    font-weight: 400;
+    text-align: center;
+    color: #cccccc;
+    line-height: 186%;
+    margin-bottom: 16px;
+  }
+
+  .checkingPHstatus {
+    font-size: 20px;
+    line-height: 130%;
+    height: 60px;
+    width: calc(100% - 6px);
+    color: #ffffff;
+    background: #3a4043;
+    margin: 3px;
+    margin-bottom: 20px;
+    text-transform: none;
+    position: relative;
+    border: none;
+    }
+  .checkingPHstatus:before{
+    content: '';
+    position:absolute;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+
+
+    z-index: -1;
+    border-radius: 4px;
+
+    background: #3a4043;
+    background: -moz-radial-gradient(center, ellipse cover,  #3a4043 10%, #1c92b1 40%, #9af248 90%);
+    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(10%,#3a4043), color-stop(40%,#1c92b1), color-stop(90%,#9af248));
+    background: -webkit-radial-gradient(center, ellipse cover,  #3a4043 10%,#1c92b1 40%,#9af248 90%);
+    background: -o-radial-gradient(center, ellipse cover,  #3a4043 10%,#1c92b1 40%,#9af248 90%);
+    background: -ms-radial-gradient(center, ellipse cover,  #3a4043 10%,#1c92b1 40%,#9af248 90%);
+    background: radial-gradient(ellipse at center,  #3a4043 10%,#1c92b1 40%,#9af248 90%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3a4043', endColorstr='#9af248',GradientType=1 );
+
+
+    background-size: 200% 200%;
+    -webkit-animation: border-swirl 2s ease-in-out infinite;
+    -moz-animation: border-swirl 2s ease-in-out infinite;
+    -o-animation: border-swirl 2s ease-in-out infinite;
+    animation: border-swirl 2s ease-in-out infinite;
+    @-webkit-keyframes border-swirl {
+      0%{background-position:0% 50%}
+      25%{background-position:50% 0%}
+      50%{background-position:100% 50%}
+      75%{background-position:50% 100%}
+      100%{background-position:0% 50%}
+    }
+    @-moz-keyframes border-swirl {
+      0%{background-position:0% 50%}
+      25%{background-position:50% 0%}
+      50%{background-position:100% 50%}
+      75%{background-position:50% 100%}
+      100%{background-position:0% 50%}
+    }
+    @-o-keyframes border-swirl {
+      0%{background-position:0% 50%}
+      25%{background-position:50% 0%}
+      50%{background-position:100% 50%}
+      75%{background-position:50% 100%}
+      100%{background-position:0% 50%}
+    }
+    @keyframes border-swirl {
+      0%{background-position:0% 50%}
+      25%{background-position:50% 0%}
+      50%{background-position:100% 50%}
+      75%{background-position:50% 100%}
+      100%{background-position:0% 50%}
+    }
+  }
+
+}
+
