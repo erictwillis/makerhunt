@@ -2,38 +2,22 @@
 
 angular.module('makerhuntApp')
   .controller('SignupCtrl', function ($scope, user, $timeout, Me) {
-	$scope.user = user;
+    $scope.user = user;
 
-
-    /*
-    // need to make proper object for this
-    wait = $interval(function() {
-        var messages = ["Fetching envelope...", "Sending..."];
-
-        scope.modal.button.status = messages[i];
-
-        if (i < messages.length - 1) {
-            i++;
-        };
-    }, 1000);
-
-    Me.invite({ email: scope.response.user.email }).$promise.then(function() {
-      scope.modal.button.status = 'Invite sent!';
-      $(scope.target).removeClass('busy');
-      $(scope.target).addClass('done');
-    }).catch(function(e) {
-      scope.modal.button.status = 'Error sending invite!';
-    }).finally(function() {
-        $interval.cancel(wait);
-    });
-    */
     $scope.step = 1;
 
+    $scope.ph_loaded=false;
+
     Me.updateProductHuntData().$promise.then(function(user) {
-        console.debug(user);
         $scope.user = user;
 
-        $scope.gotoStepTwo();
+        angular.forEach($scope.user.ph_settings.maker_of, function(post) {
+          angular.forEach(post.makers, function(maker) {
+            $scope.teamMembers.push(maker);
+          });
+        });
+
+        $scope.ph_loaded=true;
     });
 
     $scope.isMaker= function() {
@@ -48,22 +32,22 @@ angular.module('makerhuntApp')
         if (form.$invalid) 
             return;
 
-        Me.invite({ email: $scope.user.email }).$promise.then(function() {
-              $scope.goToStepThree();
+        var promise = Me.subscribe({email: $scope.user.email}).$promise;
 
-              angular.forEach($scope.user.ph_settings.maker_of, function(post) {
-                  angular.forEach(post.makers, function(maker) {
-                    $scope.teamMembers.push(maker);
-                  });
-              });
-            }).catch(function(e) {
-              scope.modal.button.status = 'Error sending invite!';
-            }).finally(function() {
-            });
+        if ($scope.isMaker()) {
+            promise = Me.invite({ email: $scope.user.email }).$promise;
+        }
+
+        promise.then(function() {
+            $scope.goToStepThree();
+        }).catch(function(e) {
+            scope.modal.button.status = 'Error sending invite!';
+        }).finally(function() {
+        });
     };
 
     //go to step two
-    $scope.gotoStepTwo = function(){
+    $scope.goToStepTwo = function(){
       $('#stepOne').addClass('animated bounceOutLeft');
         $scope.step = 2;
 

@@ -31,8 +31,8 @@
         </div>
             <div class="actions">
               <p class="processDescription">Don't be alarmed, it usually takes a second or two. Code stuff...</p>
-              
-              <button class="checkingPHstatus" disabled>Checking Product Hunt...</button>
+              <button ng-if="!ph_loaded" class="checkingPHstatus" disabled>Checking Product Hunt...</button>
+              <button ng-if="ph_loaded" class="nextStep" ng-class="{makerBtn: isMaker(), nonMakerBtn: !isMaker()}" ng-click="goToStepTwo()">Continue <i class="fa fa-arrow-right"></i></button>
             </div>
         </div>
 
@@ -48,14 +48,28 @@
           </div>
 
           <input class="user-email" type="email" name='email' ng-model="user.email" placeholder="your@awesome.email" required />
-          <span class="error-txt" ng-show="form.email.$error.required">Please enter a valid email address.</span>
-          <span class="error-txt" ng-show="form.email.$error.email">Please enter a valid email address.</span>
+          <span class="error-txt" ng-show="form.email.$error.required && !form.$pristine">Please enter a valid email address.</span>
+          <span class="error-txt" ng-show="form.email.$error.email && !form.$pristine">Please enter a valid email address.</span>
 
           <p class="processDescription" ng-if="isMaker()">Yay! You're confirmed as a maker on Product Hunt!</p>
           <p class="processDescription" ng-if="!isMaker()">Uh-oh! Looks like you're not marked as a Maker on Product hunt.</p>
 
-          <button ng-if="isMaker()" class="finish-btn makerBtn" type="submit">Send Invite <i class="fa fa-envelope-o"></i></button>
-          <button ng-if="!isMaker()" class="finish-btn nonMakerBtn" type="submit">Subscribe <i class="fa fa-envelope-o"></i></button>
+          <button ng-if="isMaker()" class="finish-btn makerBtn" type="submit" ng-disabled='form.$invalid'>Send Invite 
+              <i class="fa fa-envelope-o"></i>
+              <span class="spinner ng-hide" ng-show="form.$submitted" >
+                  <svg version="1.1" x="0" y="0" width="150px" height="150px" viewBox="-10 -10 120 120" enable-background="new 0 0 200 200" xml:space="preserve">
+                  <path class="circle" d="M0,50 A50,50,0 1 1 100,50 A50,50,0 1 1 0,50" />
+                  </svg>
+              </span>
+          </button>
+          <button ng-if="!isMaker()" class="finish-btn nonMakerBtn" type="submit" ng-disabled='form.$invalid'>Subscribe 
+              <i class="fa fa-envelope-o"></i>
+              <span class="spinner ng-hide" ng-show="form.$submitted">
+                  <svg version="1.1" x="0" y="0" width="150px" height="150px" viewBox="-10 -10 120 120" enable-background="new 0 0 200 200" xml:space="preserve">
+                  <path class="circle" d="M0,50 A50,50,0 1 1 100,50 A50,50,0 1 1 0,50" />
+                  </svg>
+              </span>
+          </button>
           </form>
         </div>
 
