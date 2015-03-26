@@ -1,34 +1,23 @@
 package main
 
 import (
-<<<<<<< HEAD
-	"crypto/tls"
-	"encoding/json"
-	"fmt"
-	"io"
-	"log"
-	"net"
-	"net/http"
-	"net/mail"
-	"net/smtp"
-	"os"
-	"time"
-=======
 	"bytes"
+	"crypto/tls"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
 	"log"
 	"mime"
+	"net"
 	"net/http"
 	"net/mail"
+	"net/smtp"
 	"os"
 	"strings"
 	"time"
 
 	"github.com/PuerkitoBio/goquery"
->>>>>>> 6f9e237ff4965b769076a4a7e5da7b398183d08b
 )
 
 func apiHookSmtp(w http.ResponseWriter, r *http.Request) {
@@ -54,7 +43,6 @@ func apiHookSmtp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-<<<<<<< HEAD
 	/*
 
 			inviteUrl := ""
@@ -156,7 +144,6 @@ func apiHookSmtp(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 
-=======
 	inviteUrl := ""
 	for contentType, p := range msg.Parts {
 		fmt.Printf("Part %q: %q\n", contentType, p)
@@ -200,7 +187,6 @@ func apiHookSmtp(w http.ResponseWriter, r *http.Request) {
 	// get user object for makerhunt id.
 	username := strings.Split(msg.Header.Get("To"), "@")[0]
 	password := "verycomplexpassword123@"
-	err := join(inviteUrl, username, password)
+	err = join(inviteUrl, username, password)
 	log.Println(err)
->>>>>>> 6f9e237ff4965b769076a4a7e5da7b398183d08b
 }
