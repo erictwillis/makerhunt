@@ -1,9 +1,13 @@
 package main
 
 import (
+<<<<<<< HEAD
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+=======
+	"fmt"
+>>>>>>> 6f9e237ff4965b769076a4a7e5da7b398183d08b
 	"log"
 	"math/rand"
 	"net/http"
@@ -96,12 +100,75 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 	session.Values["request_token_secret"] = userConfig.RequestTokenSecret
 	session.Save(r, w)
 
+<<<<<<< HEAD
+=======
+	/*
+			oauth := oauth1a.Service{
+				RequestURL:   "https://api.twitter.com/oauth/request_token",
+				AuthorizeURL: "https://api.twitter.com/oauth/authorize",
+				AccessURL:    "https://api.twitter.com/oauth/access_token",
+				ClientConfig: config,
+				Signer:       new(oauth1a.HmacSha1Signer),
+			}
+
+			v := url.Values{}
+		        v.Set("grant_type", "client_credentials")
+		        client := http.Client{}
+
+		        tokenUrl := fmt.Sprintf("https://%s:%s@api.twitter.com/oauth2/token", config.Twitter.ClientId, config.Twitter.Clie
+		        resp, err := client.PostForm(tokenUrl, v)
+		        if err != nil {
+		                return nil, err
+		        }
+
+		        type OAuthResult struct {
+
+			body := "grant_type=client_credentials"
+			req, err = http.NewRequest("POST", url, bytes.NewBufferString(body))
+			if err != nil {
+				return
+			}
+			req.Header.Set("Authorization", h)
+			req.Header.Set("Content-Type", ct)
+			if resp, err = c.HttpClient.Do(req); err != nil {
+				return
+			}
+			if resp.StatusCode != 200 {
+				err = fmt.Errorf("Got HTTP %v instead of 200", resp.StatusCode)
+				return
+			}
+			if rb, err = ioutil.ReadAll(resp.Body); err != nil {
+				return
+			}
+			if err = json.Unmarshal(rb, &rj); err != nil {
+				return
+			}
+			var (
+				token_type   = rj["token_type"].(string)
+				access_token = rj["access_token"].(string)
+			)
+			if token_type != "bearer" {
+				err = fmt.Errorf("Got invalid token type: %v", token_type)
+			}
+			c.SetAppToken(access_token)
+
+			if err := c.FetchAppToken(); err != nil {
+				// Handle error ...
+			}
+			token := c.GetAppToken()
+
+			// Redirect user to consent page to ask for permission
+			// for the scopes specified above.
+			url := conf.AuthCodeURL("state", oauth2.AccessTypeOffline)
+	*/
+>>>>>>> 6f9e237ff4965b769076a4a7e5da7b398183d08b
 	http.Redirect(w, r, url, 302)
 }
 
 func authHandler(w http.ResponseWriter, r *http.Request) {
 	session, _ := store.Get(r, "oauth")
 
+<<<<<<< HEAD
 	if r.FormValue("denied") != "" {
 		http.Error(w, "Twitter oauth request denied.", 500)
 		return
@@ -177,12 +244,70 @@ func authHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), 500)
 		return
 	}
+=======
+	// http://localhost:9000/auth?denied=o1d4TNJ8fS9FRabg8r2F6aFXvqKO4vjj
+	if r.FormValue("state") != session.Values["state"] {
+		//		http.Error(w, "Invalid state", 403)
+		//		return
+	}
+
+	var (
+		token    string
+		verifier string
+		err      error
+	)
+
+	userConfig := &oauth1a.UserConfig{
+		RequestTokenKey:    session.Values["request_token_key"].(string),
+		RequestTokenSecret: session.Values["request_token_secret"].(string),
+	}
+
+	if token, verifier, err = userConfig.ParseAuthorize(r, config.Twitter.Service); err != nil {
+		log.Printf("Could not parse authorization: %v", err)
+		http.Error(w, "Problem parsing authorization", 500)
+		return
+	}
+
+	httpClient := new(http.Client)
+
+	if err = userConfig.GetAccessToken(token, verifier, config.Twitter.Service, httpClient); err != nil {
+		log.Printf("Error getting access token: %v", err)
+		http.Error(w, "Problem getting an access token", 500)
+		return
+	}
+
+	fmt.Printf("<pre>")
+	fmt.Printf("Access Token: %v\n", userConfig.AccessTokenKey)
+	fmt.Printf("Token Secret: %v\n", userConfig.AccessTokenSecret)
+	fmt.Printf("Screen Name:  %v\n", userConfig.AccessValues.Get("screen_name"))
+	fmt.Printf("User ID:      %v\n", userConfig.AccessValues.Get("user_id"))
+	fmt.Printf("</pre>")
+	fmt.Printf("<a href=\"/signin\">Sign in again</a>")
+
+	/*
+		client, err := gohunt.NewUserOAuthClient(config.ClientId, config.ClientSecret, config.RedirectUrl, r.FormValue("code"))
+		if err != nil {
+			http.Error(w, err.Error(), 500)
+			return
+		}
+
+		settings, err := client.GetSettings()
+		if err != nil {
+			http.Error(w, err.Error(), 500)
+			return
+		}
+
+	*/
+
+	username := userConfig.AccessValues.Get("screen_name")
+>>>>>>> 6f9e237ff4965b769076a4a7e5da7b398183d08b
 
 	var user User
 	if err := db.Users.Find(bson.M{"username": username}).One(&user); err == mgo.ErrNotFound {
 		// user = NewUser() // import
 
 		user.UserId = bson.NewObjectId()
+<<<<<<< HEAD
 
 		user.Twitter = twitterUser
 
@@ -193,6 +318,8 @@ func authHandler(w http.ResponseWriter, r *http.Request) {
 		user.WebsiteUrl = twitterUser.Url
 		user.CreatedAt = time.Now()
 
+=======
+>>>>>>> 6f9e237ff4965b769076a4a7e5da7b398183d08b
 		/*
 			user.Name = settings.Name
 			user.Username = settings.Username
@@ -215,6 +342,7 @@ func authHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), 500)
 		return
 	} else if err == nil {
+<<<<<<< HEAD
 		user.Twitter = twitterUser
 
 		user.Name = twitterUser.Name
@@ -222,6 +350,8 @@ func authHandler(w http.ResponseWriter, r *http.Request) {
 		user.Location = twitterUser.Location
 		user.Headline = twitterUser.Description
 		user.WebsiteUrl = twitterUser.Url
+=======
+>>>>>>> 6f9e237ff4965b769076a4a7e5da7b398183d08b
 		/*
 			// update settings with latest info
 			user.ImageUrl = settings.ImageUrl
@@ -232,11 +362,19 @@ func authHandler(w http.ResponseWriter, r *http.Request) {
 			}
 
 			user.PHSettings = settings
+<<<<<<< HEAD
 		*/
 		if err = db.Users.UpdateId(user.UserId, &user); err != nil {
 			http.Error(w, err.Error(), 500)
 			return
 		}
+=======
+			if err = db.Users.UpdateId(user.UserId, &user); err != nil {
+				http.Error(w, err.Error(), 500)
+				return
+			}
+		*/
+>>>>>>> 6f9e237ff4965b769076a4a7e5da7b398183d08b
 	}
 
 	/*

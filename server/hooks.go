@@ -1,6 +1,7 @@
 package main
 
 import (
+<<<<<<< HEAD
 	"crypto/tls"
 	"encoding/json"
 	"fmt"
@@ -12,6 +13,22 @@ import (
 	"net/smtp"
 	"os"
 	"time"
+=======
+	"bytes"
+	"encoding/json"
+	"errors"
+	"fmt"
+	"io"
+	"log"
+	"mime"
+	"net/http"
+	"net/mail"
+	"os"
+	"strings"
+	"time"
+
+	"github.com/PuerkitoBio/goquery"
+>>>>>>> 6f9e237ff4965b769076a4a7e5da7b398183d08b
 )
 
 func apiHookSmtp(w http.ResponseWriter, r *http.Request) {
@@ -37,6 +54,7 @@ func apiHookSmtp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+<<<<<<< HEAD
 	/*
 
 			inviteUrl := ""
@@ -138,4 +156,51 @@ func apiHookSmtp(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 
+=======
+	inviteUrl := ""
+	for contentType, p := range msg.Parts {
+		fmt.Printf("Part %q: %q\n", contentType, p)
+
+		mediaType, _, err := mime.ParseMediaType(contentType)
+		if err != nil {
+			log.Println(err)
+			http.Error(w, err.Error(), 500)
+			return
+		}
+
+		if !strings.HasPrefix(mediaType, "text/html") {
+			continue
+		}
+
+		doc, err := goquery.NewDocumentFromReader(bytes.NewReader(p))
+		if err != nil {
+			log.Println(err)
+			http.Error(w, err.Error(), 500)
+			return
+		}
+
+		doc.Find("a").Each(func(i int, s *goquery.Selection) {
+			if href, exists := s.Attr("href"); exists {
+				if strings.Contains(href, "invite") {
+					inviteUrl = href
+				}
+			}
+		})
+
+		fmt.Println("invite url found: %s", inviteUrl)
+	}
+
+	if inviteUrl == "" {
+		err := errors.New("Could not detect invite url.")
+		log.Println(err)
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	// get user object for makerhunt id.
+	username := strings.Split(msg.Header.Get("To"), "@")[0]
+	password := "verycomplexpassword123@"
+	err := join(inviteUrl, username, password)
+	log.Println(err)
+>>>>>>> 6f9e237ff4965b769076a4a7e5da7b398183d08b
 }
