@@ -46,6 +46,25 @@
     padding: 20px;
     margin-bottom: 40px;
 
+    .maker-img-wrapper {
+      position: relative;
+
+      .makerBadge {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 25px;
+        height: 25px;
+        background: #59a757;
+        color: white;
+        border-radius: 50%;
+        text-align: center;
+        font-size: 14px;
+        padding: 1px;
+        line-height: 25px;
+      }
+    }
+
     .userCard-userImg {
       max-width: 100%;
       border-radius: 50%;
@@ -75,7 +94,7 @@
   .checkingPHstatus {
     font-size: 20px;
     line-height: 130%;
-    height: 60px;
+    height: 54px;
     width: calc(100% - 6px);
     color: #ffffff;
     background: #3a4043;
@@ -92,22 +111,33 @@
     left: -3px;
     right: -3px;
     bottom: -3px;
+    z-index: -1;
+    background: #3a4043;
+    border-radius: 5px;
+  }
+  .checkingPHstatus:after{
+    content: '';
+    position:absolute;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
 
 
     z-index: -1;
     border-radius: 4px;
 
     background: #3a4043;
-    background: -moz-radial-gradient(center, ellipse cover,  #3a4043 10%, #1c92b1 40%, #9af248 90%);
-    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(10%,#3a4043), color-stop(40%,#1c92b1), color-stop(90%,#9af248));
-    background: -webkit-radial-gradient(center, ellipse cover,  #3a4043 10%,#1c92b1 40%,#9af248 90%);
-    background: -o-radial-gradient(center, ellipse cover,  #3a4043 10%,#1c92b1 40%,#9af248 90%);
-    background: -ms-radial-gradient(center, ellipse cover,  #3a4043 10%,#1c92b1 40%,#9af248 90%);
-    background: radial-gradient(ellipse at center,  #3a4043 10%,#1c92b1 40%,#9af248 90%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3a4043', endColorstr='#9af248',GradientType=1 );
+    background: -moz-radial-gradient(center, ellipse cover,  rgba(28,146,177,0) 0%, rgba(28,146,177,0.02) 1%, rgba(28,146,177,1) 47%, rgba(154,242,72,1) 90%, rgba(154,242,72,1) 100%);
+    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(28,146,177,0)), color-stop(1%,rgba(28,146,177,0.02)), color-stop(47%,rgba(28,146,177,1)), color-stop(90%,rgba(154,242,72,1)), color-stop(100%,rgba(154,242,72,1)));
+    background: -webkit-radial-gradient(center, ellipse cover,  rgba(28,146,177,0) 0%,rgba(28,146,177,0.02) 1%,rgba(28,146,177,1) 47%,rgba(154,242,72,1) 90%,rgba(154,242,72,1) 100%);
+    background: -o-radial-gradient(center, ellipse cover,  rgba(28,146,177,0) 0%,rgba(28,146,177,0.02) 1%,rgba(28,146,177,1) 47%,rgba(154,242,72,1) 90%,rgba(154,242,72,1) 100%);
+    background: -ms-radial-gradient(center, ellipse cover,  rgba(28,146,177,0) 0%,rgba(28,146,177,0.02) 1%,rgba(28,146,177,1) 47%,rgba(154,242,72,1) 90%,rgba(154,242,72,1) 100%);
+    background: radial-gradient(ellipse at center,  rgba(28,146,177,0) 0%,rgba(28,146,177,0.02) 1%,rgba(28,146,177,1) 47%,rgba(154,242,72,1) 90%,rgba(154,242,72,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#001c92b1', endColorstr='#9af248',GradientType=1 );
 
 
-    background-size: 200% 200%;
+    background-size: 180% 180%;
     -webkit-animation: border-swirl 2s ease-in-out infinite;
     -moz-animation: border-swirl 2s ease-in-out infinite;
     -o-animation: border-swirl 2s ease-in-out infinite;
@@ -141,6 +171,138 @@
       100%{background-position:0% 50%}
     }
   }
+
+  .nextStep{
+    font-size: 20px;
+    line-height: 130%;
+    height: 60px;
+    width: 100%;
+    color: #ffffff;
+    background: #3a4043;
+    margin-bottom: 20px;
+    text-transform: none;
+    position: relative;
+    border: none;
+  }
+  .makerBtn{
+    background: #59a757;
+  }
+  .nonMakerBtn{
+    background: #54b6d0;
+  }
+
+  .user-email{
+    width: 100%;
+    line-height: 143%;
+    text-align: center;
+    font-weight: 500;
+    color: rgba(48,48,48,1);
+    height: 54px!important;
+    font-size: 21px;
+  }
+
+  .finish-btn{
+    font-size: 20px;
+    line-height: 130%;
+    height: 60px;
+    width: 100%;
+    color: #ffffff;
+    margin-bottom: 20px;
+    text-transform: none;
+    position: relative;
+    border: none;
+  }
+
+  .teamMembers-container{
+
+    .signup-teamHeader {
+      font-size: 32px;
+      font-weight: 300;
+      color: #303030;
+      letter-spacing: normal;
+      line-height: 1;
+      margin-bottom: 15px;
+      text-align: center;
+      margin-top: 10px;
+    }
+    .signup-teamText {
+      font-size: 18px;
+      line-height: 26px;
+      color: #a8a8a8;
+      letter-spacing: normal;
+      margin-bottom: 32px;
+      margin-top: 0;
+      text-align: center;
+    }
+
+    .teamMember {
+      width: calc(50% - 27px);
+      display: inline-block;
+      padding: 10px;
+      float: left;
+      border: 1px solid #d8d8d8;
+      border-radius: 4px;
+      overflow: hidden;
+
+      .image-container {
+        width: calc(100% / 3);
+        display: inline-block;
+        overflow: hidden;
+        float: left;
+        .teamMember-pic {
+          max-width: 100%;
+          border-radius: 50%;
+        }
+      }
+      .info-container {
+        width: calc(100% / 1.5);
+        display: inline-block;
+        float: left;
+
+        .teamMember-name {
+          font-size: 20px;
+          text-align: right;
+          margin-bottom: 0px;
+        }
+        .teamMember-username {
+          text-align: right;
+          font-size: 14px;
+        }
+      }
+
+      .invite-teamMember {
+        width: 100%;
+        display: inline-block;
+        margin-top: 15px;
+        border-radius: 4px;
+        text-align: center;
+        text-decoration: none;
+        color: #ffffff!important;
+        line-height: 34px;
+        padding: 0;
+        background: #55acee;
+        position: relative;
+
+        .fa{
+          position: absolute;
+          left: 15px;
+          line-height: 34px;
+        }
+      }
+
+
+    }
+    .teamMember:nth-child(odd){
+      margin: 0 5px 5px 0;
+    }
+    .teamMember:nth-child(even){
+      margin: 0 0 5px 5px;
+    }
+
+
+
+  }
+
 
 }
 
