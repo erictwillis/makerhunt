@@ -10,6 +10,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/dutchcoders/gohunt/gohunt"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
@@ -95,6 +96,66 @@ func apiMeSubscribe(w http.ResponseWriter, r *http.Request) {
 	// todo check status
 	//{"status":"error","code":200,"name":"List_DoesNotExist","error":"Invalid MailChimp List ID: 57413"}
 	// WriteJSON(w, user)
+}
+func apiMeUpdateProductHuntData(w http.ResponseWriter, r *http.Request) {
+	session, _ := store.Get(r, config.SessionName)
+
+	userid := session.Values["userid"]
+	if userid == nil {
+		http.Error(w, "Unauthorized", 401)
+		return
+	}
+
+	var user User
+	if err := db.Users.FindId(bson.ObjectIdHex(userid.(string))).One(&user); err == mgo.ErrNotFound {
+		http.NotFound(w, r)
+		return
+	} else if err != nil {
+		panic(err)
+	}
+
+	// get product hunt data
+	err := func() error {
+		client, err := gohunt.NewOAuthClient(config.ClientId, config.ClientSecret)
+		if err != nil {
+			return err
+		}
+
+		u, err := client.GetUser(user.Username)
+		if err != nil {
+			return err
+		}
+
+		fmt.Printf("%#v", u)
+
+		user.PHSettings = gohunt.UserSettings{}
+		user.PHSettings.ID = u.ID
+		user.PHSettings.Name = u.Name
+		user.PHSettings.Username = u.Username
+		user.PHSettings.Headline = u.Headline
+		user.PHSettings.Created = u.Created
+		user.PHSettings.ImageUrl = u.ImageUrl
+		user.PHSettings.ProfileUrl = u.ProfileUrl
+		user.PHSettings.WebsiteUrl = u.WebsiteUrl
+		user.PHSettings.Votes = u.Votes
+		user.PHSettings.Posts = u.Posts
+		user.PHSettings.MakerOf = u.MakerOf
+		user.PHSettings.Followers = u.Followers
+		user.PHSettings.Following = u.Following
+		return nil
+	}()
+
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	if err := db.Users.UpdateId(user.UserId, &user); err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	WriteJSON(w, user)
 }
 
 func apiMeInvite(w http.ResponseWriter, r *http.Request) {

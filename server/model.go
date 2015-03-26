@@ -104,6 +104,7 @@ type User struct {
 	UserId   bson.ObjectId `bson:"_id" json:"user_id"`
 	Name     string        `bson:"name" json:"name"`
 	Email    string        `bson:"email" json:"email"`
+	Location string        `bson:"location" json:"location"`
 	// FirstName  string            `bson:"first_name" json:"first_name"`
 	// MiddleName string            `bson:"middle_name" json:"middle_name"`
 	// LastName   string            `bson:"last_name" json:"last_name"`

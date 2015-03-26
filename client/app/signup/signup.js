@@ -11,7 +11,7 @@ angular.module('makerhuntApp')
                     controller: 'SignupCtrl',
                     resolve: {
                         user: ['Auth', function(Auth) {
-                            return Auth.getCurrentUser();
+                            return Auth.getCurrentUser().$promise;
                         }]
                     }
                 }

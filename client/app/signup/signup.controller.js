@@ -1,41 +1,77 @@
 'use strict';
 
 angular.module('makerhuntApp')
-  .controller('SignupCtrl', function ($scope, $timeout) {
-    $scope.step = 0;
+  .controller('SignupCtrl', function ($scope, user, $timeout, Me) {
+	$scope.user = user;
 
-      user.$promise.then(function(user) {
-          $scope.user = user;
-      });
+
+    /*
+    // need to make proper object for this
+    wait = $interval(function() {
+        var messages = ["Fetching envelope...", "Sending..."];
+
+        scope.modal.button.status = messages[i];
+
+        if (i < messages.length - 1) {
+            i++;
+        };
+    }, 1000);
+
+    Me.invite({ email: scope.response.user.email }).$promise.then(function() {
+      scope.modal.button.status = 'Invite sent!';
+      $(scope.target).removeClass('busy');
+      $(scope.target).addClass('done');
+    }).catch(function(e) {
+      scope.modal.button.status = 'Error sending invite!';
+    }).finally(function() {
+        $interval.cancel(wait);
+    });
+    */
+    $scope.step = 1;
+
+    Me.updateProductHuntData().$promise.then(function(user) {
+        console.debug(user);
+        $scope.user = user;
+
+        $scope.gotoStepTwo();
+    });
 
     $scope.isMaker= function() {
-        if ($scope.response.user.$resolved) {
-            return ($scope.response.user.ph_settings.maker_of_count > 0);
+        if ($scope.user.$resolved && $scope.user.ph_settings) {
+            return ($scope.user.ph_settings.maker_of.length > 0);
         } else {
             return false;
         }
     };
 
-    $scope.userName = 'imcatnoone';
-    $scope.userPic = 'https://pbs.twimg.com/profile_images/542004858744602624/qT_jO1YF.jpeg';
-    $scope.userBio = 'Co-Founder & Design @LiberioApp • Big on side-projects • Advisor • Building meaningful stuff with my partner in crime @blehnert';
+    $scope.submit = function(form) {
+        if (form.$invalid) 
+            return;
 
-    $timeout(function(){
-      $scope.step = 1;
-      $scope.isMaker = false;
-    },3000);
+        Me.invite({ email: $scope.user.email }).$promise.then(function() {
+              $scope.goToStepThree();
+
+              angular.forEach($scope.user.ph_settings.maker_of, function(post) {
+                  angular.forEach(post.makers, function(maker) {
+                    $scope.teamMembers.push(maker);
+                  });
+              });
+            }).catch(function(e) {
+              scope.modal.button.status = 'Error sending invite!';
+            }).finally(function() {
+            });
+    };
 
     //go to step two
-    $scope.goToStepTwo = function(){
-
+    $scope.gotoStepTwo = function(){
       $('#stepOne').addClass('animated bounceOutLeft');
-      $timeout(function(){
         $scope.step = 2;
+
+      $timeout(function(){
         $('#stepOne').addClass('hidden');
         $('#stepTwo').removeClass('hidden');
         $('#stepTwo').addClass('animated bounceInRight');
       }, 1000);
-
     };
 
     $scope.goToStepThree = function(){
@@ -47,11 +83,12 @@ angular.module('makerhuntApp')
         $('#stepThree').addClass('animated bounceInRight');
       }, 1000);
     };
-
-    //teamMember temp array
-    $scope.teamMembers = [
+    /*
       {username: 'sleinadsanoj', name: 'Jonas Daniels', profile_pic: 'https://pbs.twimg.com/profile_images/574379151760580609/ZM1ZA9ci.jpeg'},
       {username: 'erictwillis', name: 'Eric Willis', profile_pic: 'https://pbs.twimg.com/profile_images/2272007191/wvrexvyjybx1zx9flwi7_400x400.jpeg'}
+    */
+
+    $scope.teamMembers = [
     ];
 });
 
@@ -157,6 +194,5 @@ angular.module('makerhuntApp')
         }
       }
     };
->>>>>>> Working on new signup flow
   });
 */
