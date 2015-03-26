@@ -196,7 +196,7 @@ func apiMeInvite(w http.ResponseWriter, r *http.Request) {
 	}
 
 	v := url.Values{}
-	v.Set("email", fmt.Sprintf("%s9999@makers.dutchcoders.io", user.Username))
+	v.Set("email", user.Email)
 	v.Set("channels", "C03PM0S6Y")
 	v.Set("first_name", strings.Split(user.Name, " ")[0])
 	v.Set("token", "xoxp-3803026192-3803026200-3879665935-c62c8e")
@@ -212,7 +212,9 @@ func apiMeInvite(w http.ResponseWriter, r *http.Request) {
 		b, _ := ioutil.ReadAll(resp.Body)
 		fmt.Printf("Userid %#v %s %s", userid, user.Email, string(b))
 	}
+
 	// check {"ok":false,"error":"already_in_team"}
+
 	WriteJSON(w, user)
 }
 

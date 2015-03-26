@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"path"
+	"strings"
 	"text/template"
 	"time"
 
@@ -68,9 +69,56 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 
 	client := http.Client{}
 
-	var err error
+	session, _ := store.Get(r, config.SessionName)
+	session.Options = &sessions.Options{
+		Path:     "/",
+		MaxAge:   86400 * 7,
+		HttpOnly: true,
+	}
 
 	userConfig := &oauth1a.UserConfig{}
+
+	// verify credentials
+
+	var err error
+	if _, ok := session.Values["access_token_key"]; ok {
+		userConfig.AccessTokenKey = session.Values["access_token_key"].(string)
+	}
+
+	if _, ok := session.Values["access_token_secret"]; ok {
+		userConfig.AccessTokenSecret = session.Values["access_token_secret"].(string)
+	}
+
+	url := fmt.Sprintf("https://api.twitter.com/1.1/account/verify_credentials.json")
+
+	r, err = http.NewRequest("GET", url, nil)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	err = config.Twitter.Service.Sign(r, userConfig)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	resp, err := client.Do(r)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	if resp.StatusCode == 200 {
+		// should update user here with verify credentials data
+
+		url = "/signup"
+		http.Redirect(w, r, url, 302)
+		return
+	}
+
+	fmt.Printf("%#v\n", resp)
+	fmt.Printf("%#v\n", userConfig)
 
 	if err = userConfig.GetRequestToken(config.Twitter.Service, &client); err != nil {
 		log.Printf("Could not get request token: %v", err)
@@ -78,7 +126,6 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var url string
 	if url, err = userConfig.GetAuthorizeURL(config.Twitter.Service); err != nil {
 		log.Printf("Could not get authorization URL: %v", err)
 		http.Error(w, "Problem getting the authorization URL", 500)
@@ -87,11 +134,12 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Printf("%#v", userConfig)
 
-	session, _ := store.Get(r, "oauth")
+	session, _ = store.Get(r, "oauth")
 	session.Options = &sessions.Options{
 		Path:     "/",
 		HttpOnly: true,
 	}
+
 	session.Values["request_token_key"] = userConfig.RequestTokenKey
 	session.Values["request_token_secret"] = userConfig.RequestTokenSecret
 	session.Save(r, w)
@@ -133,14 +181,6 @@ func authHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Problem getting an access token", 500)
 		return
 	}
-
-	fmt.Printf("<pre>")
-	fmt.Printf("Access Token: %v\n", userConfig.AccessTokenKey)
-	fmt.Printf("Token Secret: %v\n", userConfig.AccessTokenSecret)
-	fmt.Printf("Screen Name:  %v\n", userConfig.AccessValues.Get("screen_name"))
-	fmt.Printf("User ID:      %v\n", userConfig.AccessValues.Get("user_id"))
-	fmt.Printf("</pre>")
-	fmt.Printf("<a href=\"/signin\">Sign in again</a>")
 
 	username := userConfig.AccessValues.Get("screen_name")
 
@@ -193,22 +233,16 @@ func authHandler(w http.ResponseWriter, r *http.Request) {
 		user.WebsiteUrl = twitterUser.Url
 		user.CreatedAt = time.Now()
 
-		/*
-			user.Name = settings.Name
-			user.Username = settings.Username
-			user.Email = settings.Email
-			user.Headline = settings.Headline
-			user.CreatedAt = time.Now()
-			user.ImageUrl = settings.ImageUrl
-			user.ProfileUrl = settings.ProfileUrl
-			user.WebsiteUrl = settings.WebsiteUrl
-			user.PHSettings = settings
-
-			// convert to https
-			for k, imageUrl := range user.ImageUrl {
-				user.ImageUrl[k] = strings.Replace(imageUrl, "http://", "https://", -1)
-			}
-		*/
+		imageUrl := twitterUser.ProfileImageUrl
+		imageUrl = strings.Replace(imageUrl, "_normal", "", -1)
+		user.ImageUrl = map[string]string{
+			"32px": imageUrl,
+			"48px": imageUrl,
+			"73px": imageUrl,
+			"40px": imageUrl,
+			"44px": imageUrl,
+			"88px": imageUrl,
+		}
 
 		err = db.Users.Insert(&user)
 	} else if err != nil {
@@ -222,17 +256,18 @@ func authHandler(w http.ResponseWriter, r *http.Request) {
 		user.Location = twitterUser.Location
 		user.Headline = twitterUser.Description
 		user.WebsiteUrl = twitterUser.Url
-		/*
-			// update settings with latest info
-			user.ImageUrl = settings.ImageUrl
 
-			// convert to https
-			for k, imageUrl := range user.ImageUrl {
-				user.ImageUrl[k] = strings.Replace(imageUrl, "http://", "https://", -1)
-			}
+		imageUrl := twitterUser.ProfileImageUrl
+		imageUrl = strings.Replace(imageUrl, "_normal", "", -1)
+		user.ImageUrl = map[string]string{
+			"32px": imageUrl,
+			"48px": imageUrl,
+			"73px": imageUrl,
+			"40px": imageUrl,
+			"44px": imageUrl,
+			"88px": imageUrl,
+		}
 
-			user.PHSettings = settings
-		*/
 		if err = db.Users.UpdateId(user.UserId, &user); err != nil {
 			http.Error(w, err.Error(), 500)
 			return
@@ -248,7 +283,7 @@ func authHandler(w http.ResponseWriter, r *http.Request) {
 	session.Options = &sessions.Options{
 		Path:     "/",
 		MaxAge:   86400 * 7,
-		HttpOnly: false,
+		HttpOnly: true,
 	}
 
 	session.Values["userid"] = user.UserId.Hex()

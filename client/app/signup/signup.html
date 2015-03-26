@@ -20,7 +20,7 @@
           <div class="row">
             <div class="three columns">
               <div class="maker-img-wrapper">
-                <img class="userCard-userImg" ng-src="{{user.image_url['32px']}}"/>
+                <img class="userCard-userImg" ng-src="{{user.image_url['88px']}}"/>
                 <div ng-if="isMaker()" class="makerBadge animated bounceIn">M</div>
               </div>
             </div>
@@ -88,6 +88,9 @@
               <a class="invite-teamMember" ng-href="#"><i class="fa fa-twitter"></i> Invite @{{teamMember.username}}</a>
             </div>
           </div>
+          <p class="processDescription" ng-if="isMaker()">Click the button & check your email! :)</p>
+          <p class="processDescription" ng-if="!isMaker()">My product is on ProductHunt, I'm just not marked as the Maker yet!</p>
+
         </div>
 
       </div>
