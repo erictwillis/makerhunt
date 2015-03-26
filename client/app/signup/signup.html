@@ -20,7 +20,7 @@
           <div class="row">
             <div class="three columns">
               <div class="maker-img-wrapper">
-                <img class="userCard-userImg" ng-src="{{user.image_url['32px']}}"/>
+                <img class="userCard-userImg" ng-src="{{user.image_url['88px']}}"/>
                 <div ng-if="isMaker()" class="makerBadge animated bounceIn">M</div>
               </div>
             </div>
@@ -56,7 +56,7 @@
 
           <button ng-if="isMaker()" class="finish-btn makerBtn" type="submit" ng-disabled='form.$invalid'>Send Invite 
               <i class="fa fa-envelope-o"></i>
-              <span class="spinner ng-hide" ng-show="form.$submitted" >
+              <span class="spinner ng-hide" ng-show="false && form.$submitted" >
                   <svg version="1.1" x="0" y="0" width="150px" height="150px" viewBox="-10 -10 120 120" enable-background="new 0 0 200 200" xml:space="preserve">
                   <path class="circle" d="M0,50 A50,50,0 1 1 100,50 A50,50,0 1 1 0,50" />
                   </svg>
@@ -64,7 +64,7 @@
           </button>
           <button ng-if="!isMaker()" class="finish-btn nonMakerBtn" type="submit" ng-disabled='form.$invalid'>Subscribe 
               <i class="fa fa-envelope-o"></i>
-              <span class="spinner ng-hide" ng-show="form.$submitted">
+              <span class="spinner ng-hide" ng-show="false && form.$submitted">
                   <svg version="1.1" x="0" y="0" width="150px" height="150px" viewBox="-10 -10 120 120" enable-background="new 0 0 200 200" xml:space="preserve">
                   <path class="circle" d="M0,50 A50,50,0 1 1 100,50 A50,50,0 1 1 0,50" />
                   </svg>
@@ -87,14 +87,15 @@
           <div class="teamMembers-container" ng-if="teamMembers">
             <div class="teamMember" ng-repeat="teamMember in teamMembers">
               <div class="image-container">
-                <img class="teamMember-pic" ng-src="{{teamMember.image_url['32px']}}"/>
+                <img class="teamMember-pic" ng-src="{{teamMember.image_url['88px']}}"/>
+                <div class="makerBadge animated bounceIn">M</div>
               </div>
               <div class="info-container">
                 <h4 class="teamMember-name">{{teamMember.name}}</h4>
                 <h6 class="teamMember-username">@{{teamMember.username}}</h6>
               </div>
 
-              <a class="invite-teamMember" ng-href="#"><i class="fa fa-twitter"></i> Invite @{{teamMember.username}}</a>
+              <a class="invite-teamMember" ng-href="https://twitter.com/intent/tweet?text=@{{teamMember.username}} I've joined an awesome knowledge sharing community of great &quot;maker&quot; and think you belong there. http://makerhunt.co/"><i class="fa fa-twitter"></i> Invite @{{teamMember.username}}</a>
             </div>
           </div>
           <p class="processDescription" ng-if="isMaker()">Click the button & check your email! :)</p>
