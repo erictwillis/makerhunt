@@ -23,6 +23,10 @@ angular.module('makerhuntApp')
         $scope.ph_loaded=true;
     });
 
+    $scope.hasTeamMembers= function() {
+        return (Object.keys($scope.teamMembers).length>0);
+    }
+
     $scope.isMaker= function() {
         if ($scope.user.$resolved && $scope.user.ph_settings) {
             return ($scope.user.ph_settings.maker_of.length > 0);

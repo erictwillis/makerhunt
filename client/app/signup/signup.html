@@ -67,11 +67,11 @@
         <div id="stepThree" class="hidden">
 
           <div class="header-container">
-              <h2 class="signup--welcomeHeader" ng-if="teamMembers.length>0">Invite your Team</h2>
-            <h2 class="signup--welcomeHeader" ng-if="teamMembers==0">You're in!</h2>
+              <h2 class="signup--welcomeHeader" ng-if="hasTeamMembers()">Invite your Team</h2>
+            <h2 class="signup--welcomeHeader" ng-if="!hasTeamMembers()">You're in!</h2>
 
-            <h5 class="signup--welcomeText" ng-if="teamMembers.length>0">Looks like you worked with some awesome people before, why not invite them, too?</h5>
-            <h5 class="signup--welcomeText" ng-if="teamMembers.length==0">The invite has been sent! We can't wait for you to join us!</h5>
+            <h5 class="signup--welcomeText" ng-if="hasTeamMembers()">Looks like you worked with some awesome people before, why not invite them, too?</h5>
+            <h5 class="signup--welcomeText" ng-if="!hasTeamMembers()">The invite has been sent! We can't wait for you to join us!</h5>
           </div>
 
 
@@ -88,9 +88,6 @@
               <a class="invite-teamMember" ng-href="#"><i class="fa fa-twitter"></i> Invite @{{teamMember.username}}</a>
             </div>
           </div>
-          <p class="processDescription" ng-if="isMaker()">Click the button & check your email! :)</p>
-          <p class="processDescription" ng-if="!isMaker()">My product is on ProductHunt, I'm just not marked as the Maker yet!</p>
-
         </div>
 
       </div>

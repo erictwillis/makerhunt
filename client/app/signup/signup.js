@@ -5,6 +5,7 @@ angular.module('makerhuntApp')
     $stateProvider
         .state('signup', {
             url: '/signup',
+            roles: ['user', 'maker'],
             views: {
                 main : {
                     templateUrl: "app/signup/signup.html",
