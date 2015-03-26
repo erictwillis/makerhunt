@@ -12,7 +12,7 @@
         <div id="stepOne">
 
         <div class="header-container">
-          <h2 class="signup--welcomeHeader">Hey there, @{{userName}}!</h2>
+          <h2 class="signup--welcomeHeader">Hey there, @{{user.username}}!</h2>
           <h5 class="signup--welcomeText">We checked your Twitter info to ensure you're human! Now, just a sec while we verify your Maker status on Product Hunt.</h5>
         </div>
 
@@ -20,12 +20,12 @@
           <div class="row">
             <div class="three columns">
               <div class="maker-img-wrapper">
-                <img class="userCard-userImg" ng-src="{{userPic}}"/>
+                <img class="userCard-userImg" ng-src="{{user.image_url['32px']}}"/>
                 <div ng-if="isMaker" ng-init="isMaker=false" class="makerBadge animated bounceIn">M</div>
               </div>
             </div>
             <div class="nine columns">
-              <p class="userCard-userBio">{{userBio}}</p>
+              <p class="userCard-userBio">{{user.headline}}</p>
             </div>
           </div>
         </div>
@@ -69,11 +69,7 @@
               </div>
 
               <a class="invite-teamMember" ng-href="#"><i class="fa fa-twitter"></i> Invite @{{teamMember.username}}</a>
-
-
-
             </div>
-
           </div>
         </div>
 

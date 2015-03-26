@@ -24,9 +24,9 @@ import (
 
 const (
 	// STATIC = "dist/public"
-	STATIC = "public"
+	// STATIC = "public"
 
-	// STATIC = ".tmp"
+	STATIC = ".tmp"
 )
 
 var (
@@ -176,6 +176,8 @@ func authHandler(w http.ResponseWriter, r *http.Request) {
 		err      error
 	)
 
+	fmt.Printf("SESSION: %#v", session)
+
 	userConfig := &oauth1a.UserConfig{
 		RequestTokenKey:    session.Values["request_token_key"].(string),
 		RequestTokenSecret: session.Values["request_token_secret"].(string),
@@ -280,7 +282,7 @@ func authHandler(w http.ResponseWriter, r *http.Request) {
 	session.Values["access_token_secret"] = userConfig.AccessTokenSecret
 	session.Save(r, w)
 
-	http.Redirect(w, r, "/me", 302)
+	http.Redirect(w, r, "/signup", 302)
 }
 
 func accessHandler(h http.HandlerFunc) http.HandlerFunc {
@@ -349,6 +351,7 @@ func main() {
 	r.HandleFunc("/login", loginHandler)
 	r.HandleFunc("/auth", authHandler)
 	r.HandleFunc("/me", pageHandler("index.html"))
+	r.HandleFunc("/signup", pageHandler("index.html"))
 	r.HandleFunc("/error", pageHandler("index.html"))
 	r.HandleFunc("/", pageHandler("index.html"))
 

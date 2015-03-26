@@ -1,12 +1,20 @@
-/*
 'use strict';
 
 angular.module('makerhuntApp')
-  .config(function ($routeProvider) {
-    $routeProvider
-      .when('/signup', {
-        templateUrl: 'app/signup/signup.html',
-        controller: 'SignupCtrl'
-      });
-  });
-*/
+.config(function ($stateProvider) {
+    $stateProvider
+        .state('signup', {
+            url: '/signup',
+            views: {
+                main : {
+                    templateUrl: "app/signup/signup.html",
+                    controller: 'SignupCtrl',
+                    resolve: {
+                        user: ['Auth', function(Auth) {
+                            return Auth.getCurrentUser();
+                        }]
+                    }
+                }
+            }
+        });
+});
