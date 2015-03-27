@@ -39,7 +39,12 @@ angular.module('makerhuntApp')
         if (form.$invalid)
             return;
 
-        var promise = Me.subscribe({email: $scope.user.email}).$promise;
+
+        var promise;
+
+        if(!$scope.isMaker()){
+            promise = Me.subscribe({email: $scope.user.email}).$promise;
+        }
 
         if ($scope.isMaker()) {
             promise = Me.invite({ email: $scope.user.email }).$promise;
