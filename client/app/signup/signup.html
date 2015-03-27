@@ -80,13 +80,18 @@
 
         <div id="stepThree" class="hidden">
 
-          <div class="header-container">
-            <h2 class="signup--welcomeHeader" ng-if="teamMembers">Invite your Team</h2>
-            <h2 class="signup--welcomeHeader" ng-if="!teamMembers">You're in!</h2>
+          <div class="header-container" ng-if="isMaker()">
+            <h2 class="signup--welcomeHeader" ng-if="hasTeamMembers()">Invite your Team</h2>
+            <h2 class="signup--welcomeHeader" ng-if="!hasTeamMembers()">You're in!</h2>
 
-            <h5 class="signup--welcomeText" ng-if="teamMembers">Looks like you worked with some awesome people before, why not invite them, too?</h5>
-            <h5 class="signup--welcomeText" ng-if="!teamMembers">The invite has been sent! We can't wait for you to join us!</h5>
+            <h5 class="signup--welcomeText" ng-if="hasTeamMembers()">Looks like you worked with some awesome people before, why not invite them, too?</h5>
+            <h5 class="signup--welcomeText" ng-if="!hasTeamMembers()">The invite has been sent! We can't wait for you to join us!</h5>
           </div>
+          <div class="header-container" ng-if="!isMaker()">
+            <h2 class="signup--welcomeHeader" >You're now subscribed </h2>
+            <h5 class="signup--welcomeText" >Thank you for subscribing, you'll receive the Makerhunt newsletter from now on.</h5>
+          </div>
+
 
 
           <div class="teamMembers-container" ng-if="teamMembers">
@@ -102,9 +107,6 @@
               <a class="invite-teamMember" ng-href="#"><i class="fa fa-twitter"></i> Invite @{{teamMember.username}}</a>
             </div>
           </div>
-          <p class="processDescription" ng-if="isMaker()">Click the button & check your email! :)</p>
-          <p class="processDescription" ng-if="!isMaker()">My product is on ProductHunt, I'm just not marked as the Maker yet!</p>
-
         </div>
 
       </div>
