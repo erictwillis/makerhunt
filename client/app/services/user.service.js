@@ -15,6 +15,12 @@ angular.module('makerhuntApp')
         },
         url: '/api/v1/me/subscribe'
       },
+      updateProductHuntData: {
+        method: 'POST',
+        params: {
+        },
+        url: '/api/v1/me/update-producthunt-data'
+      },
       invite: {
         method: 'POST',
         params: {

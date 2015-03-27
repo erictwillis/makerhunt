@@ -6,108 +6,104 @@
       <div class="signup--container">
 
         <div class="envelope-container">
-          <img class="signupEnvelope" src="http://www.clker.com/cliparts/5/1/7/6/11971542601675001438kuba_Envelope_2.svg.hi.png" alt="Envelope"/>
+
+          <img class="envelope-background" src="../assets/images/innerfold@2x.png"/>
+
+          <div class="envelope-letter-container">
+
+            <img class="envelope-letter" ng-class="{letterPosTwo: step===2, letterPosThree: step===3}" src="../assets/images/letter@2x.png"/>
+
+          </div>
+
+          <div class="envelope-bottom-container">
+
+            <img class="envelope-bottom" src="../assets/images/envelope@2x.png"/>
+
+          </div>
+
         </div>
 
         <div id="stepOne">
 
         <div class="header-container">
-          <h2 class="signup--welcomeHeader">Hey there, @{{userName}}!</h2>
+          <h2 class="signup--welcomeHeader">Hey there, @{{user.username}}!</h2>
           <h5 class="signup--welcomeText">We checked your Twitter info to ensure you're human! Now, just a sec while we verify your Maker status on Product Hunt.</h5>
         </div>
 
         <div class="userCard">
-          <div class="row">
-            <div class="three columns">
               <div class="maker-img-wrapper">
-                <img class="userCard-userImg" ng-src="{{userPic}}"/>
-                <div ng-if="isMaker" ng-init="isMaker=false" class="makerBadge animated bounceIn">M</div>
+                <img class="userCard-userImg" ng-src="{{user.image_url['88px']}}"/>
+                <div ng-if="isMaker()" class="makerBadge animated bounceIn">M</div>
               </div>
-            </div>
-            <div class="nine columns">
-              <p class="userCard-userBio">{{userBio}}</p>
-            </div>
-          </div>
+              <p class="userCard-userBio">{{user.headline}}</p>
         </div>
-
+            <div class="actions">
+              <p class="processDescription" ng-if="!isMaker()">Don't be alarmed, it usually takes a second or two. Code stuff...</p>
+              <p class="processDescription" ng-if="isMaker()">Yay! You're confirmed as a maker on Product Hunt!</p>
+              <button ng-if="!ph_loaded" class="checkingPHstatus" disabled>Checking Product Hunt...</button>
+              <button ng-if="ph_loaded" class="nextStep" ng-class="{makerBtn: isMaker(), nonMakerBtn: !isMaker()}" ng-click="goToStepTwo()">Continue <i class="fa fa-arrow-right"></i></button>
+            </div>
         </div>
 
         <div id="stepTwo" class="hidden">
 
+          <form name="form" ng-submit="submit(form)" novalidate>
           <div class="header-container">
-            <h2 class="signup--welcomeHeader" ng-if="isMaker">Almost there...</h2>
-            <h2 class="signup--welcomeHeader" ng-if="!isMaker">Oh no...</h2>
+            <h2 class="signup--welcomeHeader" ng-if="isMaker()">Almost there...</h2>
+            <h2 class="signup--welcomeHeader" ng-if="!isMaker()">Oh no...</h2>
 
-            <h5 class="signup--welcomeText" ng-if="isMaker">We use Slack as a communication tool, please let us know which E-mail address we should send the invite to.</h5>
-            <h5 class="signup--welcomeText" ng-if="!isMaker">Currently only verified Makers on Product Hunt can join Maker Hunt. If you tell us your E-mail address we will let you know once there are other ways to join!</h5>
+            <h5 class="signup--welcomeText" ng-if="isMaker()">We use Slack as a communication tool, please let us know which E-mail address we should send the invite to.</h5>
+            <h5 class="signup--welcomeText" ng-if="!isMaker()">Currently only verified Makers on Product Hunt can join Maker Hunt. If you tell us your E-mail address we will let you know once there are other ways to join!</h5>
           </div>
 
-          <input class="user-email" placeholder="your@awesome.email" type="email" name='email' ng-model="email" required />
+          <input class="user-email" type="email" name='email' ng-model="user.email" placeholder="your@awesome.email" required />
+          <span class="error-txt" ng-show="form.email.$error.required && !form.$pristine">A valid email address is required.</span>
+          <span class="error-txt" ng-show="form.email.$error.email && !form.$pristine">Please enter a valid email address.</span>
 
+            <p class="processDescription" ng-if="isMaker()">Click the button & check your email! :)</p>
+            <p class="processDescription" ng-if="!isMaker()"><a href="mailto:jonas@ideahatch.co">My product is on ProductHunt, I'm just not marked as the Maker yet!</a></p>
+
+            <button ng-if="isMaker()" class="finish-btn makerBtn" type="submit" ng-disabled='form.$invalid'>
+              <i class="fa fa-envelope-o"></i>
+              Send Invite
+          </button>
+          <button ng-if="!isMaker()" class="finish-btn nonMakerBtn" type="submit" ng-disabled='form.$invalid'>
+              <i class="fa fa-envelope-o"></i>
+              Subscribe
+          </button>
+          </form>
         </div>
 
         <div id="stepThree" class="hidden">
 
-          <div class="header-container">
-            <h2 class="signup--welcomeHeader" ng-if="teamMembers">Invite your Team</h2>
-            <h2 class="signup--welcomeHeader" ng-if="!teamMembers">You're in!</h2>
+          <div class="header-container" ng-if="isMaker()">
+            <h2 class="signup--welcomeHeader" ng-if="hasTeamMembers()">Invite your team</h2>
+            <h2 class="signup--welcomeHeader" ng-if="!hasTeamMembers()">You're in!</h2>
 
-            <h5 class="signup--welcomeText" ng-if="teamMembers">Looks like you worked with some awesome people before, why not invite them, too?</h5>
-            <h5 class="signup--welcomeText" ng-if="!teamMembers">The invite has been sent! We can't wait for you to join us!</h5>
+            <h5 class="signup--welcomeText" ng-if="hasTeamMembers()">Looks like you worked with some awesome people before, why not invite them, too?</h5>
+            <h5 class="signup--welcomeText" ng-if="!hasTeamMembers()">The invite has been sent! We can't wait for you to join us!</h5>
           </div>
+          <div class="header-container" ng-if="!isMaker()">
+            <h2 class="signup--welcomeHeader" >You're now subscribed </h2>
+            <h5 class="signup--welcomeText" >Thank you for subscribing, you'll receive the Makerhunt newsletter from now on.</h5>
+          </div>
+
 
 
           <div class="teamMembers-container" ng-if="teamMembers">
             <div class="teamMember" ng-repeat="teamMember in teamMembers">
-
               <div class="image-container">
-                <img class="teamMember-pic" ng-src="{{teamMember.profile_pic}}"/>
+                <img class="teamMember-pic" ng-src="{{teamMember.image_url['32px']}}"/>
               </div>
               <div class="info-container">
                 <h4 class="teamMember-name">{{teamMember.name}}</h4>
                 <h6 class="teamMember-username">@{{teamMember.username}}</h6>
               </div>
 
-              <a class="invite-teamMember" ng-href="#"><i class="fa fa-twitter"></i> Invite @{{teamMember.username}}</a>
-
-
-
+              <a class="invite-teamMember" ng-href="https://twitter.com/intent/tweet?text=@{{teamMember.username}} I recommended you on @MakerHunt. Join our awesome community of Makers:&url=http://www.makerhunt.co/&related=makerhunt"><i class="fa fa-twitter"></i> Invite @{{teamMember.username}}</a>
             </div>
-
           </div>
         </div>
-
-        <div class="actions" ng-if="step===0">
-
-          <p class="processDescription">Don't be alarmed, it usually takes a second or two. Code stuff...</p>
-
-          <button class="checkingPHstatus">Checking Product Hunt...</button>
-
-        </div>
-
-        <div class="actions" ng-if="step===1">
-
-          <p class="processDescription" ng-if="isMaker">Yay! You're confirmed as a maker on Product Hunt!</p>
-          <p class="processDescription" ng-if="!isMaker">Uh-oh! Looks like you're not marked as a Maker on Product hunt.</p>
-
-          <button class="nextStep" ng-class="{makerBtn: isMaker, nonMakerBtn: !isMaker}" ng-click="goToStepTwo()">Continue <i class="fa fa-arrow-right"></i></button>
-
-        </div>
-
-        <div class="actions" ng-if="step===2">
-
-          <p class="processDescription" ng-if="isMaker">Click the button & check your email! :)</p>
-          <p class="processDescription" ng-if="!isMaker">My product is on ProductHunt, I'm just not marked as the Maker yet!</p>
-
-          <button ng-if="isMaker" class="finish-btn makerBtn" ng-click="sendInvite(); goToStepThree();">Send Invite <i class="fa fa-envelope-o"></i></button>
-          <button ng-if="!isMaker" class="finish-btn nonMakerBtn" ng-click="subscribe()">Subscribe <i class="fa fa-envelope-o"></i></button>
-
-        </div>
-
-
-
-
-
 
       </div>
     </div>
