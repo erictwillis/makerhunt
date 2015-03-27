@@ -31,17 +31,11 @@
         </div>
 
         <div class="userCard">
-          <div class="row">
-            <div class="three columns">
               <div class="maker-img-wrapper">
                 <img class="userCard-userImg" ng-src="{{user.image_url['88px']}}"/>
                 <div ng-if="isMaker()" class="makerBadge animated bounceIn">M</div>
               </div>
-            </div>
-            <div class="nine columns">
               <p class="userCard-userBio">{{user.headline}}</p>
-            </div>
-          </div>
         </div>
             <div class="actions">
               <p class="processDescription" ng-if="!isMaker()">Don't be alarmed, it usually takes a second or two. Code stuff...</p>
