@@ -11,7 +11,7 @@
 
           <div class="envelope-letter-container">
 
-            <img class="envelope-letter" ng-class="{letterPosTwo: step==2, letterPosThree: step===3}" src="../assets/images/letter@2x.png"/>
+            <img class="envelope-letter" ng-class="{letterPosTwo: step===2, letterPosThree: step===3}" src="../assets/images/letter@2x.png"/>
 
           </div>
 
@@ -69,11 +69,13 @@
             <p class="processDescription" ng-if="isMaker()">Click the button & check your email! :)</p>
             <p class="processDescription" ng-if="!isMaker()">My product is on ProductHunt, I'm just not marked as the Maker yet!</p>
 
-            <button ng-if="isMaker()" class="finish-btn makerBtn" type="submit" ng-disabled='form.$invalid'>Send Invite
+            <button ng-if="isMaker()" class="finish-btn makerBtn" type="submit" ng-disabled='form.$invalid'>
               <i class="fa fa-envelope-o"></i>
+              Send Invite
           </button>
-          <button ng-if="!isMaker()" class="finish-btn nonMakerBtn" type="submit" ng-disabled='form.$invalid'>Subscribe
+          <button ng-if="!isMaker()" class="finish-btn nonMakerBtn" type="submit" ng-disabled='form.$invalid'>
               <i class="fa fa-envelope-o"></i>
+              Subscribe
           </button>
           </form>
         </div>
@@ -81,7 +83,7 @@
         <div id="stepThree" class="hidden">
 
           <div class="header-container" ng-if="isMaker()">
-            <h2 class="signup--welcomeHeader" ng-if="hasTeamMembers()">Invite your Team</h2>
+            <h2 class="signup--welcomeHeader" ng-if="hasTeamMembers()">Invite your team</h2>
             <h2 class="signup--welcomeHeader" ng-if="!hasTeamMembers()">You're in!</h2>
 
             <h5 class="signup--welcomeText" ng-if="hasTeamMembers()">Looks like you worked with some awesome people before, why not invite them, too?</h5>

@@ -13,7 +13,7 @@ angular.module('makerhuntApp')
 
         angular.forEach($scope.user.ph_settings.maker_of, function(post) {
           angular.forEach(post.makers, function(maker) {
-              if (maker.username === $scope.user.username) 
+              if (maker.username === $scope.user.username)
                 return;
 
               $scope.teamMembers[maker.username] = maker;
@@ -36,7 +36,7 @@ angular.module('makerhuntApp')
     };
 
     $scope.submit = function(form) {
-        if (form.$invalid) 
+        if (form.$invalid)
             return;
 
         var promise = Me.subscribe({email: $scope.user.email}).$promise;
