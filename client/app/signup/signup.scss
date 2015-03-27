@@ -10,8 +10,8 @@
   }
 
   .envelope-container {
-    max-width: 33%;
-    margin: 64px auto 40px;
+    max-width: 50%;
+    margin: 32px auto 40px;
     position: relative;
 
     .envelope-background {
@@ -29,7 +29,7 @@
         width: 90%;
         margin-left: 5%;
         margin-bottom: -33%;
-        transition: 1s all;
+        transition: 800ms all cubic-bezier(.40,-0.4,.40,1.40);
       }
       .letterPosTwo{
         margin-bottom: -10%;
@@ -85,6 +85,9 @@
 
     .maker-img-wrapper {
       position: relative;
+      max-width: 33vw;
+      margin: 0 auto;
+      margin-bottom: 10px;
 
       .makerBadge {
         position: absolute;
@@ -102,6 +105,13 @@
       }
     }
 
+    /* Larger than mobile */
+    @media (min-width: 400px) {
+      .maker-img-wrapper{
+        margin-bottom: 0;
+      }
+    }
+
     .userCard-userImg {
       max-width: 100%;
       border-radius: 50%;
@@ -110,11 +120,20 @@
 
     .userCard-userBio {
       margin: 0;
-      font-size: 16px;
+      font-size: 14px;
       line-height: 24px;
       color: #ccc;
       font-weight: 300;
       letter-spacing: normal;
+      text-align: center;
+    }
+
+    /* Larger than mobile */
+    @media (min-width: 400px) {
+      .userCard-userBio{
+        font-size: 16px;
+        line-height: 24px;
+      }
     }
   }
 
