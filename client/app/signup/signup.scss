@@ -163,6 +163,11 @@
     line-height: 186%;
     margin-bottom: 12px;
     clear: both;
+    a{
+      color: inherit!important;
+      text-decoration: none!important;
+      cursor: pointer!important;
+    }
   }
 
   .checkingPHstatus {
