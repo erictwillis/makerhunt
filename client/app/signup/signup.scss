@@ -11,10 +11,46 @@
   .envelope-container {
     max-width: 33%;
     margin: 64px auto 40px;
+    position: relative;
 
-    .signupEnvelope {
-      max-width: 100%;
+    .envelope-background {
+      width: 100%;
     }
+
+    .envelope-letter-container {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      overflow: hidden;
+
+      .envelope-letter {
+        width: 90%;
+        margin-left: 5%;
+        margin-bottom: -33%;
+        transition: 1s all;
+      }
+      .letterPosTwo{
+        margin-bottom: -10%;
+      }
+      .letterPosThree{
+        margin-bottom: 10%;
+      }
+    }
+
+    .envelope-bottom-container {
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      overflow: hidden;
+
+      .envelope-bottom {
+        width: 100%;
+      }
+    }
+
+
   }
 
   .header-container {
