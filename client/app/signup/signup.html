@@ -61,7 +61,7 @@
           <span class="error-txt" ng-show="form.email.$error.email && !form.$pristine">Please enter a valid email address.</span>
 
             <p class="processDescription" ng-if="isMaker()">Click the button & check your email! :)</p>
-            <p class="processDescription" ng-if="!isMaker()">My product is on ProductHunt, I'm just not marked as the Maker yet!</p>
+            <p class="processDescription" ng-if="!isMaker()"><a href="mailto:jonas@ideahatch.co">My product is on ProductHunt, I'm just not marked as the Maker yet!</a></p>
 
             <button ng-if="isMaker()" class="finish-btn makerBtn" type="submit" ng-disabled='form.$invalid'>
               <i class="fa fa-envelope-o"></i>
