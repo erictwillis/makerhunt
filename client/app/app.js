@@ -39,6 +39,10 @@ angular.module('makerhuntApp', [
 }).run(function ($rootScope, $location, $state, Auth) {
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$stateChangeStart', function (event, next) {
+        window.Intercom('update');
+    });
+
+    $rootScope.$on('$stateChangeStart', function (event, next) {
         Auth.isLoggedInAsync(function(loggedIn) {
             if (!angular.isDefined(next.roles)) {
                 return;

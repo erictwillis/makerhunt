@@ -5,6 +5,16 @@ angular.module('makerhuntApp')
 
     var currentUser = Me.get();
 
+    currentUser.$promise.then(function() {
+        window.Intercom('boot', {
+          app_id: "npm19nez",
+          name: currentUser.name,
+          email: currentUser.email,
+          created_at: moment(currentUser.created_at).unix()
+        });
+
+        window.Intercom('update');
+    });
     return {
 
       /**
