@@ -1,6 +1,7 @@
 #signupView {
   border: 12px solid rgba(152,211,227,1);
   min-height: calc(100vh - 24px);
+  overflow: hidden;
 
   .signup--container{
     width: 500px;
@@ -365,5 +366,9 @@
   }
 
 
+}
+
+.intercom-container{
+  display: none!important;
 }
 
