@@ -25,7 +25,7 @@ angular.module('makerhuntApp')
 
     $scope.hasTeamMembers= function() {
         return (Object.keys($scope.teamMembers).length>0);
-    }
+    };
 
     $scope.isMaker= function() {
         if ($scope.user.$resolved && $scope.user.ph_settings) {
