@@ -413,5 +413,32 @@
 
 .intercom-container{
   display: none!important;
+  .error-txt{
+    color: red;
+  }
+
+  .goHomeBtn {
+    font-size: 20px;
+    height: 60px;
+    width: 100%;
+    color: #ffffff!important;
+    background: #3a4043;
+    margin-bottom: 20px;
+    text-transform: none;
+    position: relative;
+    border: none;
+    display: block;
+    line-height: 60px;
+    text-align: center;
+    text-decoration: none!important;
+    font-weight: 400!important;
+    border-radius: 4px;
+  }
+
+
+}
+
+.intercom-container{
+  display: none!important;
 }
 

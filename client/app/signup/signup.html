@@ -82,10 +82,16 @@
 
             <h5 class="signup--welcomeText" ng-if="hasTeamMembers()">Looks like you worked with some awesome people before, why not invite them, too?</h5>
             <h5 class="signup--welcomeText" ng-if="!hasTeamMembers()">The invite has been sent! We can't wait for you to join us!</h5>
+            <h5 class="signup--welcomeText" ng-if="hasTeamMembers()">The invite has been sent! It looks like you've worked with some awesome people before, why not invite them, too?</h5>
+            <h5 class="signup--welcomeText" ng-if="!hasTeamMembers()">The invite has been sent! We can't wait for you to join us!</h5>
           </div>
           <div class="header-container" ng-if="!isMaker()">
             <h2 class="signup--welcomeHeader" >You're now subscribed </h2>
             <h5 class="signup--welcomeText" >Thank you for subscribing, you'll receive the Makerhunt newsletter from now on.</h5>
+          </div>
+          <div class="header-container" ng-if="!isMaker()">
+            <h2 class="signup--welcomeHeader" >You're now subscribed </h2>
+            <h5 class="signup--welcomeText" >Thank you for subscribing, you'll receive the MakerHunt newsletter from now on.</h5>
           </div>
 
 
@@ -103,6 +109,16 @@
               <a class="invite-teamMember" ng-href="https://twitter.com/intent/tweet?text=@{{teamMember.username}} I recommended you on @MakerHunt. Join our awesome community of Makers:&url=http://www.makerhunt.co/&related=makerhunt"><i class="fa fa-twitter"></i> Invite @{{teamMember.username}}</a>
             </div>
           </div>
+        </div>
+
+
+          <a href="/" class="goHomeBtn">
+            <i class="fa fa-home"></i>
+            Back To Home
+          </a>
+
+
+
         </div>
 
       </div>
