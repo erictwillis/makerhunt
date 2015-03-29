@@ -6,10 +6,13 @@ angular.module('makerhuntApp', [
         'ngResource',
         'ngSanitize',
         'angularMoment',
+        'angularytics',
         'ui.router'
-]).config(function ($locationProvider, $httpProvider, $stateProvider, $urlRouterProvider, $compileProvider) {
+]).config(function ($locationProvider, $httpProvider, $stateProvider, $urlRouterProvider, $compileProvider, AngularyticsProvider) {
     $urlRouterProvider
         .otherwise("/");
+
+    AngularyticsProvider.setEventHandlers(['Console', 'GoogleUniversal']);
 
     $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|data):/);
 
@@ -36,11 +39,13 @@ angular.module('makerhuntApp', [
             }
         }
     };
-}).run(function ($rootScope, $location, $state, Auth) {
+}).run(function ($rootScope, $location, $state, Auth, Angularytics) {
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$stateChangeStart', function (event, next) {
         window.Intercom('update');
     });
+
+    Angularytics.init();
 
     $rootScope.$on('$stateChangeStart', function (event, next) {
         Auth.isLoggedInAsync(function(loggedIn) {
