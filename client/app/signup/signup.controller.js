@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('makerhuntApp')
-  .controller('SignupCtrl', function ($scope, user, $timeout, Me) {
+  .controller('SignupCtrl', function ($scope, user, $timeout, Me, Angularytics) {
     $scope.user = user;
 
     $scope.step = 1;
@@ -25,7 +25,7 @@ angular.module('makerhuntApp')
 
     $scope.hasTeamMembers= function() {
         return (Object.keys($scope.teamMembers).length>0);
-    };
+    }
 
     $scope.isMaker= function() {
         if ($scope.user.$resolved && $scope.user.ph_settings) {
@@ -39,26 +39,30 @@ angular.module('makerhuntApp')
         if (form.$invalid)
             return;
 
-       var fn = Me.subscribe({email: $scope.user.email});
+       var promise = null;
 
         if ($scope.isMaker()) {
-            fn = Me.invite({ email: $scope.user.email });
+            promise = Me.invite({ email: $scope.user.email }).$promise;
+            Angularytics.trackEvent("Signup flow", "Invited");
+        } else {
+            promise = Me.subscribe({email: $scope.user.email}).$promise;
+            Angularytics.trackEvent("Signup flow", "Subscribed");
         }
 
-        fn.$promise.then(function() {
+        promise.then(function() {
             $scope.goToStepThree();
         }).catch(function(e) {
-            // scope.modal.button.status = 'Error sending invite!';
         }).finally(function() {
         });
     };
 
-    //go to step two
     $scope.goToStepTwo = function(){
       $('#stepOne').addClass('animated bounceOutLeft');
-        $scope.step = 2;
 
       $timeout(function(){
+        $scope.step = 2;
+        Angularytics.trackEvent("Signup flow", "Step 2");
+
         $('#stepOne').addClass('hidden');
         $('#stepTwo').removeClass('hidden');
         $('#stepTwo').addClass('animated bounceInRight');
@@ -67,8 +71,10 @@ angular.module('makerhuntApp')
 
     $scope.goToStepThree = function(){
       $('#stepTwo').addClass('bounceOutLeft');
+
       $timeout(function(){
         $scope.step = 3;
+        Angularytics.trackEvent("Signup flow", "Step 3");
         $('#stepTwo').addClass('hidden');
         $('#stepThree').removeClass('hidden');
         $('#stepThree').addClass('animated bounceInRight');
