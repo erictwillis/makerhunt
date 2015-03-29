@@ -235,6 +235,7 @@ func authHandler(w http.ResponseWriter, r *http.Request) {
 
 		imageUrl := twitterUser.ProfileImageUrl
 		imageUrl = strings.Replace(imageUrl, "_normal", "", -1)
+		imageUrl = strings.Replace(imageUrl, "http", "https", -1)
 		user.ImageUrl = map[string]string{
 			"32px": imageUrl,
 			"48px": imageUrl,
@@ -259,6 +260,7 @@ func authHandler(w http.ResponseWriter, r *http.Request) {
 
 		imageUrl := twitterUser.ProfileImageUrl
 		imageUrl = strings.Replace(imageUrl, "_normal", "", -1)
+		imageUrl = strings.Replace(imageUrl, "http", "https", -1)
 		user.ImageUrl = map[string]string{
 			"32px": imageUrl,
 			"48px": imageUrl,
