@@ -235,7 +235,7 @@
     }
 
     .switch-wrapper{
-      width: 220px;
+      width: 280px;
       height: 30px;
       margin: 0 auto 56px;
       z-index: 2;
@@ -282,11 +282,13 @@
       border-radius: 100px 0 0 100px;
       //margin-right: -1px;
       padding-left: 10px;
+      float:left;
     }
     .btn-amas--previous{
       border-radius: 0 100px 100px 0;
       //margin-left: -1px;
       padding-right: 10px;
+      float:right;
     }
 
 

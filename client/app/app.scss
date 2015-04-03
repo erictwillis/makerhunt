@@ -7,6 +7,13 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
  * App-wide Styles
  */
 
+*, ::after, ::before {
+  text-rendering: optimizelegibility;
+  zoom: 1;
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+}
 
 body{
   margin: 0;
@@ -15,7 +22,7 @@ img{
   vertical-align: bottom;
 }
 button{
-  display: block;
+  display: inline-block;
   margin: 0 auto;
 }
 .hidden{
@@ -47,4 +54,5 @@ body{
 @import 'directives/modal/modal.scss';
 @import 'main/main.scss';
 @import 'signup/signup.scss';
+@import 'timeline/timeline.scss';
 // endinjector
