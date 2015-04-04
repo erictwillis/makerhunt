@@ -1,0 +1,174 @@
+<div id="feedView">
+
+  <div class="fixedNav">
+
+    <div class="container">
+
+      <div class="logo-wrapper">
+        <h1 class="logo">MakerHunt</h1>
+      </div>
+
+      <div class="search-wrapper" style="opacity: 0;">
+        <div class="search-box">
+          <input type="text" class="search" placeholder="Search makers, locations and projects…" autocomplete="off"/>
+        </div>
+      </div>
+
+      <div class="nav-action-wrapper">
+
+        <ul class="action-list">
+          <li class="action-item">
+            <i class="fa fa-bell"></i>
+          </li>
+          <li class="action-item">
+            <i class="fa fa-user"></i>
+          </li>
+        </ul>
+
+      </div>
+
+    </div>
+
+  </div>
+  <div class="fixedNav-height"></div>
+
+  <div class="container feed-wrapper">
+
+    <div class="row">
+      <div class="f_left-sidebar">
+        user - bar
+      </div>
+      <div class="f_main-content">
+
+        <div class="newPost-wrapper ui_card">
+
+          <div class="newPost-inner">
+
+            <textarea name="newPost" placeholder="Something to share?" id="newPost" class="textarea-autogrow" role="textbox"></textarea>
+
+          </div>
+
+          <div class="newPost-actions">
+
+
+            <button class="newPost-postBtn">Post</button>
+
+          </div>
+
+
+        </div>
+
+        <div class="main-timeline ui_card">
+
+          <div class="ui_hero main-filter">
+
+            <ul class="main-filter--list">
+
+              <li class="main-filter--item active"><i class="fa fa-globe"></i> Global</li>
+              <li class="main-filter--item"><i class="fa fa-slack"></i> Slack</li>
+
+            </ul>
+
+          </div>
+
+          <div class="ui_post timeline-item" ng-repeat="post in posts">
+
+            <div class="ui_post-head timeline-item--meta">
+
+              <div class="meta-who-did-what">
+
+                <img ng-src="{{post.user.profilePic}}" class="user-pic"/>
+                <p class="who-did-what">
+                  <span class="who">{{post.user.name}}</span>
+                  <span class="did">shared</span>
+                  <span class="what">a<span ng-if="post.card.type==='article'">n</span> {{post.card.type}}</span>.
+                </p>
+
+                <div class="user-detail-card ui_card" style="background-image: url('{{post.user.profilePic}}');">
+
+                  <div class="detail-wrapper">
+
+                    <div class="name-wrapper">
+                      <h4 class="userName">{{post.user.name}}</h4>
+                    </div>
+                    <div class="badge-wrapper" ng-repeat="badge in post.user.makerOf">
+                      <div class="badgeItemName"><a ng-href="{{badge.discussionUrl}}" target="_blank">{{badge.name}}</a> <span class="makerBadge">M</span></div>
+                    </div>
+
+
+                  </div>
+
+
+                </div>
+
+              </div>
+              <div class="meta-timestamp">
+                <p class="timestamp">{{post.createdAt}}</p>
+              </div>
+
+            </div>
+
+            <div class="ui_post-body timeline-item--content">
+
+              <div class="status-wrapper">
+
+                <div class="quote-icon-wrapper">
+
+                  <h4 class="quote">
+                    <i class="fa fa-twitter" ng-if="post.via.provider==='twitter'"></i>
+                    <i class="fa fa-slack" ng-if="post.via.provider==='slack'"></i>
+                  </h4>
+
+                </div>
+
+                <div class="status-message">
+                  <p class="status">{{post.status}}</p>
+                </div>
+
+              </div>
+
+              <div class="external-content-wrapper">
+
+                <div class="text-wrapper">
+                  <img ng-src="https://pbs.twimg.com/profile_images/498896933360898049/Io6eZONw_normal.jpeg" alt="" class="sourceImg"/>
+                  <h3 class="external-content-headline">
+                    {{post.card.headline}}
+                  </h3>
+                  <p class="external-content-snippet">
+                    {{post.card.text}}
+                  </p>
+                </div>
+                <div class="img-wrapper">
+                  <img ng-src="{{post.card.img}}" alt="" class="external-pic"/>
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="ui_post-footer timeline-item--actions">
+
+              <div class="poster-actions-wrapper">
+                <button class="action-edit"><i class="fa fa-pencil"></i></button>
+                <button class="action-delete"><i class="fa fa-trash-o"></i></button>
+              </div>
+
+              <div class="comment-open-wrapper">
+                <button class="comment-toggle"><i class="fa fa-comments-o"></i> Comments ({{post.commentCount}})</button>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+      <div class="f_right-sidebar">
+        side - bar
+      </div>
+    </div>
+
+  </div>
+
+</div>
