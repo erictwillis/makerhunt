@@ -1,4 +1,6 @@
+
 //general styles
+
 
 .fixedNav {
   z-index: 800;
@@ -10,7 +12,8 @@
   box-shadow: 0 0 12px 0 rgba(0,0,0,0.125);
 
   .logo-wrapper {
-    width: calc(100% / 6);
+    width: 17.5%;
+    float: left;
     display: inline-block;
     vertical-align: top;
 
@@ -23,7 +26,8 @@
   }
 
   .search-wrapper {
-    width: calc(100% / 12 * 7);
+    width: 55%;
+    float: left;
     display: inline-block;
     vertical-align: top;
 
@@ -70,7 +74,8 @@
 
   .nav-action-wrapper {
     display: inline-block;
-    width: calc(100% / 12 * 3 - 6px);
+    width: 27.5%;
+    float: left;
 
     .action-list {
       margin: 0;
@@ -141,9 +146,91 @@
 
     .meta-who-did-what {
       width: 80%;
-      overflow: hidden;
       display: inline-block;
       vertical-align: top;
+      position: relative;
+      overflow: visible;
+
+      .user-detail-card {
+        position: absolute;
+        right: calc(100% + 35px);
+        width: 0;
+        min-height: 200px;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+        color: #FFFFFF;
+        top: 0;
+        -webkit-transition: all 250ms;
+        -moz-transition: all 250ms;
+        -ms-transition: all 250ms;
+        -o-transition: all 250ms;
+        transition: all 250ms;
+        box-shadow: none;
+        -webkit-box-shadow: none;
+        z-index: 100;
+        overflow: hidden;
+        border-radius: 2px;
+
+        .detail-wrapper {
+          position: absolute;
+          top: 120px;
+          width: 80%;
+
+          .name-wrapper {
+            display: table;
+            padding: 2px 18px;
+            background: rgba(0, 0, 0, 0.3);
+            margin: 5px 0;
+            text-align: center;
+            max-width: 80%;
+            border-radius: 0 2px 2px 0;
+            .userName {
+              font-size: 18px;
+              margin: 0;
+              font-weight: 300;
+              white-space: nowrap;
+            }
+          }
+
+          .badge-wrapper {
+            background: rgba(65, 170, 120, 0.8);
+            text-align: center;
+            margin-top: 2px;
+            width: auto;
+            position: relative;
+            white-space: nowrap;
+            padding: 0 8px;
+            max-width: 100px;
+
+            .badgeItemName {
+              font-size: 12px;
+
+              a{
+                color: #fff!important;
+                text-decoration: none!important;
+                line-height: 20px;
+                font-weight: 300;
+              }
+
+              .makerBadge {
+                position: absolute;
+                font-size: inherit;
+                margin-right: -10px;
+                background: rgba(65, 170, 120, 1);
+                border-radius: 50%;
+                height: 20px;
+                width: 20px;
+                line-height: 20px;
+                text-align: center;
+                right: 0;
+                font-weight: 700;
+              }
+            }
+          }
+        }
+      }
+
 
 
       .user-pic {
@@ -161,7 +248,7 @@
         font-weight: 300;
 
         .who {
-          padding-left: 5px;
+          padding-left: 10px;
           font-weight: 700;
           cursor: pointer;
         }
@@ -172,6 +259,14 @@
         }
       }
 
+    }
+
+    .meta-who-did-what:hover{
+      .user-detail-card{
+        width: calc(1190px / 6 - 15px);
+        box-shadow: 0 0 0 1px rgba(0,0,0,.01) , 0 1px 1px 0 rgba(0,0,0,.1);
+        -webkit-box-shadow: 0 0 0 1px rgba(0,0,0,.01) , 0 1px 1px 0 rgba(0,0,0,.1);
+      }
     }
 
     .meta-timestamp {
@@ -212,11 +307,11 @@
         vertical-align: middle;
 
         .status {
-          padding-left: 5px;
+          padding-left: 10px;
           font-size: 14px;
           overflow: hidden;
           text-overflow: ellipsis;
-          text-align: justify;
+          //text-align: justify;
           margin: 0;
 
           a {
@@ -230,7 +325,7 @@
     }
 
     .external-content-wrapper {
-      margin-left: 45px;
+      margin-left: 50px;
       display: block;
       text-decoration: none;
       color: #27313b;
@@ -254,7 +349,6 @@
           margin-right: 2px;
           border-radius: 2px;
           margin-top: 2px;
-          vertical-align: top;
         }
 
         .external-content-headline {
@@ -353,38 +447,6 @@
 }
 
 
-///#feedView
-
-#feedView{
-  background: #fbfbfb;
-  min-height: 100vh;
-  color: rgb(78, 88, 96);
-
-}
-
-////f_ Desktop
-
-.f_left-sidebar {
-  display: inline-block;
-  width: calc(100% / 6);
-  padding-right: 20px;
-  vertical-align: top;
-}
-
-.f_main-content {
-  display: inline-block;
-  width: calc(100% / 12 * 7);
-  vertical-align: top;
-}
-
-.f_right-sidebar {
-  display: inline-block;
-  width: calc(100% / 12 * 3 - 6px);
-  padding-left: 20px;
-  vertical-align: top;
-}
-
-
 // newPost
 
 .newPost-wrapper {
@@ -460,4 +522,161 @@
 
   }
 
+}
+
+///#feedView
+
+#feedView{
+  background: #fbfbfb;
+  min-height: 100vh;
+  color: rgb(78, 88, 96);
+
+  .container{
+    max-width: 1160px;
+  }
+}
+
+
+///////// MOBILE FIRST QUERIES ////////
+
+//// header mobile
+
+.fixedNav {
+  .logo-wrapper {
+    width: 50%;
+  }
+
+  .search-wrapper {
+    display: none;
+  }
+
+  .nav-action-wrapper {
+    width: 50%;
+  }
+}
+
+.user-detail-card{
+  display: none!important;
+}
+.meta-who-did-what{
+  width: 100%!important;
+}
+.meta-timestamp{
+  display: none!important;
+}
+
+
+
+
+////f_Mobile
+.f_left-sidebar {
+  display: none;
+}
+
+
+.f_main-content {
+  display: inline-block;
+  width: 100%;
+  vertical-align: top;
+  float: left;
+}
+
+.f_right-sidebar {
+  display: none;
+}
+
+////f_Tablet
+
+@media (min-width: 800px){
+  .meta-who-did-what{
+    width: 80%!important;
+  }
+  .meta-timestamp{
+    display: inline-block!important;
+  }
+
+  .f_left-sidebar {
+    display: none;
+  }
+
+  .f_main-content {
+    display: inline-block;
+    width: calc(100% / 3 * 2);
+    vertical-align: top;
+    float: left;
+  }
+
+  .f_right-sidebar {
+    display: inline-block;
+    width: calc(100% / 3);
+    padding-left: 20px;
+    vertical-align: top;
+    float: left;
+  }
+
+  //// header tablet
+
+  .fixedNav {
+    .logo-wrapper {
+      width: calc(100% / 3 * 2);
+    }
+
+    .search-wrapper {
+      display: none;
+    }
+
+    .nav-action-wrapper {
+      width: calc(100% / 3);
+    }
+  }
+
+}
+
+
+////f_ Desktop
+@media (min-width: 1200px){
+
+  .user-detail-card{
+    display: block!important;
+  }
+
+  .f_left-sidebar {
+    display: inline-block;
+    width: 17.5%;
+    padding-right: 20px;
+    vertical-align: top;
+    float: left;
+  }
+
+  .f_main-content {
+    display: inline-block;
+    width: 55%;
+    vertical-align: top;
+    float: left;
+  }
+
+  .f_right-sidebar {
+    display: inline-block;
+    width: 27.5%;
+    padding-left: 20px;
+    vertical-align: top;
+    float: left;
+  }
+
+  //// header desktop
+
+  .fixedNav {
+    .logo-wrapper {
+      width: 17.5%;
+    }
+
+    .search-wrapper {
+      display: inline-block;
+      width: 55%;
+    }
+
+    .nav-action-wrapper {
+      width: 27.5%;
+    }
+  }
 }

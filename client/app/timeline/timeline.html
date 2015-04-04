@@ -84,6 +84,23 @@
                   <span class="what">a<span ng-if="post.card.type==='article'">n</span> {{post.card.type}}</span>.
                 </p>
 
+                <div class="user-detail-card ui_card" style="background-image: url('{{post.user.profilePic}}');">
+
+                  <div class="detail-wrapper">
+
+                    <div class="name-wrapper">
+                      <h4 class="userName">{{post.user.name}}</h4>
+                    </div>
+                    <div class="badge-wrapper" ng-repeat="badge in post.user.makerOf">
+                      <div class="badgeItemName"><a ng-href="{{badge.discussionUrl}}" target="_blank">{{badge.name}}</a> <span class="makerBadge">M</span></div>
+                    </div>
+
+
+                  </div>
+
+
+                </div>
+
               </div>
               <div class="meta-timestamp">
                 <p class="timestamp">{{post.createdAt}}</p>
