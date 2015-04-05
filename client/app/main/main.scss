@@ -18,8 +18,8 @@
 
     .makerFaces-face{
       display: inline-block;
-      width: calc(100vw / 6);
-      height: calc(100vw / 6);
+      width: calc(100% / 6);
+      height: calc(100% / 6);
       background-image: url('../assets/images/slack_bg.png');
       background-size: cover;
       filter: grayscale(80%);
@@ -29,8 +29,8 @@
     /* Larger than mobile */
     @media (min-width: 400px) {
       .makerFaces-face{
-        width: calc(100vw / 6);
-        height: calc(100vw / 6);
+        width: calc(100% / 6);
+        height: calc(100% / 6);
       }
     }
 
@@ -38,16 +38,16 @@
     /* Larger than tablet */
     @media (min-width: 750px) {
       .makerFaces-face{
-        width: calc(100vw / 10);
-        height: calc(100vw / 10);
+        width: calc(100% / 10);
+        height: calc(100% / 10);
       }
     }
 
     /* Larger than desktop */
     @media (min-width: 1000px) {
       .makerFaces-face {
-        width: calc(100vw / 12);
-        height: calc(100vw / 12);
+        width: calc(100% / 12);
+        height: calc(100% / 12);
       }
     }
   }
@@ -198,6 +198,7 @@
   @media (min-width: 750px) {
     header{
       height: calc(100vw / 10 * 6);
+      min-height: 458px;
     }
   }
 
@@ -205,12 +206,14 @@
   @media (min-width: 1000px) {
     header {
       height: calc(100vw / 12 * 5);
+      min-height: 417px;
     }
   }
   /* Even Larger than desktop */
   @media (min-width: 1200px) {
     header {
       height: calc(100vw / 12 * 5);
+      min-height: 500px;
     }
   }
 
