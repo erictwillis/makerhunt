@@ -359,12 +359,13 @@
         padding-left: 10px;
 
         .teamMember-name {
-          font-size: 20px;
+          font-size: 18px;
           margin-bottom: 0px;
         }
         .teamMember-username {
           font-size: 14px;
           color: #a8a8a8;
+          margin-bottom: 5px;
         }
       }
 
@@ -431,5 +432,9 @@
 
 .intercom-container{
   display: none!important;
+}
+
+.teamMembers-container {
+  display: inline-block;
 }
 
