@@ -295,6 +295,14 @@ func apiTimelineCreate(w http.ResponseWriter, r *http.Request) {
 				card.Text, _ = s.Attr("content")
 			})
 
+			doc.Find("meta").Each(func(i int, s *goquery.Selection) {
+				if property, _ := s.Attr("property"); property != "og:image" {
+					return
+				}
+
+				card.Image, _ = s.Attr("content")
+			})
+
 			post.Cards = append(post.Cards, card)
 		}
 
