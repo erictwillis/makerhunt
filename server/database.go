@@ -7,6 +7,7 @@ type Database struct {
 	Events *mgo.Collection
 	Makers *mgo.Collection
 	Users  *mgo.Collection
+	Posts  *mgo.Collection
 }
 
 func (d *Database) Open() error {
@@ -29,5 +30,6 @@ func (d *Database) Open() error {
 	d.Makers = d.Database.C("makers")
 	d.Users = d.Database.C("users")
 	d.Events = d.Database.C("events")
+	d.Posts = d.Database.C("posts")
 	return nil
 }
