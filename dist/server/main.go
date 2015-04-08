@@ -351,7 +351,15 @@ func main() {
 	api.HandleFunc("/me/update-producthunt-data", apiMeUpdateProductHuntData).Methods("POST")
 	api.HandleFunc("/me/invite", apiMeInvite).Methods("POST")
 	api.HandleFunc("/users", accessHandler(apiUsersNew)).Methods("POST")
-	api.HandleFunc("/events", accessHandler(apiEventsNew)).Methods("POST")
+
+	api.HandleFunc("/timeline", accessHandler(apiTimelineCreate)).Methods("POST")
+	api.HandleFunc("/timeline", apiTimelineAll).Methods("GET")
+	api.HandleFunc("/timeline/{id}", accessHandler(apiTimelineGet)).Methods("GET")
+	api.HandleFunc("/timeline/{id}", accessHandler(apiTimelineUpdate)).Methods("PUT")
+	api.HandleFunc("/timeline/{id}", accessHandler(apiTimelinePatch)).Methods("PATCH")
+	api.HandleFunc("/timeline/{id}", accessHandler(apiTimelineDelete)).Methods("DELETE")
+
+	api.HandleFunc("/events", accessHandler(apiEventsCreate)).Methods("POST")
 	api.HandleFunc("/events", apiEventsAll).Methods("GET")
 	api.HandleFunc("/events/{id}", accessHandler(apiEventGet)).Methods("GET")
 	api.HandleFunc("/events/{id}", accessHandler(apiEventUpdate)).Methods("PUT")
@@ -364,6 +372,7 @@ func main() {
 	r.HandleFunc("/auth", authHandler)
 	r.HandleFunc("/me", pageHandler("index.html"))
 	r.HandleFunc("/signup", pageHandler("index.html"))
+	r.HandleFunc("/timeline", pageHandler("index.html"))
 	r.HandleFunc("/error", pageHandler("index.html"))
 	r.HandleFunc("/", pageHandler("index.html"))
 
