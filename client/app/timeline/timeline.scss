@@ -408,7 +408,6 @@
       position: relative;
       border: 1px solid rgba(0, 0, 0, 0.05);
       border-radius: 2px;
-      cursor: pointer;
       margin-top: 10px;
 
       .text-wrapper {
@@ -424,6 +423,7 @@
           margin-right: 2px;
           border-radius: 2px;
           margin-top: 2px;
+          vertical-align: top;
         }
 
         .external-content-headline {
@@ -432,6 +432,11 @@
           display: inline;
           line-height: 1.1;
           vertical-align: top;
+          color: inherit;
+          cursor: pointer;
+        }
+        .event-info--headline:hover{
+          text-decoration: underline;
         }
 
         .external-content-snippet {
@@ -762,6 +767,11 @@
 
 .f_right-sidebar {
   display: none;
+  -webkit-transition: all 150ms;
+  -moz-transition: all 150ms;
+  -ms-transition: all 150ms;
+  -o-transition: all 150ms;
+  transition: all 150ms;
 }
 
 ////f_Tablet
@@ -858,4 +868,9 @@
       width: 27.5%;
     }
   }
+}
+
+.sidebar-blur{
+  filter: blur(5px);
+  -webkit-filter: blur(5px);
 }

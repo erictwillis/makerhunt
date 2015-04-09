@@ -59,7 +59,7 @@ angular.module('makerhuntApp')
     $scope.delete = function(post) {
         post.$delete().then(function(post) {
             var index = $scope.posts.indexOf(post);
-            $scope.posts.splice(index, 1);     
+            $scope.posts.splice(index, 1);
         }).catch(function(e) {
             console.debug(e);
         }).finally(function() {
@@ -78,5 +78,19 @@ angular.module('makerhuntApp')
             console.debug(e);
         }).finally(function() {
         });
+    };
+
+
+    ////open comments of post
+    // (very bad implementation this might be possible much easier & smoother)
+    // also obviously this should target individual posts not all of them
+
+    $scope.openComments = function(){
+
+      $('#right-sidebar').toggleClass('sidebar-blur');
+      $('.ui_comments-container').toggleClass('comments-open')
+
     }
+
+
 });
