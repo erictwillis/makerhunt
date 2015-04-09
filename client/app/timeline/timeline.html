@@ -31,12 +31,11 @@
 
   </div>
   <div class="fixedNav-height"></div>
-
   <div class="container feed-wrapper">
 
     <div class="row">
       <div class="f_left-sidebar">
-        user - bar
+          {{ user.name }}
       </div>
       <div class="f_main-content">
       <form name="form" ng-submit="share(form)" novalidate>
@@ -74,7 +73,7 @@
                 <p class="who-did-what">
                   <span class="who">{{post.user.name}}</span>
                   <span class="did">shared</span>
-                  <span class="what">a<span ng-if="post.card.type==='article'">n</span> {{post.card.type}}</span>.
+                  <span class="what">a<span ng-if="post.card.type==='article'">n</span> {{post.card.type || 'link'}}</span>.
                 </p>
 
                 <div class="user-detail-card ui_card" style="background-image: url({{post.user.image_url['88px']}});">
@@ -110,6 +109,7 @@
                   <h4 class="quote" ng-switch="post.via.provider">
                     <i class="fa fa-twitter" ng-switch-when="twitter"></i>
                     <i class="fa fa-slack" ng-switch-when="slack"></i>
+                    <i class="fa fa-pencil" ng-switch-when="direct"></i>
                   </h4>
                 </div>
 
@@ -148,6 +148,42 @@
 
             </div>
 
+            <div class="ui_comments-container">
+
+              <div class="ui_card">
+
+                <h4 class="comments-headline">Comments <i class="fa fa-comments-o"></i></h4>
+
+                <div class="comment-wrapper" ng-repeat="comment in activePost.comments">
+                  <div class="img-wrapper">
+                    <img ng-src="https://pbs.twimg.com/profile_images/583567395161268224/ZRqzE0zf.jpg" alt="" class="user-img"/>
+                  </div>
+                  <div class="comment-meta">
+                    <h5 class="user-name">Jonas Daniels</h5>
+                    <div class="timestamp">5min ago</div>
+                  </div>
+                  <div class="comment-status-wrapper">
+                    <p class="comment-status">
+                      We just published “Maker Hunt’s AMA with Mattan Griffel from One Month” https://medium.com/@MakerHunt/maker-hunt-s-ama-with-mattan-griffel-from-one-month-b23dcdf2eea4?source=tw-a32a58630f2c-1428011480867 @mattangriffel @onemonthedu
+                    </p>
+                  </div>
+                  <div class="comment-actions-wrapper">
+
+                  </div>
+                </div>
+
+                <div class="newComment-wrapper">
+
+                  <input name="newComment" placeholder="Write something..." class="textarea-autogrow newComment" type="text">
+
+
+
+                </div>
+
+              </div>
+
+            </div>
+
           </div>
           <div ng-switch="state">
               <p ng-switch-when='loading'>Loading more posts</p>
@@ -162,7 +198,45 @@
 
       </div>
       <div class="f_right-sidebar">
-        side - bar
+
+        <div class="ui_sideBar-wrapper">
+
+          <div class="ui_card">
+
+            <h4 class="ui_sideBar-headline">Upcoming Events</h4>
+
+            <div class="ui_sideBar-section">
+
+              <ul class="sideBar-list">
+                <li class="sideBar-list--item" ng-repeat="event in events">
+
+                  <div class="img-wrapper">
+                    <img ng-src="{{event.ph_profile.image_url.original}}" alt="" class="event-img"/>
+                  </div>
+
+                  <div class="info-wrapper">
+                    <h4 class="event-info--headline">
+                      <span class="eventName">AMA</span>
+                      <span class="with">with</span>
+                      <span class="eventWho">{{event.title}}</span>
+                    </h4>
+                    <p class="event-info--meta">
+                      <span class="timestamp">in 6 days</span>
+                      ·
+                      <i class="fa fa-slack"></i>MakerHunt
+                    </p>
+                  </div>
+
+                </li>
+              </ul>
+
+            </div>
+
+
+          </div>
+
+        </div>
+
       </div>
     </div>
 

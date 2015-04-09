@@ -158,7 +158,7 @@ type Comment struct {
 type Post struct {
 	PostId    bson.ObjectId `bson:"_id" json:"post_id"`
 	UserId    bson.ObjectId `bson:"user_id"`
-	User      *User         `json:"user"`
+	User      *User         `bson:"-" json:"user"`
 	CreatedAt time.Time     `bson:"created_at" json:"created_at"`
 	Status    string        `bson:"status" json:"status"`
 	Type      string        `bson:"type" json:"type"`
@@ -205,8 +205,8 @@ func apiTimelineAll(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
 	skip := 0
-	if val, ok := vars["offset"]; !ok {
-		skip, _ = strconv.Atoi(val)
+	if val, err := strconv.Atoi(r.FormValue("offset")); err == nil {
+		skip = val
 	}
 
 	fromDate := time.Now()
@@ -218,11 +218,27 @@ func apiTimelineAll(w http.ResponseWriter, r *http.Request) {
 
 	posts := []Post{}
 
-	err := db.Posts.Find(bson.M{"created_at": bson.M{"$lt": fromDate}}).Sort("-created_at").Limit(limit).Skip(skip).All(&posts)
-	if err != nil {
+	fmt.Println(skip)
+
+	iter := db.Posts.
+		Find(bson.M{"created_at": bson.M{"$lt": fromDate}}).
+		Sort("-created_at").
+		Skip(skip).
+		Limit(limit).Iter()
+
+	defer iter.Close()
+
+	post := Post{}
+	for iter.Next(&post) {
+		post.LoadUser()
+		posts = append(posts, post)
+	}
+
+	if err := iter.Close(); err != nil {
 	}
 
 	Filter(posts, func(path string, value reflect.Value) error {
+		fmt.Println(path)
 		/*
 			if path == "[].PhProfile.Votes" {
 				v := reflect.ValueOf([]gohunt.Vote{})

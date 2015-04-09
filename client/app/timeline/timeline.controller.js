@@ -1,16 +1,28 @@
 'use strict';
 
 angular.module('makerhuntApp')
-.controller('TimelineCtrl', function ($scope, $timeout, Post) {
+.controller('TimelineCtrl', function ($scope, $timeout, Post, Event, user) {
     var offset = 0;
     var from_date = new Date();
 
+    $scope.user = user;
     $scope.posts = [];
     $scope.currentPost = new Post();
     $scope.state = null;
 
     $timeout(function() {
         $scope.load();
+    });
+
+    $scope.events = [];
+
+    $timeout(function() {
+        Event.query(function(data) {
+            angular.forEach(data, function(event) {
+                event = angular.extend(event, { till_date: moment(event.from_date).add(1,'hour') });
+                $scope.events.push(event);
+            });
+        });
     });
 
     $scope.canEdit = function(post) {
@@ -36,7 +48,7 @@ angular.module('makerhuntApp')
                 $scope.state='no-more';
                 return;
             }
-            $scope.posts.push(posts);
+            $scope.posts.push.apply($scope.posts, posts);
             $scope.state = null;
             offset += posts.length;
         }, function(error) {
