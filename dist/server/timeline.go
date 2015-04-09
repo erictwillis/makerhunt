@@ -174,6 +174,7 @@ type Card struct {
 	Headline string        `bson:"headline" json:"headline"`
 	Text     string        `bson:"text" json:"text"`
 	Url      string        `bson:"url" json:"url"`
+	Icon     string        `bson:"icon" json:"icon"`
 	Image    string        `bson:"image" json:"img"`
 }
 
@@ -314,6 +315,22 @@ func apiTimelineCreate(w http.ResponseWriter, r *http.Request) {
 
 			doc.Find("title").Each(func(i int, s *goquery.Selection) {
 				card.Headline = s.Text()
+			})
+
+			doc.Find("meta").Each(func(i int, s *goquery.Selection) {
+				if title, _ := s.Attr("property"); title != "og:title" {
+					return
+				}
+
+				card.Headline, _ = s.Attr("content")
+			})
+
+			doc.Find("link").Each(func(i int, s *goquery.Selection) {
+				if rel, _ := s.Attr("rel"); rel != "shortcut icon" {
+					return
+				}
+
+				card.Icon, _ = s.Attr("href")
 			})
 
 			doc.Find("meta").Each(func(i int, s *goquery.Selection) {
