@@ -6,12 +6,14 @@ import (
 	"log"
 	"net/http"
 	"reflect"
+	"strconv"
 	"strings"
 	"time"
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/gorilla/mux"
-	"gopkg.in/mgo.v2"
+
+	mgo "gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -200,12 +202,23 @@ func (p *Post) LoadUser() error {
 }
 
 func apiTimelineAll(w http.ResponseWriter, r *http.Request) {
-	limit := 20
+	vars := mux.Vars(r)
+
 	skip := 0
+	if val, ok := vars["offset"]; !ok {
+		skip, _ = strconv.Atoi(val)
+	}
+
+	fromDate := time.Now()
+	if _, ok := vars["from_date"]; !ok {
+		//	fromDate = val
+	}
+
+	limit := 20
 
 	posts := []Post{}
 
-	err := db.Posts.Find(nil).Sort("-created_at").Limit(limit).Skip(skip).All(&posts)
+	err := db.Posts.Find(bson.M{"created_at": bson.M{"$lt": fromDate}}).Sort("-created_at").Limit(limit).Skip(skip).All(&posts)
 	if err != nil {
 	}
 

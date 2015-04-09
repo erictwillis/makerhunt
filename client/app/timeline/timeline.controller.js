@@ -1,13 +1,16 @@
 'use strict';
 
 angular.module('makerhuntApp')
-.controller('TimelineCtrl', function ($scope, Post) {
+.controller('TimelineCtrl', function ($scope, $timeout, Post) {
+    var offset = 0;
+    var from_date = new Date();
+
     $scope.posts = [];
-
     $scope.currentPost = new Post();
+    $scope.state = null;
 
-    Post.query(function (posts) {
-        $scope.posts = posts;
+    $timeout(function() {
+        $scope.load();
     });
 
     $scope.canEdit = function(post) {
@@ -20,6 +23,25 @@ angular.module('makerhuntApp')
 
     $scope.edit = function(post) {
         alert("edit");
+    }
+
+    $scope.load = function() {
+        if ($scope.state !== null) {
+            return
+        }
+
+        $scope.state = 'loading';
+        Post.query({ from_date: from_date, offset: offset },function (posts) {
+            if (posts.length == 0) {
+                $scope.state='no-more';
+                return;
+            }
+            $scope.posts.push(posts);
+            $scope.state = null;
+            offset += posts.length;
+        }, function(error) {
+            $scope.state = 'error';
+        });
     }
 
     $scope.delete = function(post) {

@@ -1,4 +1,4 @@
-<div id="feedView">
+<div id="feedView" infinite-scroll="load()" infinite-scroll-distance="200">
 
   <div class="fixedNav">
 
@@ -122,7 +122,7 @@
               <div class="external-content-wrapper" ng-repeat="card in post.cards">
                 <div class="text-wrapper">
                   <img ng-src="https://pbs.twimg.com/profile_images/498896933360898049/Io6eZONw_normal.jpeg" alt="" class="sourceImg"/>
-                  <a class="external-content-headline" ng-bind="card.headline" ng-href="card.url">
+                  <a class="external-content-headline" ng-bind="card.headline" ng-bind-href="{{card.url}}">
                   </a>
                   <p class="external-content-snippet" ng-bind-html="card.text">
                   </p>
@@ -149,7 +149,15 @@
             </div>
 
           </div>
-
+          <div ng-switch="state">
+              <p ng-switch-when='loading'>Loading more posts</p>
+              <p ng-switch-when='no-more'>No more posts, you've scrolled to the end of Makerhunt</p>
+              <p ng-switch-when='error'>Error</p>
+          </div>
+          <!--
+          <div ng-if="loadingPosts && !noMorePosts">Loading</div>
+          <div ng-if="!loadingPosts && noMorePosts">No More Posts</div>
+          -->
         </div>
 
       </div>
