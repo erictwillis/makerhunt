@@ -143,12 +143,12 @@
               </div>
 
               <div class="comment-open-wrapper">
-                <button class="comment-toggle" ng-click="openComments(post)"><i class="fa fa-comments-o"></i> Comments ({{post.comments.length}})</button>
+                <button class="comment-toggle" ng-click="openComments(post); $event.stopPropagation();"><i class="fa fa-comments-o"></i> Comments ({{post.comments.length}})</button>
               </div>
 
             </div>
 
-            <div class="ui_comments-container" ng-class="{'comments-open': isCommentsPost(post)}" ng-controller="CommentsCtrl">
+            <div class="ui_comments-container popup" ng-class="{'comments-open': isCommentsPost(post)}" ng-controller="CommentsCtrl">
 
               <div class="ui_card">
 

@@ -15,9 +15,9 @@ angular.module('makerhuntApp')
         $scope.load();
     });
 
-    $scope.closeComment = function() {
+    $scope.$on('closeAll', function() {
         $scope.commentsPost = null;
-    }
+    });
 
     $scope.events = [];
     $timeout(function() {

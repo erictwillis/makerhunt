@@ -65,7 +65,6 @@ angular.module('makerhuntApp', [
                 return;
             }
 
-
             $state.go("main");
         });
     });
@@ -76,6 +75,28 @@ angular.module('makerhuntApp', [
   }
 
 });
+
+angular.module('makerhuntApp').
+    directive('closeAll', [
+      '$rootScope', '$window', '$timeout', '$log' , function($rootScope, $window, $timeout,$log) {
+    return {
+      restrict: 'A',
+      scope: false,
+      link: function closeAll(scope, elem, attrs) {
+            var $target = angular.element($window);
+            $target.on('click', function($event) {
+                var $target = $($event.target);
+                if ($target.closest('.popup').length!=0) {
+                    return (true);
+                }
+
+                $rootScope.$apply(function() {
+                    $rootScope.$broadcast('closeAll');
+                });
+            });
+        }
+    }
+}]);
 
 
 angular.module('makerhuntApp').filter('firstname', function() {
