@@ -122,7 +122,7 @@
               <div class="external-content-wrapper" ng-repeat="card in post.cards">
                 <div class="text-wrapper">
                     <img ng-src="{{card.icon}}" alt="" class="sourceImg"/>
-                  <a class="external-content-headline" ng-bind="card.headline" ng-bind-href="{{card.url}}">
+                  <a class="external-content-headline" ng-bind="card.headline" ng-bind-href="{{card.url}}" target="_blank">
                   </a>
                   <p class="external-content-snippet" ng-bind-html="card.text">
                   </p>
@@ -143,41 +143,41 @@
               </div>
 
               <div class="comment-open-wrapper">
-                <button class="comment-toggle" ng-click="openComments()"><i class="fa fa-comments-o"></i> Comments ({{post.comments.length}})</button>
+                <button class="comment-toggle" ng-click="openComments(post)"><i class="fa fa-comments-o"></i> Comments ({{post.comments.length}})</button>
               </div>
 
             </div>
 
-            <div class="ui_comments-container">
+            <div class="ui_comments-container" ng-class="{'comments-open': isCommentsPost(post)}" ng-controller="CommentsCtrl">
 
               <div class="ui_card">
 
                 <h4 class="comments-headline">Comments <i class="fa fa-comments-o"></i></h4>
-
-                <div class="comment-wrapper" ng-repeat="comment in activePost.comments">
+                <div class="comment-wrapper" ng-if="post.comments.length == 0">
+                    be the first to comment
+                </div>
+                <div class="comment-wrapper" ng-repeat="comment in post.comments | orderBy:sortComments:true">
                   <div class="img-wrapper">
-                    <img ng-src="https://pbs.twimg.com/profile_images/583567395161268224/ZRqzE0zf.jpg" alt="" class="user-img"/>
+                    <img ng-src="{{comment.user.image_url['88px']}}" alt="" class="user-img"/>
                   </div>
                   <div class="comment-meta">
-                    <h5 class="user-name">Jonas Daniels</h5>
-                    <div class="timestamp">5min ago</div>
+                    <h5 class="user-name" ng-bind="comment.user.name"></h5>
+                    <div class="timestamp" am-time-ago="comment.created_at"></div>
                   </div>
                   <div class="comment-status-wrapper">
-                    <p class="comment-status">
-                      We just published “Maker Hunt’s AMA with Mattan Griffel from One Month” https://medium.com/@MakerHunt/maker-hunt-s-ama-with-mattan-griffel-from-one-month-b23dcdf2eea4?source=tw-a32a58630f2c-1428011480867 @mattangriffel @onemonthedu
+                    <p class="comment-status" ng-bind-html="comment.body">
                     </p>
                   </div>
                   <div class="comment-actions-wrapper">
-
+                    <button class="action-delete" ng-show="canDelete(comment)" ng-click="delete(comment)"><i class="fa fa-trash-o"></i></button>
                   </div>
                 </div>
-
-                <div class="newComment-wrapper">
-
-                  <input name="newComment" placeholder="Write something..." class="textarea-autogrow newComment" type="text">
-
-
-
+                <div class="newComment-wrapper" ng-controller="CommentCtrl">
+                  <form name="form" ng-submit="submit(form)" novalidate>
+                  <input name="body" ng-model="comment.body" placeholder="Write something..." class="textarea-autogrow newComment" type="text" required>
+                  <span class="error-txt" ng-show="form.body.$error.required && !form.$pristine">Common', don't you have anything to share?</span>
+                  <button class="newPost-postBtn" type='submit' ng-disabled='form.$invalid'>Post</button>
+                  </form>
                 </div>
 
               </div>
@@ -197,8 +197,7 @@
         </div>
 
       </div>
-      <div id="right-sidebar" class="f_right-sidebar">
-
+      <div id="right-sidebar" class="f_right-sidebar" ng-class="{'sidebar-blur': (commentsPost != null)}">
         <div class="ui_sideBar-wrapper">
 
           <div class="ui_card">
@@ -208,7 +207,7 @@
             <div class="ui_sideBar-section">
 
               <ul class="sideBar-list">
-                <li class="sideBar-list--item" ng-repeat="event in events">
+                <li class="sideBar-list--item" ng-repeat="event in events | filter:eventsFilter | orderBy:sortEvents">
 
                   <div class="img-wrapper">
                     <img ng-src="{{event.ph_profile.image_url.original}}" alt="" class="event-img"/>

@@ -353,6 +353,8 @@ func main() {
 	api.HandleFunc("/users", accessHandler(apiUsersNew)).Methods("POST")
 
 	api.HandleFunc("/timeline", accessHandler(apiTimelineCreate)).Methods("POST")
+	api.HandleFunc("/timeline/{id}/comments", accessHandler(apiTimelineCommentCreate)).Methods("POST")
+	api.HandleFunc("/timeline/{post_id}/comments/{comment_id}", accessHandler(apiTimelineCommentDelete)).Methods("DELETE")
 	api.HandleFunc("/timeline", apiTimelineAll).Methods("GET")
 	api.HandleFunc("/timeline/{id}", accessHandler(apiTimelineGet)).Methods("GET")
 	api.HandleFunc("/timeline/{id}", accessHandler(apiTimelineUpdate)).Methods("PUT")

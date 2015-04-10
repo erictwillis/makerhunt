@@ -8,14 +8,18 @@ angular.module('makerhuntApp')
     $scope.user = user;
     $scope.posts = [];
     $scope.currentPost = new Post();
+    $scope.commentsPost = null;
     $scope.state = null;
 
     $timeout(function() {
         $scope.load();
     });
 
-    $scope.events = [];
+    $scope.closeComment = function() {
+        $scope.commentsPost = null;
+    }
 
+    $scope.events = [];
     $timeout(function() {
         Event.query(function(data) {
             angular.forEach(data, function(event) {
@@ -24,6 +28,18 @@ angular.module('makerhuntApp')
             });
         });
     });
+
+    $scope.eventsFilter = function( item) {
+            return (moment(item.from_date).isAfter(moment()));
+    };
+
+    $scope.sortEvents = function(event) {
+           return event.from_date;
+    };
+
+    $scope.sortComments = function(comment) {
+           return comment.created_at;
+    };
 
     $scope.canEdit = function(post) {
         return (false);
@@ -81,16 +97,57 @@ angular.module('makerhuntApp')
     };
 
 
-    ////open comments of post
-    // (very bad implementation this might be possible much easier & smoother)
-    // also obviously this should target individual posts not all of them
-
-    $scope.openComments = function(){
-
-      $('#right-sidebar').toggleClass('sidebar-blur');
-      $('.ui_comments-container').toggleClass('comments-open')
-
+    $scope.isCommentsPost = function(post){
+        return ($scope.commentsPost === post);
     }
+
+    $scope.openComments = function(post){
+        $scope.commentsPost = post;
+    }
+
+
+});
+
+angular.module('makerhuntApp')
+.controller('CommentsCtrl', function ($scope, $timeout, Comment) {
+    $scope.canDelete = function(post) {
+        return (true);
+    }
+
+    $scope.delete = function(comment) {
+        Comment.delete({post_id: comment.post_id, comment_id: comment.comment_id}).$promise.then(function(comment) {
+            var index = $scope.post.comments.indexOf(comment);
+            $scope.post.comments.splice(index, 1);
+        }).catch(function(e) {
+            console.debug(e);
+        }).finally(function() {
+        });
+    }
+});
+
+angular.module('makerhuntApp')
+.controller('CommentCtrl', function ($scope, $timeout, Comment) {
+    $scope.comment = new Comment( {
+        post_id: $scope.post.post_id,
+        body: ""
+    });
+
+    $scope.submit = function(form) {
+        if (form.$invalid)
+            return;
+
+        $scope.comment.$create().then(function(comment) {
+            $scope.post.comments.unshift(comment);
+            $scope.comment = new Comment({
+                post_id: $scope.post.post_id
+            });
+            form.$setPristine();
+        }).catch(function(e) {
+            console.debug(e);
+        }).finally(function() {
+        });
+    };
+
 
 
 });

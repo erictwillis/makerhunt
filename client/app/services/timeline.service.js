@@ -1,6 +1,22 @@
 'use strict';
 
 angular.module('makerhuntApp')
+  .factory('Comment', function ($resource) {
+    return $resource('/api/v1/timeline/:post_id/comments', {
+        post_id: '@post_id'
+    },
+    {
+      create: {
+        method: 'POST'
+      },
+      delete: {
+        method: 'DELETE',
+        url: '/api/v1/timeline/:post_id/comments/:comment_id'
+      },
+  });
+});
+
+angular.module('makerhuntApp')
   .factory('Post', function ($resource) {
     return $resource('/api/v1/timeline', {
         post_id: '@post_id'
@@ -14,6 +30,10 @@ angular.module('makerhuntApp')
       create: {
         method: 'POST',
         url: '/api/v1/timeline'
+      },
+      comment: {
+        method: 'POST',
+        url: '/api/v1/timeline/:post_id/comments'
       },
       delete: {
         method: 'DELETE',

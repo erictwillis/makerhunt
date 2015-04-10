@@ -152,7 +152,28 @@ func filter(value reflect.Value, path string, fn func(path string, value reflect
 
 type Comment struct {
 	CommentId bson.ObjectId `bson:"_id" json:"comment_id"`
-	Message   string
+	Body      string        `bson:"body" json:"body"`
+	UserId    bson.ObjectId `bson:"user_id"`
+	User      *User         `bson:"-" json:"user"`
+	PostId    bson.ObjectId `bson:"post_id" json:"post_id"`
+	CreatedAt time.Time     `bson:"created_at" json:"created_at"`
+}
+
+// should we use a unmarshal struct for this?
+func (c *Comment) SetUser(user User) {
+	c.UserId = user.UserId
+	c.User = &user
+}
+
+func (c *Comment) LoadUser() error {
+	var user User
+	if err := db.Users.FindId(c.UserId).One(&user); err == mgo.ErrNotFound {
+		return nil
+	} else if err != nil {
+		return err
+	}
+	c.User = &user
+	return nil
 }
 
 type Post struct {
@@ -160,6 +181,7 @@ type Post struct {
 	UserId    bson.ObjectId `bson:"user_id"`
 	User      *User         `bson:"-" json:"user"`
 	CreatedAt time.Time     `bson:"created_at" json:"created_at"`
+	UpdatedAt time.Time     `bson:"updated_at" json:"updated_at"`
 	Status    string        `bson:"status" json:"status"`
 	Type      string        `bson:"type" json:"type"`
 	Comments  []Comment     `bson:"comments" json:"comments"`
@@ -232,6 +254,14 @@ func apiTimelineAll(w http.ResponseWriter, r *http.Request) {
 	post := Post{}
 	for iter.Next(&post) {
 		post.LoadUser()
+
+		for idx, _ := range post.Comments {
+			if err := post.Comments[idx].LoadUser(); err != nil {
+				fmt.Println(err)
+			}
+
+		}
+
 		posts = append(posts, post)
 	}
 
@@ -266,6 +296,90 @@ func apiTimelineAll(w http.ResponseWriter, r *http.Request) {
 	})
 
 	WriteJSON(w, posts)
+}
+
+func apiTimelineCommentDelete(w http.ResponseWriter, r *http.Request) {
+	postId := bson.NewObjectId()
+	commentId := bson.NewObjectId()
+
+	vars := mux.Vars(r)
+	if val, ok := vars["post_id"]; ok {
+		postId = bson.ObjectIdHex(val)
+	}
+
+	if val, ok := vars["comment_id"]; ok {
+		commentId = bson.ObjectIdHex(val)
+	}
+
+	change := mgo.Change{
+		ReturnNew: false,
+		Update: bson.M{
+			"$set": bson.M{
+				"updated_at": time.Now(),
+			},
+			"$pull": bson.M{
+				"comments": bson.M{
+					"_id": commentId,
+				},
+			}}}
+
+	post := Post{}
+	_, err := db.Posts.FindId(postId).Apply(change, &post)
+	if err != nil {
+		fmt.Println(err)
+		http.Error(w, "Error", 500)
+		return
+	}
+
+}
+
+func apiTimelineCommentCreate(w http.ResponseWriter, r *http.Request) {
+	comment := Comment{}
+	if err := json.NewDecoder(r.Body).Decode(&comment); err != nil {
+		log.Println(err)
+		http.Error(w, "Error", 500)
+		return
+	}
+
+	session, _ := store.Get(r, config.SessionName)
+
+	userid := session.Values["userid"]
+	if userid == nil {
+		http.Error(w, "Unauthorized", 401)
+		return
+	}
+
+	var user User
+	if err := db.Users.FindId(bson.ObjectIdHex(userid.(string))).One(&user); err == mgo.ErrNotFound {
+		http.NotFound(w, r)
+		return
+	} else if err != nil {
+		panic(err)
+	}
+
+	comment.CommentId = bson.NewObjectId()
+	comment.SetUser(user)
+	comment.CreatedAt = time.Now()
+
+	change := mgo.Change{
+		ReturnNew: false,
+		Update: bson.M{
+			"$set": bson.M{
+				"updated_at": time.Now(),
+			},
+			"$addToSet": bson.M{
+				"comments": comment,
+			}}}
+
+	post := Post{}
+	_, err := db.Posts.FindId(comment.PostId).Apply(change, &post)
+	if err != nil {
+		fmt.Println(err)
+		http.Error(w, "Error", 500)
+		return
+	}
+
+	WriteJSON(w, comment)
 }
 
 func apiTimelineCreate(w http.ResponseWriter, r *http.Request) {
