@@ -45,7 +45,7 @@
                   <span class="error-txt" ng-show="form.status.$error.required && !form.$pristine">Common', don't you have anything to share?</span>
               </div>
               <div class="newPost-actions">
-                  <button class="newPost-postBtn" type='submit' ng-disabled='form.$invalid'>Post</button>
+                  <button id="newPost-submit" class="newPost-postBtn" type='submit' ng-disabled='form.$invalid'><div class="outline"><div class="pulse"></div></div> Post</button>
               </div>
         </div>
       </form>
@@ -148,9 +148,8 @@
 
             </div>
 
-            <div class="ui_comments-container popup" ng-class="{'comments-open': isCommentsPost(post)}" ng-controller="CommentsCtrl">
+            <div class="ui_comments-container ui_card popup" ng-class="{'comments-open': isCommentsPost(post)}" ng-controller="CommentsCtrl">
 
-              <div class="ui_card">
 
                 <h4 class="comments-headline">Comments <i class="fa fa-comments-o"></i></h4>
                 <div class="comment-wrapper" ng-if="post.comments.length == 0">
@@ -175,19 +174,29 @@
                 <div class="newComment-wrapper" ng-controller="CommentCtrl">
                   <form name="form" ng-submit="submit(form)" novalidate>
                   <input name="body" ng-model="comment.body" placeholder="Write something..." class="textarea-autogrow newComment" type="text" required>
-                  <span class="error-txt" ng-show="form.body.$error.required && !form.$pristine">Common', don't you have anything to share?</span>
-                  <button class="newPost-postBtn" type='submit' ng-disabled='form.$invalid'>Post</button>
+                  <!--<span class="error-txt" ng-show="form.body.$error.required && !form.$pristine">Common', don't you have anything to share?</span>-->
                   </form>
                 </div>
 
-              </div>
 
             </div>
 
           </div>
           <div ng-switch="state">
-              <p ng-switch-when='loading'>Loading more posts</p>
-              <p ng-switch-when='no-more'>No more posts, you've scrolled to the end of Makerhunt</p>
+              <div ng-switch-when='loading'>
+                <div class="loader-height"></div>
+                <div class="ui_content-loader">
+                  <div class='bar'></div>
+                  <div class='bar'></div>
+                  <div class='bar'></div>
+                  <div class='bar'></div>
+                  <div class='bar'></div>
+                </div>
+              </div>
+              <div ng-switch-when='no-more'>
+                <p class="no-more"></p>
+              </div>
+
               <p ng-switch-when='error'>Error</p>
           </div>
           <!--

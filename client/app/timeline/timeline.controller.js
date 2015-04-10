@@ -80,16 +80,19 @@ angular.module('makerhuntApp')
             console.debug(e);
         }).finally(function() {
         });
-    }
+    };
 
     $scope.share = function(form) {
-        if (form.$invalid)
+        if (form.$invalid){
             return;
+        }
 
+        $('#newPost-submit').addClass('newPost-posting');
         $scope.currentPost.$create().then(function(post) {
             $scope.posts.unshift(post);
             $scope.currentPost = new Post();
             form.$setPristine();
+            $('#newPost-submit').removeClass('newPost-posting');
         }).catch(function(e) {
             console.debug(e);
         }).finally(function() {
@@ -99,7 +102,7 @@ angular.module('makerhuntApp')
 
     $scope.isCommentsPost = function(post){
         return ($scope.commentsPost === post);
-    }
+    };
 
     $scope.openComments = function(post){
         $scope.commentsPost = post;
