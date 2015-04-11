@@ -250,7 +250,7 @@
 
         .detail-wrapper {
           position: absolute;
-          top: 120px;
+          top: 118px;
           width: 80%;
 
           .name-wrapper {
@@ -270,14 +270,13 @@
           }
 
           .badge-wrapper {
-            background: rgba(65, 170, 120, 0.8);
-            text-align: center;
+            background: rgba(65,170,120,.8);
             margin-top: 2px;
             width: auto;
             position: relative;
             white-space: nowrap;
-            padding: 0 8px;
-            max-width: 100px;
+            padding: 0 15px 0 5px;
+            display: table;
 
             .badgeItemName {
               font-size: 12px;
@@ -300,7 +299,7 @@
                 line-height: 20px;
                 text-align: center;
                 right: 0;
-                font-weight: 700;
+                font-weight: 400;
               }
             }
           }
