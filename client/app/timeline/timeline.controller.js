@@ -6,7 +6,6 @@ angular.module('makerhuntApp')
     var from_date = new Date();
 
     $scope.user = user;
-    console.log(user);
     $scope.posts = [];
     $scope.currentPost = new Post();
     $scope.commentsPost = null;
