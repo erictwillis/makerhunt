@@ -43,15 +43,15 @@ angular.module('makerhuntApp')
 
     $scope.canEdit = function(post) {
         return (false);
-    }
+    };
 
     $scope.canDelete = function(post) {
         return (true);
-    }
+    };
 
     $scope.edit = function(post) {
         alert("edit");
-    }
+    };
 
     $scope.load = function() {
         if ($scope.state !== null) {
@@ -115,7 +115,7 @@ angular.module('makerhuntApp')
 .controller('CommentsCtrl', function ($scope, $timeout, Comment) {
     $scope.canDelete = function(post) {
         return (true);
-    }
+    };
 
     $scope.delete = function(comment) {
         Comment.delete({post_id: comment.post_id, comment_id: comment.comment_id}).$promise.then(function(comment) {

@@ -35,7 +35,34 @@
 
     <div class="row">
       <div class="f_left-sidebar">
-          {{ user.name }}
+
+        <div class="currentUser-card ui_card">
+
+          <div class="currentUser-card--cover">
+
+            <div class="cover-background" style="background-image: url('{{user.twitter_profile.profile_banner_url}}');"></div>
+
+            <div class="image-wrapper">
+              <img ng-src="{{user.image_url['88px']}}" alt="" class="currentUser-img"/>
+              <div class="maker-badge">M</div>
+            </div>
+            <div class="currentUser-meta">
+              <h3 class="user-name">{{user.name}}</h3>
+              <h5 class="user-username">@{{user.username}}</h5>
+            </div>
+
+          </div>
+          <div class="currentUser-card--stats">
+
+          </div>
+          <div class="currentUser-card--actions">
+            <button class="action-edit-profile" disabled>Edit Profile</button>
+            <button class="action-logout">Logout</button>
+          </div>
+
+
+        </div>
+
       </div>
       <div class="f_main-content">
       <form name="form" ng-submit="share(form)" novalidate>
@@ -153,7 +180,7 @@
 
                 <h4 class="comments-headline">Comments <i class="fa fa-comments-o"></i></h4>
                 <div class="comment-wrapper" ng-if="post.comments.length == 0">
-                    be the first to comment
+                    <p class="be-first-to-comment">write the first comment</p>
                 </div>
                 <div class="comment-wrapper" ng-repeat="comment in post.comments | orderBy:sortComments:true">
                   <div class="img-wrapper">
@@ -195,7 +222,7 @@
                 </div>
               </div>
               <div ng-switch-when='no-more'>
-                <p class="no-more"></p>
+                <p class="no-more">You've reached the end of MakerHunt! &#9737;_&#9737;</p>
               </div>
 
               <p ng-switch-when='error'>Error</p>
