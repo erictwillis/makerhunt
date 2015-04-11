@@ -70,7 +70,7 @@ angular.module('makerhuntApp')
         }, function(error) {
             $scope.state = 'error';
         });
-    }
+    };
 
     $scope.delete = function(post) {
         post.$delete().then(function(post) {
@@ -111,6 +111,7 @@ angular.module('makerhuntApp')
     ////STUPID HACK TO FIX THE FIXED HEADER ON THE TIMELINE
 
     $('body').css('-webkit-transform', 'none');
+
 
 
 });

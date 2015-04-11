@@ -536,7 +536,7 @@
   max-height: 600px;
   overflow-y: hidden;
   overflow-x: hidden;
-  z-index: 999;
+  z-index: 500;
   width: 0;
   -webkit-transition: all 300ms;
   -moz-transition: all 300ms;
@@ -612,7 +612,7 @@
 
     .comment-status-wrapper {
       display: block;
-      padding-left: 50px;
+      padding-left: 45px;
 
       .comment-status{
         font-weight: 400;

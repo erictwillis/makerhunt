@@ -99,8 +99,8 @@
                 <img ng-src="{{post.user.image_url['88px']}}" class="user-pic"/>
                 <p class="who-did-what">
                   <span class="who">{{post.user.name}}</span>
-                  <span class="did">shared</span>
-                  <span class="what">a<span ng-if="post.card.type==='article'">n</span> {{post.card.type || 'link'}}</span>.
+                  <span class="did"><span ng-if="!post.cards[0]">posted</span><span ng-if="post.cards[0]">shared</span></span>
+                  <span class="what">a<span ng-if="post.cards[0].type==='article' || !post.cards[0]">n</span> <span ng-if="post.cards[0]">{{post.cards[0].type || 'link'}}</span><span ng-if="!post.cards[0]">update</span></span>.
                 </p>
 
                 <div class="user-detail-card ui_card" style="background-image: url({{post.user.image_url['88px']}});">
