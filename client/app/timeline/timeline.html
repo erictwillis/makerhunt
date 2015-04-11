@@ -237,6 +237,33 @@
       <div id="right-sidebar" class="f_right-sidebar" ng-class="{'sidebar-blur': (commentsPost != null)}">
         <div class="ui_sideBar-wrapper">
 
+          <div class="currentUser-card ui_card">
+
+            <div class="currentUser-card--cover">
+
+              <div class="cover-background" style="background-image: url('{{user.twitter_profile.profile_banner_url}}');"></div>
+
+              <div class="image-wrapper">
+                <img ng-src="{{user.image_url['88px']}}" alt="" class="currentUser-img"/>
+                <div class="maker-badge">M</div>
+              </div>
+              <div class="currentUser-meta">
+                <h3 class="user-name">{{user.name}}</h3>
+                <h5 class="user-username">@{{user.username}}</h5>
+              </div>
+
+            </div>
+            <div class="currentUser-card--stats">
+
+            </div>
+            <div class="currentUser-card--actions">
+              <button class="action-edit-profile" disabled>Edit Profile</button>
+              <button class="action-logout">Logout</button>
+            </div>
+
+
+          </div>
+
           <div class="ui_card">
 
             <h4 class="ui_sideBar-headline">Upcoming Events</h4>
