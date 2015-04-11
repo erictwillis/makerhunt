@@ -106,7 +106,11 @@ angular.module('makerhuntApp')
 
     $scope.openComments = function(post){
         $scope.commentsPost = post;
-    }
+    };
+
+    ////STUPID HACK TO FIX THE FIXED HEADER ON THE TIMELINE
+
+    $('body').css('-webkit-transform', 'none');
 
 
 });
