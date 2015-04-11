@@ -564,10 +564,9 @@
     min-width: 200px;
 
     .img-wrapper {
-      width: 12.5%;
+      width: 40px;
       display: inline-block;
       vertical-align: middle;
-      float: left;
 
       .user-img {
         max-width: 100%;
@@ -576,19 +575,22 @@
       }
     }
     .comment-meta {
-      width: 87.5%;
       vertical-align: middle;
       display: inline-block;
-      padding-left: 10px;
+      padding-left: 5px;
 
       .user-name {
         font-size: 14px;
         font-weight: 400;
-        display: inline-block;
+        display: block;
         margin: 0;
-        line-height: 20px;
-        width: 80%;
-        float: left;
+        line-height: 1;
+      }
+      .user-userName {
+        margin: 0;
+        font-size: 12px;
+        line-height: 1.2;
+        color: rgba(0,0,0,0.66);
       }
       .timestamp {
         font-size: 11px;
@@ -603,21 +605,28 @@
 
     .comment-status-wrapper {
       display: block;
-      width: 100%;
+      padding-left: 50px;
 
       .comment-status{
         font-weight: 300;
-        font-size: 13px;
-        margin-top: 10px;
+        font-size: 14px;
         margin-bottom: 0;
       }
 
     }
     .comment-actions-wrapper {
-      width: 100%;
-      display: block;
+      display: inline-block;
+      float: right;
+      line-height: 30px;
+      opacity: 0;
+      transition: opacity 250ms;
     }
 
+    &:hover{
+      .comment-actions-wrapper{
+        opacity: 1;
+      }
+    }
   }
 
   .newComment-wrapper{
