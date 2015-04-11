@@ -153,6 +153,21 @@
                   </a>
                   <p class="external-content-snippet" ng-bind-html="card.text">
                   </p>
+
+                  <div class="product-card-specials" ng-if="card.type==='product'">
+
+                    <button class="product-upvote">
+                      <span class="product-upvote--arrow"></span>
+                      <span class="product-upvote--count">95</span>
+                    </button>
+
+                    <button class="product-maker" ng-repeat="maker in [1, 2]">
+                      <div class="maker-name">Jonas Daniels</div>
+                      <img ng-src="https://pbs.twimg.com/profile_images/583567395161268224/ZRqzE0zf.jpg" alt="" class="maker-image"/>
+                    </button>
+
+                  </div>
+
                 </div>
                 <div class="img-wrapper">
                   <img ng-src="{{card.img}}" alt="" class="external-pic"/>
@@ -164,7 +179,8 @@
 
             <div class="ui_post-footer timeline-item--actions">
 
-              <div class="poster-actions-wrapper">
+              <div class="actions-wrapper">
+                <button class="action-like" ng-click="like(post);"><i class="fa fa-heart-o" ng-if="!post.likedBy.indexOf(user.user_id)"></i><i class="fa fa-heart" ng-if="post.likedBy.indexOf(user.user_id)"></i></button>
                 <button class="action-edit" ng-show="canEdit(post)" ng-click="edit(post)"><i class="fa fa-pencil"></i></button>
                 <button class="action-delete" ng-show="canDelete(post)" ng-click="delete(post)"><i class="fa fa-trash-o"></i></button>
               </div>
@@ -284,7 +300,7 @@
                       <span class="eventWho">{{event.title}}</span>
                     </h4>
                     <p class="event-info--meta">
-                      <span class="timestamp">in 6 days</span>
+                      <span class="timestamp" am-time-ago="event.from_date"></span>
                       ·
                       <i class="fa fa-slack"></i>MakerHunt
                     </p>

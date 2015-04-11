@@ -474,10 +474,19 @@
     -o-transition: opacity 300ms;
     transition: opacity 300ms;
 
-    .poster-actions-wrapper {
+    .actions-wrapper {
       width: 50%;
       display: inline-block;
       vertical-align: top;
+
+      .action-like{
+        margin: 0;
+        padding: 10px;
+        line-height: 1;
+        height: auto;
+        border: none;
+        font-size: 14px;
+      }
 
       .action-edit {
         margin: 0;
@@ -1039,7 +1048,7 @@ form{
   height: auto;
   line-height: 1;
   font-size: 14px;
-  color: rgba(228, 0, 0, 0.66);
+  //color: rgba(228, 0, 0, 0.66);
   &:hover{
     color: rgba(228, 0, 0, 1);
   }
@@ -1181,6 +1190,111 @@ $ease: .4s ease-in-out; $delay: .1s;
       width: 80%;
       &:hover{
         background: rgba(0,0,0,0.1);
+      }
+    }
+  }
+}
+
+.product-card-specials {
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 10px 8px;
+
+  .product-upvote {
+    background: #fff;
+    margin: 0 11px 0 0;
+    position: relative;
+    text-align: center;
+    border-radius: 4px;
+    width: auto;
+    padding: 0 10px;
+    height: 30px;
+    color: #555;
+    -webkit-transition: all 250ms;
+    -moz-transition: all 250ms;
+    -ms-transition: all 250ms;
+    -o-transition: all 250ms;
+    transition: all 250ms;
+    vertical-align: middle;
+
+    .product-upvote--arrow {
+      border-bottom: 10px solid #555;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 10px solid transparent;
+      display: inline-block;
+      vertical-align: top;
+      -webkit-transition: all 250ms;
+      -moz-transition: all 250ms;
+      -ms-transition: all 250ms;
+      -o-transition: all 250ms;
+      transition: all 250ms;
+    }
+    .product-upvote--count {
+      color: inherit;
+      font-size: 14px;
+      font-weight: 400;
+      display: inline-block;
+      vertical-align: top;
+      line-height: 30px;
+    }
+    &:hover{
+      background: rgba(217, 88, 57, 1);
+      color: #FFFFFF;
+      .product-upvote--arrow {
+        border-bottom: 10px solid #FFFFFF;
+      }
+    }
+  }
+
+  .product-maker {
+    padding: 0;
+    vertical-align: middle;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    position: relative;
+    margin: 0 11px 0 0;
+    z-index: 20;
+
+    .maker-name {
+      opacity: 0;
+      position: absolute;
+      background: transparent;
+      left: -50%;
+      top: 0;
+      line-height: 25px;
+      border-radius: 4px;
+      font-size: 10px;
+      text-transform: none;
+      font-weight: 400;
+      overflow: hidden;
+      white-space: nowrap;
+      -webkit-transition: all 300ms;
+      -moz-transition: all 300ms;
+      -ms-transition: all 300ms;
+      -o-transition: all 300ms;
+      transition: all 300ms;
+      width: auto;
+      padding: 0 5px;
+      border: 1px solid rgba(0,0,0,.3);
+    }
+    .maker-image {
+      width: 100%;
+      height: 100%;
+      vertical-align: top;
+      z-index: 20px;
+    }
+    &:hover{
+      .maker-name {
+        left: -50%;
+        top: -30px;
+        background: #fff;
+        z-index: 10;
+        opacity: 1;
+
       }
     }
   }

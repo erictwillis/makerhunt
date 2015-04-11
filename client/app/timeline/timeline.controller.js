@@ -6,6 +6,7 @@ angular.module('makerhuntApp')
     var from_date = new Date();
 
     $scope.user = user;
+    console.log(user);
     $scope.posts = [];
     $scope.currentPost = new Post();
     $scope.commentsPost = null;
@@ -29,7 +30,7 @@ angular.module('makerhuntApp')
         });
     });
 
-    $scope.eventsFilter = function( item) {
+    $scope.eventsFilter = function(item) {
             return (moment(item.from_date).isAfter(moment()));
     };
 
