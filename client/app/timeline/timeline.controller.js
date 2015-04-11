@@ -29,7 +29,7 @@ angular.module('makerhuntApp')
         });
     });
 
-    $scope.eventsFilter = function( item) {
+    $scope.eventsFilter = function(item) {
             return (moment(item.from_date).isAfter(moment()));
     };
 
@@ -70,7 +70,7 @@ angular.module('makerhuntApp')
         }, function(error) {
             $scope.state = 'error';
         });
-    }
+    };
 
     $scope.delete = function(post) {
         post.$delete().then(function(post) {
@@ -106,7 +106,12 @@ angular.module('makerhuntApp')
 
     $scope.openComments = function(post){
         $scope.commentsPost = post;
-    }
+    };
+
+    ////STUPID HACK TO FIX THE FIXED HEADER ON THE TIMELINE
+
+    $('body').css('-webkit-transform', 'none');
+
 
 
 });

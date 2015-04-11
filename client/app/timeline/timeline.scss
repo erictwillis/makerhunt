@@ -250,7 +250,7 @@
 
         .detail-wrapper {
           position: absolute;
-          top: 120px;
+          top: 118px;
           width: 80%;
 
           .name-wrapper {
@@ -270,14 +270,13 @@
           }
 
           .badge-wrapper {
-            background: rgba(65, 170, 120, 0.8);
-            text-align: center;
+            background: rgba(65,170,120,.8);
             margin-top: 2px;
             width: auto;
             position: relative;
             white-space: nowrap;
-            padding: 0 8px;
-            max-width: 100px;
+            padding: 0 15px 0 5px;
+            display: table;
 
             .badgeItemName {
               font-size: 12px;
@@ -300,7 +299,7 @@
                 line-height: 20px;
                 text-align: center;
                 right: 0;
-                font-weight: 700;
+                font-weight: 400;
               }
             }
           }
@@ -464,7 +463,7 @@
   }
 
   .ui_post-footer {
-    opacity: 0;
+    opacity: 1;
     width: 100%;
     margin-top: 10px;
     margin-bottom: 5px;
@@ -475,10 +474,19 @@
     -o-transition: opacity 300ms;
     transition: opacity 300ms;
 
-    .poster-actions-wrapper {
+    .actions-wrapper {
       width: 50%;
       display: inline-block;
       vertical-align: top;
+
+      .action-like{
+        margin: 0;
+        padding: 10px;
+        line-height: 1;
+        height: auto;
+        border: none;
+        font-size: 14px;
+      }
 
       .action-edit {
         margin: 0;
@@ -529,20 +537,24 @@
 }
 
 .ui_comments-container {
-  position: absolute;
-  top: -15px;
-  left: calc(100% + 5px);
+  position: relative;
   padding: 0;
   max-height: 600px;
   overflow-y: hidden;
   overflow-x: hidden;
-  z-index: 999;
+  z-index: 500;
   width: 0;
   -webkit-transition: all 300ms;
   -moz-transition: all 300ms;
   -ms-transition: all 300ms;
   -o-transition: all 300ms;
   transition: all 300ms;
+  background: rgba(0,0,0,0.04);
+  margin-top: 11px;
+  float: right;
+  margin-bottom: 20px;
+  display: inline-block;
+
 
   .comments-headline{
     font-weight: 400;
@@ -554,6 +566,7 @@
     padding: 5px 15px;
     margin: 0 0 5px;
     min-width: 200px;
+    display: none;
   }
 
   .comment-wrapper {
@@ -615,8 +628,8 @@
       padding-left: 50px;
 
       .comment-status{
-        font-weight: 300;
-        font-size: 14px;
+        font-weight: 400;
+        font-size: 12px;
         margin-bottom: 0;
         line-height: 1.2;
       }
@@ -652,8 +665,7 @@
   }
 }
 .comments-open{
-  width: calc(1160px * 27.5 / 100 - 20px);
-  margin-left: 20px;
+  width: 100%;
   overflow-y: auto;
 }
 
@@ -846,6 +858,10 @@
     padding-left: 20px;
     vertical-align: top;
     float: left;
+
+    .currentUser-card{
+      display: block;
+    }
   }
 
   //// header tablet
@@ -864,6 +880,30 @@
     }
   }
 
+  .ui_comments-container {
+    position: absolute;
+    top: -15px;
+    left: calc(100% + 5px);
+    background: #FFFFFF;
+    margin-top: 0;
+    float: none;
+    margin-bottom: 0;
+    display: block;
+    .comments-headline{
+      display: block;
+    }
+    .comment-wrapper{
+      .comment-status-wrapper {
+        display: block;
+        padding-left: 45px;
+      }
+    }
+  }
+
+  .comments-open{
+    width: calc(800px / 3 - 10px);
+    margin-left: 20px;
+  }
 }
 
 
@@ -895,6 +935,9 @@
     padding-left: 20px;
     vertical-align: top;
     float: left;
+    .currentUser-card{
+      display: none;
+    }
   }
 
   //// header desktop
@@ -913,6 +956,15 @@
       width: 27.5%;
     }
   }
+  .comments-open{
+    width: calc(1160px * 27.5 / 100 - 20px);
+  }
+  .ui_post{
+    .ui_post-footer{
+      opacity: 0;
+    }
+  }
+
 }
 
 .sidebar-blur{
@@ -996,7 +1048,7 @@ form{
   height: auto;
   line-height: 1;
   font-size: 14px;
-  color: rgba(228, 0, 0, 0.66);
+  //color: rgba(228, 0, 0, 0.66);
   &:hover{
     color: rgba(228, 0, 0, 1);
   }
@@ -1041,6 +1093,7 @@ $ease: .4s ease-in-out; $delay: .1s;
 .currentUser-card {
   width: 100%;
   overflow: hidden;
+  margin-bottom: 15px;
 
   .currentUser-card--cover {
     position: relative;
@@ -1102,6 +1155,7 @@ $ease: .4s ease-in-out; $delay: .1s;
       display: inline-block;
       vertical-align: top;
       padding-top: 20px;
+      padding-left: 5px;
       .user-name {
         margin: 0;
         font-size: 14px;
@@ -1136,6 +1190,111 @@ $ease: .4s ease-in-out; $delay: .1s;
       width: 80%;
       &:hover{
         background: rgba(0,0,0,0.1);
+      }
+    }
+  }
+}
+
+.product-card-specials {
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 10px 8px;
+
+  .product-upvote {
+    background: #fff;
+    margin: 0 11px 0 0;
+    position: relative;
+    text-align: center;
+    border-radius: 4px;
+    width: auto;
+    padding: 0 10px;
+    height: 30px;
+    color: #555;
+    -webkit-transition: all 250ms;
+    -moz-transition: all 250ms;
+    -ms-transition: all 250ms;
+    -o-transition: all 250ms;
+    transition: all 250ms;
+    vertical-align: middle;
+
+    .product-upvote--arrow {
+      border-bottom: 10px solid #555;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 10px solid transparent;
+      display: inline-block;
+      vertical-align: top;
+      -webkit-transition: all 250ms;
+      -moz-transition: all 250ms;
+      -ms-transition: all 250ms;
+      -o-transition: all 250ms;
+      transition: all 250ms;
+    }
+    .product-upvote--count {
+      color: inherit;
+      font-size: 14px;
+      font-weight: 400;
+      display: inline-block;
+      vertical-align: top;
+      line-height: 30px;
+    }
+    &:hover{
+      background: rgba(217, 88, 57, 1);
+      color: #FFFFFF;
+      .product-upvote--arrow {
+        border-bottom: 10px solid #FFFFFF;
+      }
+    }
+  }
+
+  .product-maker {
+    padding: 0;
+    vertical-align: middle;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    position: relative;
+    margin: 0 11px 0 0;
+    z-index: 20;
+
+    .maker-name {
+      opacity: 0;
+      position: absolute;
+      background: transparent;
+      left: -50%;
+      top: 0;
+      line-height: 25px;
+      border-radius: 4px;
+      font-size: 10px;
+      text-transform: none;
+      font-weight: 400;
+      overflow: hidden;
+      white-space: nowrap;
+      -webkit-transition: all 300ms;
+      -moz-transition: all 300ms;
+      -ms-transition: all 300ms;
+      -o-transition: all 300ms;
+      transition: all 300ms;
+      width: auto;
+      padding: 0 5px;
+      border: 1px solid rgba(0,0,0,.3);
+    }
+    .maker-image {
+      width: 100%;
+      height: 100%;
+      vertical-align: top;
+      z-index: 20px;
+    }
+    &:hover{
+      .maker-name {
+        left: -50%;
+        top: -30px;
+        background: #fff;
+        z-index: 10;
+        opacity: 1;
+
       }
     }
   }
