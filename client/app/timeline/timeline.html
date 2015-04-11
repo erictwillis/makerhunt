@@ -180,7 +180,7 @@
             <div class="ui_post-footer timeline-item--actions">
 
               <div class="actions-wrapper">
-                <button class="action-like" ng-click="like(post);"><i class="fa fa-heart-o" ng-if="!post.likedBy.indexOf(user.user_id)"></i><i class="fa fa-heart" ng-if="post.likedBy.indexOf(user.user_id)"></i></button>
+                  <button class="action-like" ng-click="like(post);"><i class="fa" ng-class="{'fa-heart-o': !hasLiked(post), 'fa-heart': hasLiked(post) }"></i></button>
                 <button class="action-edit" ng-show="canEdit(post)" ng-click="edit(post)"><i class="fa fa-pencil"></i></button>
                 <button class="action-delete" ng-show="canDelete(post)" ng-click="delete(post)"><i class="fa fa-trash-o"></i></button>
               </div>

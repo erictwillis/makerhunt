@@ -72,6 +72,28 @@ angular.module('makerhuntApp')
         });
     };
 
+    $scope.hasLiked = function(post) {
+        return (post.liked_by.indexOf($scope.user.user_id)!=-1);
+    };
+
+    $scope.like = function(post) {
+        if ($scope.hasLiked(post)) {
+            post.$unlike().then(function(data) {
+                angular.extend(post, data);
+            }).catch(function(e) {
+                console.debug(e);
+            }).finally(function() {
+            });
+        } else { 
+            post.$like().then(function(data) {
+                angular.extend(post, data);
+            }).catch(function(e) {
+                console.debug(e);
+            }).finally(function() {
+            });
+        }
+    };
+
     $scope.delete = function(post) {
         post.$delete().then(function(post) {
             var index = $scope.posts.indexOf(post);

@@ -81,6 +81,56 @@ func apiTimelineDelete(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func apiTimelineLike(w http.ResponseWriter, r *http.Request) {
+	postId := bson.NewObjectId()
+
+	vars := mux.Vars(r)
+	if val, ok := vars["post_id"]; ok {
+		postId = bson.ObjectIdHex(val)
+	}
+
+	session, _ := store.Get(r, config.SessionName)
+
+	userid := session.Values["userid"]
+	if userid == nil {
+		http.Error(w, "Unauthorized", 401)
+		return
+	}
+
+	change := mgo.Change{
+		ReturnNew: true,
+	}
+
+	switch r.Method {
+	case "PUT":
+		change.Update = bson.M{
+			"$addToSet": bson.M{
+				"liked_by": bson.ObjectIdHex(userid.(string)),
+			},
+		}
+	case "DELETE":
+		change.Update = bson.M{
+			"$pull": bson.M{
+				"liked_by": bson.ObjectIdHex(userid.(string)),
+			},
+		}
+
+	}
+
+	post := Post{}
+	_, err := db.Posts.FindId(postId).Apply(change, &post)
+	if err != nil {
+		fmt.Printf("%#v", err.(*mgo.LastError).Error())
+		fmt.Println(err.Error())
+		http.Error(w, "Error", 500)
+		return
+	}
+
+	fmt.Println(post)
+
+	WriteJSON(w, post)
+}
+
 func apiTimelinePatch(w http.ResponseWriter, r *http.Request) {
 	/*
 		vars := mux.Vars(r)
@@ -178,16 +228,17 @@ func (c *Comment) LoadUser() error {
 }
 
 type Post struct {
-	PostId    bson.ObjectId `bson:"_id" json:"post_id"`
-	UserId    bson.ObjectId `bson:"user_id"`
-	User      *User         `bson:"-" json:"user"`
-	CreatedAt time.Time     `bson:"created_at" json:"created_at"`
-	UpdatedAt time.Time     `bson:"updated_at" json:"updated_at"`
-	Status    string        `bson:"status" json:"status"`
-	Type      string        `bson:"type" json:"type"`
-	Comments  []Comment     `bson:"comments" json:"comments"`
-	Via       Via           `bson:"via" json:"via"`
-	Cards     []Card        `bson:"cards" json:"cards"`
+	PostId    bson.ObjectId   `bson:"_id" json:"post_id"`
+	UserId    bson.ObjectId   `bson:"user_id"`
+	User      *User           `bson:"-" json:"user"`
+	CreatedAt time.Time       `bson:"created_at" json:"created_at"`
+	UpdatedAt time.Time       `bson:"updated_at" json:"updated_at"`
+	Status    string          `bson:"status" json:"status"`
+	Type      string          `bson:"type" json:"type"`
+	Comments  []Comment       `bson:"comments" json:"comments"`
+	Via       Via             `bson:"via" json:"via"`
+	Cards     []Card          `bson:"cards" json:"cards"`
+	LikedBy   []bson.ObjectId `bson:"liked_by" json:"liked_by"`
 }
 
 type Card struct {
@@ -413,6 +464,7 @@ func apiTimelineCreate(w http.ResponseWriter, r *http.Request) {
 	post.Via = Via{Provider: "article"}
 	post.Comments = []Comment{}
 	post.Cards = []Card{}
+	post.LikedBy = []bson.ObjectId{}
 
 	words := strings.FieldsFunc(post.Status, func(c rune) bool {
 		return unicode.IsSpace(c)

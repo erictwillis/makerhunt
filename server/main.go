@@ -296,8 +296,37 @@ func authHandler(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/signup", 302)
 }
 
-func accessHandler(h http.HandlerFunc) http.HandlerFunc {
+type Role string
+
+const (
+	RoleAdmin Role = "admin"
+	RoleUser  Role = "user"
+	RoleMaker Role = "maker"
+)
+
+func Has(haystack []interface{}, needle interface{}) bool {
+	for i, _ := range haystack {
+		if haystack[i] == needle {
+			return true
+		}
+	}
+
+	return false
+}
+
+/*
+
+type Context struct {
+	User User
+}
+
+type HandlerFunc func(Context, http.ResponseWriter, *http.Request)
+*/
+
+func accessHandler(h http.HandlerFunc, roles ...Role) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		// context := Context{}
+
 		session, _ := store.Get(r, config.SessionName)
 
 		userid := session.Values["userid"]
@@ -314,18 +343,23 @@ func accessHandler(h http.HandlerFunc) http.HandlerFunc {
 			panic(err)
 		}
 
-		switch user.Username {
-		case "erictwillis":
-			fallthrough
-		case "remco_verhoef":
-			fallthrough
-		case "sleinadsanoj":
-			h(w, r)
-		default:
-			http.Error(w, "Unauthorized", 401)
-			return
-		}
+		/*
+			if Has(roles, RoledAdmin) {
+				switch user.Username {
+				case "erictwillis":
+					fallthrough
+				case "remco_verhoef":
+					fallthrough
+				case "sleinadsanoj":
+					break
+				default:
+					http.Error(w, "Unauthorized", 401)
+					return
+				}
+			}
+		*/
 
+		h(w, r)
 	}
 }
 
@@ -350,23 +384,24 @@ func main() {
 	api.HandleFunc("/me/subscribe", apiMeSubscribe).Methods("POST")
 	api.HandleFunc("/me/update-producthunt-data", apiMeUpdateProductHuntData).Methods("POST")
 	api.HandleFunc("/me/invite", apiMeInvite).Methods("POST")
-	api.HandleFunc("/users", accessHandler(apiUsersNew)).Methods("POST")
+	api.HandleFunc("/users", accessHandler(apiUsersNew, RoleAdmin)).Methods("POST")
 
-	api.HandleFunc("/timeline", accessHandler(apiTimelineCreate)).Methods("POST")
-	api.HandleFunc("/timeline/{id}/comments", accessHandler(apiTimelineCommentCreate)).Methods("POST")
-	api.HandleFunc("/timeline/{post_id}/comments/{comment_id}", accessHandler(apiTimelineCommentDelete)).Methods("DELETE")
+	api.HandleFunc("/timeline", accessHandler(apiTimelineCreate, RoleAdmin, RoleUser)).Methods("POST")
+	api.HandleFunc("/timeline/{id}/comments", accessHandler(apiTimelineCommentCreate, RoleAdmin, RoleUser)).Methods("POST")
+	api.HandleFunc("/timeline/{post_id}/comments/{comment_id}", accessHandler(apiTimelineCommentDelete, RoleAdmin, RoleUser)).Methods("DELETE")
 	api.HandleFunc("/timeline", apiTimelineAll).Methods("GET")
-	api.HandleFunc("/timeline/{id}", accessHandler(apiTimelineGet)).Methods("GET")
-	api.HandleFunc("/timeline/{id}", accessHandler(apiTimelineUpdate)).Methods("PUT")
-	api.HandleFunc("/timeline/{id}", accessHandler(apiTimelinePatch)).Methods("PATCH")
-	api.HandleFunc("/timeline/{id}", accessHandler(apiTimelineDelete)).Methods("DELETE")
+	api.HandleFunc("/timeline/{id}", accessHandler(apiTimelineGet, RoleAdmin, RoleUser)).Methods("GET")
+	api.HandleFunc("/timeline/{id}", accessHandler(apiTimelineUpdate, RoleAdmin, RoleUser)).Methods("PUT")
+	api.HandleFunc("/timeline/{id}", accessHandler(apiTimelinePatch, RoleAdmin, RoleUser)).Methods("PATCH")
+	api.HandleFunc("/timeline/{id}", accessHandler(apiTimelineDelete, RoleAdmin, RoleUser)).Methods("DELETE")
+	api.HandleFunc("/timeline/{post_id}/like", accessHandler(apiTimelineLike, RoleAdmin, RoleUser))
 
-	api.HandleFunc("/events", accessHandler(apiEventsCreate)).Methods("POST")
+	api.HandleFunc("/events", accessHandler(apiEventsCreate, RoleAdmin)).Methods("POST")
 	api.HandleFunc("/events", apiEventsAll).Methods("GET")
-	api.HandleFunc("/events/{id}", accessHandler(apiEventGet)).Methods("GET")
-	api.HandleFunc("/events/{id}", accessHandler(apiEventUpdate)).Methods("PUT")
-	api.HandleFunc("/events/{id}", accessHandler(apiEventPatch)).Methods("PATCH")
-	api.HandleFunc("/events/{id}", accessHandler(apiEventDelete)).Methods("DELETE")
+	api.HandleFunc("/events/{id}", accessHandler(apiEventGet, RoleAdmin)).Methods("GET")
+	api.HandleFunc("/events/{id}", accessHandler(apiEventUpdate, RoleAdmin)).Methods("PUT")
+	api.HandleFunc("/events/{id}", accessHandler(apiEventPatch, RoleAdmin)).Methods("PATCH")
+	api.HandleFunc("/events/{id}", accessHandler(apiEventDelete, RoleAdmin)).Methods("DELETE")
 	api.HandleFunc("/makers", apiMakersAll)
 
 	r.HandleFunc("/signout", signoutHandler)

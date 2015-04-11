@@ -43,6 +43,14 @@ angular.module('makerhuntApp')
         method: 'PUT',
         url: '/api/v1/timeline/:post_id'
       },
+      like: {
+        method: 'PUT',
+        url: '/api/v1/timeline/:post_id/like'
+      },
+      unlike: {
+        method: 'DELETE',
+        url: '/api/v1/timeline/:post_id/like'
+      },
       get: {
         method: 'GET',
         params: {
