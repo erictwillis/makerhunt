@@ -5,6 +5,7 @@ angular.module('makerhuntApp')
     $stateProvider
         .state('timeline', {
             url: "/timeline",
+            roles: ['user', 'maker'],
             views: {
                 main: {
                     templateUrl: 'app/timeline/timeline.html',
