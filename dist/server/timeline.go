@@ -9,6 +9,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"unicode"
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/gorilla/mux"
@@ -413,7 +414,9 @@ func apiTimelineCreate(w http.ResponseWriter, r *http.Request) {
 	post.Comments = []Comment{}
 	post.Cards = []Card{}
 
-	words := strings.Split(post.Status, " ")
+	words := strings.FieldsFunc(post.Status, func(c rune) bool {
+		return unicode.IsSpace(c)
+	})
 
 	post.Status = ""
 	for _, word := range words {
