@@ -23,7 +23,10 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
-)
+	/*
+			"github.com/goamz/goamz/aws"
+		"github.com/goamz/goamz/sqs"
+	*/)
 
 const ()
 
@@ -38,6 +41,39 @@ var (
 )
 
 var templates = template.Must(template.ParseGlob(path.Join(config.Static, "*.html")))
+
+func botQueue() {
+	/*
+		for {
+			var rmr *sqs.ReceiveMessageResponse
+
+			if rmr, err = q.ReceiveMessage(1); err != nil {
+				log.Printf("%s", err)
+				return
+			}
+
+			if len(rmr.Messages) == 0 {
+				log.Printf("Nothing to do")
+				time.Sleep(60 * time.Second)
+				continue
+			}
+			message := rmr.Messages[0]
+			var pr struct {
+				PullRequest PullRequest `json:"pull_request"`
+				Repository  Repository  `json:"repository"`
+				Action      string      `json:"action"`
+			}
+
+			log.Println(message.Body)
+
+			if err = json.Unmarshal([]byte(message.Body), &pr); err != nil {
+				log.Printf("%s", err)
+				continue
+			}
+		}
+
+	*/
+}
 
 func init() {
 	rand.Seed(time.Now().UTC().UnixNano())

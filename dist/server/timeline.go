@@ -126,7 +126,14 @@ func apiTimelineLike(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println(post)
+	post.LoadUser()
+
+	for idx, _ := range post.Comments {
+		if err := post.Comments[idx].LoadUser(); err != nil {
+			fmt.Println(err)
+		}
+
+	}
 
 	WriteJSON(w, post)
 }
