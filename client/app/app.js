@@ -68,10 +68,27 @@ angular.module('makerhuntApp', [
             $state.go("main");
         });
     });
-}).run(function($window){
+}).run(function($window, $rootScope){
 
   if ($window.navigator.userAgent.match(/OS X.*Safari/) && ! $window.navigator.userAgent.match(/Chrome/)) {
     $('body').addClass('safari');
+  }
+
+  $rootScope.goExternal = function(url, source, medium, campaign){
+
+    if(!source){
+      source = 'makerhunt'
+    }
+    if(!medium){
+      medium = 'timeline'
+    }
+    if(!campaign){
+      campaign = 'user_post'
+    }
+
+    url = encodeURI(url);
+
+    $window.open(url+'?utm_source='+source+'&utm_medium='+medium+'&utm_campaign='+campaign, '_blank');
   }
 
 });

@@ -147,7 +147,7 @@
 
               </div>
 
-              <div class="external-content-wrapper" ng-repeat="card in post.cards">
+              <div class="external-content-wrapper" ng-repeat="card in post.cards" ng-click="goExternal(card.url)">
                 <div class="text-wrapper">
                     <img ng-src="{{card.icon}}" alt="" class="sourceImg"/>
                   <a class="external-content-headline" ng-bind="card.headline" ng-bind-href="{{card.url}}" target="_blank">

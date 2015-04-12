@@ -410,6 +410,7 @@
       border: 1px solid rgba(0, 0, 0, 0.05);
       border-radius: 2px;
       margin-top: 10px;
+      cursor: pointer;
 
       .text-wrapper {
         width: 66%;
@@ -486,6 +487,10 @@
         height: auto;
         border: none;
         font-size: 14px;
+        color: #41aa78;
+        &:focus,&:active{
+          color: #41aa78;
+        }
       }
 
       .action-edit {
@@ -610,7 +615,8 @@
         margin: 0;
         font-size: 12px;
         line-height: 1.2;
-        color: rgba(0,0,0,0.66);
+        font-weight: 400;
+        color: rgba(0,0,0,.5);
       }
       .timestamp {
         font-size: 11px;
@@ -864,6 +870,12 @@
     }
   }
 
+  .ui_comments-container {
+    .comment-wrapper{
+      width: 257px;
+    }
+  }
+
   //// header tablet
 
   .fixedNav {
@@ -937,6 +949,11 @@
     float: left;
     .currentUser-card{
       display: none;
+    }
+  }
+  .ui_comments-container {
+    .comment-wrapper{
+      width: 299px;
     }
   }
 
