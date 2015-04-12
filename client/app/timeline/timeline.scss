@@ -486,6 +486,10 @@
         height: auto;
         border: none;
         font-size: 14px;
+        color: #41aa78;
+        &:focus,&:active{
+          color: #41aa78;
+        }
       }
 
       .action-edit {
@@ -864,6 +868,12 @@
     }
   }
 
+  .ui_comments-container {
+    .comment-wrapper{
+      width: 257px;
+    }
+  }
+
   //// header tablet
 
   .fixedNav {
@@ -937,6 +947,11 @@
     float: left;
     .currentUser-card{
       display: none;
+    }
+  }
+  .ui_comments-container {
+    .comment-wrapper{
+      width: 299px;
     }
   }
 
