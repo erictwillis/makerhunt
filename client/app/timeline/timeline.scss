@@ -573,21 +573,21 @@
 .ui_comments-container {
   position: relative;
   padding: 0;
-  max-height: 600px;
   overflow-y: hidden;
   overflow-x: hidden;
-  z-index: 500;
-  width: 0;
-  -webkit-transition: all 300ms;
-  -moz-transition: all 300ms;
-  -ms-transition: all 300ms;
-  -o-transition: all 300ms;
-  transition: all 300ms;
-  background: rgba(0,0,0,0.04);
-  margin-top: 11px;
-  float: right;
-  margin-bottom: 20px;
-  display: inline-block;
+  -webkit-transition: all 400ms ease-in-out;
+  -moz-transition: all 400ms ease-in-out;
+  -ms-transition: all 400ms ease-in-out;
+  -o-transition: all 400ms ease-in-out;
+  transition: all 400ms ease-in-out;
+  margin-top: 0;
+  background: rgba(0,0,0,.01);
+  border-radius: 4px;
+  float: none;
+  display: block;
+  max-height: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
 
 
   .comments-headline{
@@ -607,7 +607,6 @@
     width: 100%;
     padding: 5px 15px 10px;
     border-bottom: 1px solid #f4f4f4;
-    min-width: 200px;
 
     .be-first-to-comment {
       text-align: center;
@@ -618,7 +617,7 @@
     }
 
     .img-wrapper {
-      width: 40px;
+      width: 35px;
       display: inline-block;
       vertical-align: middle;
 
@@ -660,7 +659,7 @@
 
     .comment-status-wrapper {
       display: block;
-      padding-left: 50px;
+      padding-left: 45px;
 
       .comment-status{
         font-weight: 400;
@@ -683,6 +682,12 @@
         opacity: 1;
       }
     }
+    &:nth-child(even){
+      background: rgba(0,0,0,0.01);
+    }
+  }
+  .comment-threaded{
+    padding-left: 60px;
   }
 
   .newComment-wrapper{
@@ -700,8 +705,11 @@
   }
 }
 .comments-open{
-  width: 100%;
+  max-height: 600px;
+  margin-top: 5px;
   overflow-y: auto;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.01), 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.01), 0 1px 1px 0 rgba(0, 0, 0, 0.1);
 }
 
 
@@ -868,12 +876,12 @@
 
 ////f_Tablet
 
-@media (min-width: 800px){
-  .meta-who-did-what{
-    width: 80%!important;
+@media (min-width: 800px) {
+  .meta-who-did-what {
+    width: 80% !important;
   }
-  .meta-timestamp{
-    display: inline-block!important;
+  .meta-timestamp {
+    display: inline-block !important;
   }
 
   .f_left-sidebar {
@@ -894,14 +902,8 @@
     vertical-align: top;
     float: left;
 
-    .currentUser-card{
+    .currentUser-card {
       display: block;
-    }
-  }
-
-  .ui_comments-container {
-    .comment-wrapper{
-      width: 257px;
     }
   }
 
@@ -921,30 +923,6 @@
     }
   }
 
-  .ui_comments-container {
-    position: absolute;
-    top: -15px;
-    left: calc(100% + 5px);
-    background: #FFFFFF;
-    margin-top: 0;
-    float: none;
-    margin-bottom: 0;
-    display: block;
-    .comments-headline{
-      display: block;
-    }
-    .comment-wrapper{
-      .comment-status-wrapper {
-        display: block;
-        padding-left: 45px;
-      }
-    }
-  }
-
-  .comments-open{
-    width: calc(800px / 3 - 10px);
-    margin-left: 20px;
-  }
 }
 
 
@@ -980,11 +958,6 @@
       display: none;
     }
   }
-  .ui_comments-container {
-    .comment-wrapper{
-      width: 299px;
-    }
-  }
 
   //// header desktop
 
@@ -1001,9 +974,6 @@
     .nav-action-wrapper {
       width: 27.5%;
     }
-  }
-  .comments-open{
-    width: calc(1160px * 27.5 / 100 - 20px);
   }
   .ui_post{
     .ui_post-footer{
