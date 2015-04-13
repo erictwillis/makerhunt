@@ -142,7 +142,7 @@
                 </div>
 
                 <div class="status-message">
-                    <p class="status" ng-bind-html="post.status"></p>
+                    <p class="status" ng-bind-html="post.status | twemoji"></p>
                 </div>
 
               </div>
@@ -150,9 +150,9 @@
               <div class="external-content-wrapper" ng-repeat="card in post.cards" ng-click="goExternal(card.url)">
                 <div class="text-wrapper">
                     <img ng-src="{{card.icon}}" alt="" class="sourceImg"/>
-                  <a class="external-content-headline" ng-bind="card.headline" ng-bind-href="{{card.url}}" target="_blank">
+                  <a class="external-content-headline" ng-bind-html="card.headline | twemoji">
                   </a>
-                  <p class="external-content-snippet" ng-bind-html="card.text">
+                  <p class="external-content-snippet" ng-bind-html="card.text | twemoji">
                   </p>
 
                   <div class="product-card-specials" ng-if="card.type==='product'">
@@ -212,7 +212,7 @@
                     <button class="action-delete" ng-show="canDelete(comment)" ng-click="delete(comment)"><i class="fa fa-trash-o"></i></button>
                   </div>
                   <div class="comment-status-wrapper">
-                    <p class="comment-status" ng-bind-html="comment.body">
+                    <p class="comment-status" ng-bind-html="comment.body | twemoji">
                     </p>
                   </div>
                 </div>

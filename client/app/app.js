@@ -7,7 +7,8 @@ angular.module('makerhuntApp', [
         'ngSanitize',
         'angularMoment',
         'angularytics',
-        'ui.router'
+        'ui.router',
+        'sc.twemoji'
 ]).config(function ($locationProvider, $httpProvider, $stateProvider, $urlRouterProvider, $compileProvider, AngularyticsProvider) {
     $urlRouterProvider
         .otherwise("/");
