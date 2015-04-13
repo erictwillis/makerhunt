@@ -84,7 +84,7 @@ angular.module('makerhuntApp')
                 console.debug(e);
             }).finally(function() {
             });
-        } else { 
+        } else {
             post.$like().then(function(data) {
                 angular.extend(post, data);
             }).catch(function(e) {
@@ -133,6 +133,47 @@ angular.module('makerhuntApp')
     ////STUPID HACK TO FIX THE FIXED HEADER ON THE TIMELINE
 
     $('body').css('-webkit-transform', 'none');
+
+
+    //// jQUERY powered notification open & closing
+
+    $scope.toggleNotifications = function(){
+      $('#notification-center').toggleClass('notifications-open');
+    };
+
+    //// static notification array
+    $scope.notifications = [
+      {
+        user: {
+          img: 'https://pbs.twimg.com/profile_images/583567395161268224/ZRqzE0zf.jpg',
+          name: 'Jonas Daniels'
+        },
+        action: 'commented on',
+        target: {
+          type: 'post'
+        }
+      },
+      {
+        user: {
+          img: 'https://pbs.twimg.com/profile_images/583567395161268224/ZRqzE0zf.jpg',
+          name: 'Jonas Daniels'
+        },
+        action: 'commented on',
+        target: {
+          type: 'post'
+        }
+      },
+      {
+        user: {
+          img: 'https://pbs.twimg.com/profile_images/583567395161268224/ZRqzE0zf.jpg',
+          name: 'Jonas Daniels'
+        },
+        action: 'commented on',
+        target: {
+          type: 'post'
+        }
+      }
+    ];
 
 
 

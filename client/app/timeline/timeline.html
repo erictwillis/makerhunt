@@ -17,13 +17,40 @@
       <div class="nav-action-wrapper">
 
         <ul class="action-list">
-          <li class="action-item">
+          <li class="action-item" ng-click="toggleNotifications()">
             <i class="fa fa-bell"></i>
+            <div class="notification-count" ng-if="notifications.length > 0"><span ng-if="notifications.length < 10">{{notifications.length}}</span><span class="notifs-over-10" ng-if="notifications.length >= 10">·</span></div>
           </li>
           <li class="action-item">
             <i class="fa fa-user"></i>
           </li>
         </ul>
+
+        <div class="dropDown-wrapper">
+
+          <div class="notifications-wrapper ui_card" id="notification-center">
+
+            <ul class="notifications-list">
+              <li class="notification-wrapper" ng-repeat="notification in notifications">
+                <div class="notif-img-wrapper">
+                  <img ng-src="{{notification.user.img}}" alt="" class="notification-pic"/>
+                </div>
+                <div class="notif-content-wrapper">
+                  <span class="who">{{notification.user.name}}</span>
+                  <span class="did">{{notification.action}}</span>
+                  <span class="what">your {{notification.target.type}}</span>.
+                </div>
+                <div class="notif-action-wrapper">
+                  <button class="notif-remove" ng-click="remove(notification); $event.stopPropagation();"><i class="fa fa-trash-o"></i></button>
+                </div>
+              </li>
+            </ul>
+
+            <button class="notif-remove-all" ng-click="removeAll(notifications)"><i class="fa fa-trash-o"></i> remove all notifications</button>
+
+          </div>
+
+        </div>
 
       </div>
 
