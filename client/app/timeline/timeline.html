@@ -181,13 +181,13 @@
             <div class="ui_post-footer timeline-item--actions">
 
               <div class="actions-wrapper">
-                  <button class="action-like" ng-click="like(post);"><i class="fa" ng-class="{'fa-heart-o': !hasLiked(post), 'fa-heart': hasLiked(post) }"></i></button>
                 <button class="action-edit" ng-show="canEdit(post)" ng-click="edit(post)"><i class="fa fa-pencil"></i></button>
                 <button class="action-delete" ng-show="canDelete(post)" ng-click="delete(post)"><i class="fa fa-trash-o"></i></button>
               </div>
 
-              <div class="comment-open-wrapper">
-                <button class="comment-toggle" ng-click="openComments(post); $event.stopPropagation();"><i class="fa fa-comments-o"></i> Comments ({{post.comments.length}})</button>
+              <div class="right-action-wrapper">
+                <button class="action-like" ng-click="like(post);"><span ng-if="post.liked_by.length > 0">{{post.liked_by.length}} </span><i class="fa" ng-class="{'fa-heart-o': !hasLiked(post), 'fa-heart': hasLiked(post) }"></i></button>
+                <button class="comment-toggle" ng-click="openComments(post); $event.stopPropagation();"><i class="fa fa-comments-o"></i> <span ng-if="post.comments.length > 0">{{post.comments.length}} </span>Comment<span ng-hide="post.comments.length === 1">s</span></button>
               </div>
 
             </div>
@@ -195,7 +195,7 @@
             <div class="ui_comments-container ui_card popup" ng-class="{'comments-open': isCommentsPost(post)}" ng-controller="CommentsCtrl">
 
 
-                <h4 class="comments-headline">Comments <i class="fa fa-comments-o"></i></h4>
+                <h4 class="comments-headline"><i class="fa fa-comments-o"></i> Comments</h4>
                 <div class="comment-wrapper" ng-if="post.comments.length == 0">
                     <p class="be-first-to-comment">write the first comment</p>
                 </div>
