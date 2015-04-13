@@ -139,6 +139,7 @@ angular.module('makerhuntApp')
 
     $scope.toggleNotifications = function(){
       $('#notification-center').toggleClass('notifications-open');
+      $('#right-sidebar').toggleClass('sidebar-blur');
     };
 
     //// static notification array

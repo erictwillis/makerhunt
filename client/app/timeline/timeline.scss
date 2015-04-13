@@ -76,7 +76,6 @@
     display: inline-block;
     width: 27.5%;
     float: left;
-    position: relative;
 
     .action-list {
       margin: 0;
@@ -1388,7 +1387,7 @@ $ease: .4s ease-in-out; $delay: .1s;
   position: absolute;
   left: 0;
   top: 51px;
-  padding-left: 20px;
+  padding: 0 20px;
   width: 100%;
 
   .notifications-wrapper {
@@ -1481,6 +1480,7 @@ $ease: .4s ease-in-out; $delay: .1s;
       line-height: 1;
       border: none;
       display: inline-block;
+      width: 100%;
     }
   }
   .notifications-open{
@@ -1490,4 +1490,19 @@ $ease: .4s ease-in-out; $delay: .1s;
     -webkit-box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.01), 0 1px 1px 0 rgba(0, 0, 0, 0.1);
   }
 
+}
+
+////NOTIFICATION RESPONSIFICATION
+
+@media (min-width: 800px){
+
+  .fixedNav {
+    .nav-action-wrapper{
+      position: relative;
+    }
+  }
+
+  .dropDown-wrapper {
+    padding-right: 0;
+  }
 }
