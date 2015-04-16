@@ -8,12 +8,14 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
  */
 
 *, ::after, ::before {
-  text-rendering: optimizelegibility;
   zoom: 1;
   box-sizing: border-box;
-  margin: 0px;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
+  text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -moz-font-feature-settings: "liga" on;
 }
 
 body{
@@ -30,8 +32,39 @@ button{
   display:none;
 }
 .emoji {
-  max-height: 14px;
-  vertical-align: middle;
+  max-height: 15px;
+  vertical-align: baseline;
+}
+.button{
+  display: inline-block;
+  position: relative;
+  height: 38px;
+  padding: 0 16px;
+  outline: 0;
+  color: rgba(0,0,0,0.44);
+  background: rgba(0,0,0,0);
+  font-size: 14px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid rgba(0,0,0,0.15);
+  vertical-align: bottom;
+  white-space: nowrap;
+  text-rendering: auto;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  box-sizing: border-box;
+  border-radius: 999em;
+  transition: 100ms background-color,100ms border-color,100ms color;
+  font-weight: 400;
+  font-style: normal;
+  margin-bottom: 0;
+  &:hover{
+    color: rgba(0,0,0,0.6);
+    border-color: rgba(0,0,0,0.3);
+  }
 }
 
 
