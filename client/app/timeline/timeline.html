@@ -17,12 +17,14 @@
       <div class="nav-action-wrapper">
 
         <ul class="action-list">
-          <li class="action-item" ng-click="toggleNotifications()">
+          <li class="action-item button" ng-click="toggleNotifications()">
             <i class="fa fa-bell"></i>
-            <div class="notification-count" ng-if="notifications.length > 0"><span ng-if="notifications.length < 10">{{notifications.length}}</span><span class="notifs-over-10" ng-if="notifications.length >= 10">·</span></div>
+            <div class="notification-count animated rubberBand" ng-if="notifications.length > 0"><span ng-if="notifications.length < 10">{{notifications.length}}</span><span class="notifs-over-10" ng-if="notifications.length >= 10">·</span></div>
           </li>
-          <li class="action-item">
-            <i class="fa fa-user"></i>
+          <li class="action-item action-item--user button">
+            <img ng-src="{{user.image_url['88px']}}" alt="" class="user-menu-img"/>
+            <span class="user-menu-name">{{user.name}}</span>
+            <i class="fa fa-chevron-down"></i>
           </li>
         </ul>
 
@@ -61,7 +63,7 @@
   <div class="container feed-wrapper">
 
     <div class="row">
-      <div class="f_left-sidebar">
+      <div class="f_left-sidebar" ng-if="columns===3">
 
         <div class="currentUser-card ui_card">
 
@@ -91,13 +93,13 @@
 
         </div>
 
-      </div>
+      </div ng-i>
       <div class="f_main-content">
       <form name="form" ng-submit="share(form)" novalidate>
           <div class="newPost-wrapper ui_card">
               <div class="newPost-inner">
-                  <textarea ng-model="currentPost.status" name="status" placeholder="Something to share?" id="status" class="textarea-autogrow" role="textbox" required></textarea>
-                  <span class="error-txt" ng-show="form.status.$error.required && !form.$pristine">Common', don't you have anything to share?</span>
+                  <textarea ng-model="currentPost.status" name="status" placeholder="Have something to share?" id="status" class="textarea-autogrow" role="textbox" required></textarea>
+                  <span class="error-txt hidden" ng-show="form.status.$error.required && !form.$pristine">Common', don't you have anything to share?</span>
               </div>
               <div class="newPost-actions">
                   <button id="newPost-submit" class="newPost-postBtn" type='submit' ng-disabled='form.$invalid'><div class="outline"><div class="pulse"></div></div> Post</button>
@@ -176,7 +178,6 @@
 
               <div class="external-content-wrapper" ng-repeat="card in post.cards" ng-click="goExternal(card.url)">
                 <div class="text-wrapper">
-                    <img ng-src="{{card.icon}}" alt="" class="sourceImg"/>
                   <a class="external-content-headline" ng-bind-html="card.headline | twemoji">
                   </a>
                   <p class="external-content-snippet" ng-bind-html="card.text | twemoji">
@@ -196,9 +197,14 @@
 
                   </div>
 
+                  <div class="source-wrapper">
+                    <img ng-src="{{card.icon}}" alt="" class="sourceImg"/>
+                    <span class="sourceUrl">· {{card.url | rootDomain}}</span>
+                  </div>
+
                 </div>
                 <div class="img-wrapper">
-                  <img ng-src="{{card.img}}" alt="" class="external-pic"/>
+                  <div class="card-image" style="background-image: url('{{card.img}}');"></div>
                 </div>
 
               </div>
@@ -206,15 +212,14 @@
             </div>
 
             <div class="ui_post-footer timeline-item--actions">
-
               <div class="actions-wrapper">
-                <button class="action-edit" ng-show="canEdit(post)" ng-click="edit(post)"><i class="fa fa-pencil"></i></button>
-                <button class="action-delete" ng-show="canDelete(post)" ng-click="delete(post)"><i class="fa fa-trash-o"></i></button>
-              </div>
-
-              <div class="right-action-wrapper">
                 <button class="action-like" ng-click="like(post);"><i class="fa" ng-class="{'fa-heart-o': !hasLiked(post), 'fa-heart': hasLiked(post) }"></i><span ng-if="post.liked_by.length > 0">&nbsp;{{post.liked_by.length}}</span></button>
                 <button class="comment-toggle" ng-click="openComments(post); $event.stopPropagation();"><i class="fa fa-comments-o"></i> <span ng-if="post.comments.length > 0">{{post.comments.length}} </span>Comment<span ng-hide="post.comments.length === 1">s</span></button>
+              </div>
+
+              <div class="user-actions-wrapper">
+                <button class="action-edit" ng-show="canEdit(post)" ng-click="edit(post)"><i class="fa fa-pencil"></i></button>
+                <button class="action-delete" ng-show="canDelete(post)" ng-click="delete(post)"><i class="fa fa-trash-o"></i></button>
               </div>
 
             </div>
@@ -281,7 +286,7 @@
       <div id="right-sidebar" class="f_right-sidebar" ng-class="{'sidebar-blur': (commentsPost != null)}">
         <div class="ui_sideBar-wrapper">
 
-          <div class="currentUser-card ui_card">
+          <div class="currentUser-card ui_card hidden">
 
             <div class="currentUser-card--cover">
 

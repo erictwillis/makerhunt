@@ -137,6 +137,16 @@ angular.module('makerhuntApp').filter('utc', function() {
     };
 });
 
+angular.module('makerhuntApp').filter('rootDomain', function() {
+  return function(input) {
+    if (angular.isUndefined(input)) {
+      return "";
+    }
+
+    return input.replace('http://','').replace('https://','').replace('www.','').split(/[/?#]/)[0];
+  };
+});
+
 
 var regexIso8601 = /^(\d{4}|\+\d{6})(?:-(\d{2})(?:-(\d{2})(?:T(\d{2}):(\d{2}):(\d{2})\.(\d{1,})(Z|([\-+])(\d{2}):(\d{2}))?)?)?)?$/;
 
