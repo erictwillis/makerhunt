@@ -592,12 +592,18 @@
         max-height: 34px;
         min-width: 34px;
         border: 1px solid rgba(65, 170, 120, 0.4);
+        position: relative;
         &:focus,&:active{
           color: #41aa78;
+          .heart {
+            display: initial;
+          }
         }
         &:hover{
           border: 1px solid rgba(65, 170, 120, 0.9);
-
+          .heart {
+            display: initial;
+          }
         }
         .fa{
           width: 12px;
@@ -1568,4 +1574,94 @@ $ease: .4s ease-in-out; $delay: .1s;
   .dropDown-wrapper {
     padding-right: 0;
   }
+}
+
+
+
+
+///////heart animation
+
+
+.heart {
+  display: none;
+  opacity: 0;
+  color: #41aa78;
+  z-index: 0;
+  position: absolute;
+  top: 10px;
+  font-size: 10px;
+  animation-duration:2s;
+  -webkit-animation-duration:2s;
+  animation-timing-function:ease-in-out;
+  animation-iteration-count:infinite;
+  animation-direction:normal;
+  animation-play-state:running;
+  -webkit-animation-timing-function:ease-in-out;
+  -webkit-animation-iteration-count:infinite;
+  -webkit-animation-direction:normal;
+  -webkit-animation-play-state:running;
+  animation-name:hearts;
+  -webkit-animation-name:hearts;
+}
+
+.heart .icon-heart {
+  color: #41aa78;
+  z-index: 0;
+  position: absolute;
+  animation-duration:2s;
+  -webkit-animation-duration:2s;
+  animation-timing-function:ease-in-out;
+  animation-iteration-count:infinite;
+  animation-direction:normal;
+  animation-play-state:running;
+  -webkit-animation-timing-function:ease-in-out;
+  -webkit-animation-iteration-count:infinite;
+  -webkit-animation-direction:normal;
+  -webkit-animation-play-state:running;
+  animation-name:icon-heart;
+  -webkit-animation-name:icon-heart;
+  animation-delay:0;
+  -webkit-animation-delay:0;
+}
+
+.hearts-animations .heart:nth-child(1) {
+  animation-delay:1.25s;
+  -webkit-animation-delay:1.25s;
+  left: 0;
+}
+
+.hearts-animations .heart:nth-child(2) {
+  animation-delay:0.75s;
+  -webkit-animation-delay:0.75s;
+  left: calc(50% - 5px);
+}
+
+.hearts-animations .heart:nth-child(3) {
+  animation-delay:1.75s;
+  -webkit-animation-delay:1.75s;
+  right: 0;
+}
+
+@keyframes hearts {
+  0% {transform:rotate(20deg);opacity:0;}
+  50% {transform:rotate(-20deg);opacity:1;}
+  100% {top:-60px;transform:rotate(20deg);opacity:0;}
+}
+
+@-webkit-keyframes hearts {
+  0% {transform:rotate(20deg);opacity:0;}
+  50% {transform:rotate(-20deg);opacity:1;}
+  100% {top:-60px;transform:rotate(20deg);opacity:0;}
+}
+
+@keyframes icon-heart {
+  0% {right:20px}
+  50% {right:-20px}
+  100% {right:20px}
+}
+
+@-webkit-keyframes icon-heart {
+  0% {right:20px}
+  50% {right:-20px}
+  100% {right:20px}
 }
