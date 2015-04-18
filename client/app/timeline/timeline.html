@@ -98,7 +98,7 @@
       <form name="form" ng-submit="share(form)" novalidate>
           <div class="newPost-wrapper ui_card">
               <div class="newPost-inner">
-                  <textarea ng-model="currentPost.status" name="status" placeholder="Have something to share?" id="status" class="textarea-autogrow" role="textbox" required></textarea>
+                  <textarea ng-model="currentPost.status" msd-elastic="\n" name="status" placeholder="Have something to share?" id="status" class="textarea-autogrow" role="textbox" required></textarea>
                   <span class="error-txt hidden" ng-show="form.status.$error.required && !form.$pristine">Common', don't you have anything to share?</span>
               </div>
               <div class="newPost-actions">
@@ -107,9 +107,9 @@
         </div>
       </form>
 
-        <div class="main-timeline ui_card">
+        <div class="main-timeline">
 
-          <div class="ui_hero main-filter">
+          <div class="ui_hero main-filter ui_card">
 
             <ul class="main-filter--list">
 
@@ -120,7 +120,7 @@
 
           </div>
 
-          <div class="ui_post timeline-item" ng-repeat="post in posts">
+          <div class="ui_post timeline-item ui_card" ng-repeat="post in posts">
 
             <div class="ui_post-head timeline-item--meta">
 
@@ -133,7 +133,7 @@
                   <span class="what">a<span ng-if="post.cards[0].type==='article' || !post.cards[0]">n</span> <span ng-if="post.cards[0]">{{post.cards[0].type || 'link'}}</span><span ng-if="!post.cards[0]">update</span></span>.
                 </p>
 
-                <div class="user-detail-card ui_card" style="background-image: url({{post.user.image_url['88px']}});">
+                <!--<div class="user-detail-card ui_card" style="background-image: url({{post.user.image_url['88px']}});">
 
                   <div class="detail-wrapper">
 
@@ -148,7 +148,7 @@
                   </div>
 
 
-                </div>
+                </div>-->
 
               </div>
               <div class="meta-timestamp">
@@ -228,7 +228,7 @@
 
 
                 <h4 class="comments-headline"><i class="fa fa-comments-o"></i> Comments</h4>
-                <div class="comment-wrapper" ng-if="post.comments.length == 0">
+                <div class="comment-wrapper hidden" ng-if="post.comments.length == 0">
                     <p class="be-first-to-comment">write the first comment</p>
                 </div>
                 <div class="comment-wrapper" ng-repeat="comment in post.comments | orderBy:sortComments:false">
@@ -238,7 +238,7 @@
                   <div class="comment-meta">
                     <h5 class="user-name" ng-bind="comment.user.name"></h5>
                     <h6 class="user-userName">@{{ comment.user.username }}</h6>
-                    <!--<div class="timestamp" am-time-ago="comment.created_at"></div>-->
+                    <div class="timestamp hidden" am-time-ago="comment.created_at"></div>
                   </div>
                   <div class="comment-actions-wrapper">
                     <button class="action-delete" ng-show="canDelete(comment)" ng-click="delete(comment)"><i class="fa fa-trash-o"></i></button>
@@ -248,11 +248,18 @@
                     </p>
                   </div>
                 </div>
-                <div class="newComment-wrapper" ng-controller="CommentCtrl">
-                  <form name="form" ng-submit="submit(form)" novalidate>
-                  <input name="body" ng-model="comment.body" placeholder="Write something..." class="textarea-autogrow newComment" type="text" required>
-                  <!--<span class="error-txt" ng-show="form.body.$error.required && !form.$pristine">Common', don't you have anything to share?</span>-->
-                  </form>
+                <div class="newComment-wrapper">
+
+                  <div class="newComment-img-wrapper">
+                    <img ng-src="{{user.image_url['88px']}}" alt="" class="newComment-user-img"/>
+                  </div>
+                  <div class="newComment-comment-wrapper" ng-controller="CommentCtrl">
+                    <form name="form" ng-submit="submit(form)" novalidate>
+                      <textarea msd-elastic name="body" ng-model="comment.body" placeholder="Write something..." class="textarea-autogrow newComment" type="text" required></textarea>
+                      <!--<span class="error-txt" ng-show="form.body.$error.required && !form.$pristine">Common', don't you have anything to share?</span>-->
+                    </form>
+                  </div>
+
                 </div>
 
 
