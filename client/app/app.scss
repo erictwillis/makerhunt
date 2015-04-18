@@ -28,6 +28,10 @@ button{
   display: inline-block;
   margin: 0 auto;
 }
+textarea{
+  min-height: 0;
+  padding: 0;
+}
 .hidden{
   display:none!important;
 }

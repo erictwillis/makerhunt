@@ -204,7 +204,7 @@
         width: calc(80% - 3px);
         display: inline-block;
         vertical-align: middle;
-        padding: 0 5px;
+        padding: 0 8px;
 
         .event-info--headline {
           margin: 0;
@@ -240,13 +240,13 @@
   -webkit-box-shadow: 0 0 0 1px rgba(0,0,0,.01) , 0 1px 1px 0 rgba(0,0,0,.1);
   border-radius: 2px;
   zoom: 1;
-  float: left;
+  //float: left;
   width: 100%;
 }
 
 .ui_hero {
   margin: 0;
-  border-bottom: 1px solid #f4f4f4;
+  //border-bottom: 1px solid #f4f4f4;
   position: relative;
   display: -webkit-box;
   display: -moz-box;
@@ -261,7 +261,7 @@
 
 .ui_post {
   padding: 10px;
-  border-bottom: 1px solid #f4f4f4;
+  //border-bottom: 1px solid #f4f4f4;
   margin-top: 15px;
   position: relative;
 
@@ -577,16 +577,17 @@
     .actions-wrapper {
       display: inline-block;
 
-      .action-like{
+      .action-like {
         margin: 0;
-        padding: 10px;
         line-height: 1;
         font-size: 12px;
         color: #41aa78;
+        padding: 0 9px;
         border-radius: 500px;
         margin-right: 5px;
         font-weight: 400;
-        height: 36px;
+        max-height: 34px;
+        min-width: 34px;
         border: 1px solid rgba(65, 170, 120, 0.4);
         &:focus,&:active{
           color: #41aa78;
@@ -594,6 +595,10 @@
         &:hover{
           border: 1px solid rgba(65, 170, 120, 0.9);
 
+        }
+        .fa{
+          width: 12px;
+          line-height: 34px;
         }
       }
 
@@ -627,22 +632,25 @@
 
 .ui_comments-container {
   position: relative;
-  padding: 0;
   overflow-y: hidden;
   overflow-x: hidden;
-  -webkit-transition: all 400ms ease-in-out;
-  -moz-transition: all 400ms ease-in-out;
-  -ms-transition: all 400ms ease-in-out;
-  -o-transition: all 400ms ease-in-out;
-  transition: all 400ms ease-in-out;
-  margin-top: 0;
+  -webkit-transition: all 400ms ease;
+  -moz-transition: all 400ms ease;
+  -ms-transition: all 400ms ease;
+  -o-transition: all 400ms ease;
+  transition: all 400ms ease;
   background: rgba(0,0,0,.01);
-  border-radius: 4px;
-  float: none;
+  border-radius: 2px;
   display: block;
   max-height: 0;
-  -webkit-box-shadow: none;
-  box-shadow: none;
+  -webkit-box-shadow: none!important;
+  box-shadow: none!important;
+  background-color: #f6f7f8;
+  -webkit-border-radius: 0 0 2px 2px;
+  margin: 8px -10px -10px;
+  width: auto;
+  padding: 0 10px;
+  border-top: 1px solid transparent;
 
 
   .comments-headline{
@@ -660,7 +668,7 @@
 
   .comment-wrapper {
     width: 100%;
-    padding: 5px 15px 10px;
+    padding: 5px 0;
     border-bottom: 1px solid #f4f4f4;
 
     .be-first-to-comment {
@@ -714,7 +722,8 @@
 
     .comment-status-wrapper {
       display: block;
-      padding-left: 40px;
+      padding-left: 45px;
+      padding-right: 10px;
 
       .comment-status{
         font-weight: 400;
@@ -747,24 +756,37 @@
 
   .newComment-wrapper{
     width: 100%;
-    padding: 5px;
+    padding: 5px 0;
 
-    .newComment {
-      border: 1px solid rgba(0, 0, 0, 0.1) !important;
-      font-size: 12px;
-      line-height: 16px;
-      border-radius: 0;
-      padding: 0 5px;
-      height: 30px;
+    .newComment-img-wrapper {
+      display: inline-block;
+      vertical-align: top;
+      width: 35px;
+      .newComment-user-img {
+        max-width: 100%;
+        border-radius: 50%;
+      }
+    }
+    .newComment-comment-wrapper {
+      display: inline-block;
+      width: calc(100% - 37px);
+      padding-left: 5px;
+      vertical-align: top;
+      .newComment {
+        border: 1px solid rgba(0, 0, 0, 0.1) !important;
+        font-size: 12px;
+        line-height: 15px;
+        border-radius: 0;
+        height: 35px;
+        padding: 9px 5px;
+      }
     }
   }
 }
 .comments-open{
   max-height: 600px;
-  margin-top: 5px;
   overflow-y: auto;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.01), 0 1px 1px 0 rgba(0, 0, 0, 0.1);
-  -webkit-box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.01), 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+  border-top: 1px solid #e1e2e3;
 }
 
 
@@ -776,6 +798,10 @@
 
   .newPost-inner {
     overflow: hidden;
+    textarea{
+      min-height: 65px;
+      font-size: 15px;
+    }
   }
 
 
@@ -827,7 +853,7 @@
 //main timeline
 
 .main-timeline {
-  padding: 5px;
+  padding: 5px 0;
   margin-bottom: 15px;
 
   .no-more {
