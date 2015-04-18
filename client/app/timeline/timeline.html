@@ -102,7 +102,7 @@
                   <span class="error-txt hidden" ng-show="form.status.$error.required && !form.$pristine">Common', don't you have anything to share?</span>
               </div>
               <div class="newPost-actions">
-                  <button id="newPost-submit" class="newPost-postBtn" type='submit' ng-disabled='form.$invalid'><div class="outline"><div class="pulse"></div></div> Post</button>
+                  <button id="newPost-submit" class="newPost-postBtn" ng-class="{'is-disabled' : form.$invalid}" type='submit' ng-disabled='form.$invalid'><div class="outline"><div class="pulse"></div></div> Post</button>
               </div>
         </div>
       </form>
@@ -114,7 +114,8 @@
             <ul class="main-filter--list">
 
               <li class="main-filter--item active"><i class="fa fa-globe"></i> Global</li>
-              <li class="main-filter--item"><i class="fa fa-slack"></i> Slack</li>
+              <li class="main-filter--item is-disabled"><i class="fa fa-slack"></i> Slack</li>
+              <li class="main-filter--item is-disabled"><i class="fa fa-twitter"></i> Twitter</li>
 
             </ul>
 
@@ -263,8 +264,9 @@
                   </div>
                   <div class="newComment-comment-wrapper" ng-controller="CommentCtrl">
                     <form name="form" ng-submit="submit(form)" novalidate>
-                      <textarea msd-elastic name="body" ng-model="comment.body" placeholder="Write something..." class="textarea-autogrow newComment" type="text" required></textarea>
+                      <textarea msd-elastic name="body" ng-model="comment.body" placeholder="Write a comment..." class="textarea-autogrow newComment" type="text" required></textarea>
                       <!--<span class="error-txt" ng-show="form.body.$error.required && !form.$pristine">Common', don't you have anything to share?</span>-->
+                      <button id="newComment-submit" class="newComment-postBtn" ng-class="{'is-disabled' : form.$invalid}" type='submit' ng-disabled='form.$invalid'>Post</button>
                     </form>
                   </div>
 
