@@ -167,14 +167,17 @@
   float: left;
 
   .ui_sideBar-headline {
-    font-weight: 400;
-    font-size: 14px;
     opacity: .75;
     position: relative;
     border-bottom: 1px solid #f4f4f4;
     line-height: 2.5;
     padding: 5px 15px;
     margin: 0 0 5px;
+    color: #555;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .1rem;
+    text-transform: uppercase;
   }
   .ui_sideBar-section {
     padding: 5px 15px;
@@ -417,7 +420,7 @@
 
     .status-wrapper {
       width: 100%;
-      margin-top: 10px;
+      //margin-top: 10px;
 
       .quote-icon-wrapper {
         width: 40px;
@@ -811,7 +814,7 @@
     border-top: 1px solid #f4f4f4;
 
     .newPost-postBtn {
-      font-weight: 400;
+      font-weight: 700;
       font-size: 14px;
       color: #fff !important;
       background: #54b6d0;
@@ -820,9 +823,8 @@
       margin: 0 auto;
       text-decoration: none;
       box-sizing: border-box;
-      border-radius: 4px;
+      border-radius: 2px;
       border: none !important;
-      line-height: 2.5;
       height: auto;
     }
     .newPost-posting{
@@ -841,13 +843,18 @@
 .textarea-autogrow {
   overflow: hidden;
   width: 100%;
-  border-radius: 0;
+  border-radius: 2px;
   border: none!important;
   outline: none!important;
   margin: 0;
   resize: none;
   font-size: 14px;
   padding: 10px;
+  -webkit-transition: height 100ms;
+  -moz-transition: height 100ms;
+  -ms-transition: height 100ms;
+  -o-transition: height 100ms;
+  transition: height 100ms;
 }
 
 //main timeline
@@ -1438,9 +1445,13 @@ $ease: .4s ease-in-out; $delay: .1s;
 .dropDown-wrapper {
   position: absolute;
   left: 0;
-  top: 51px;
+  top: 50px;
   padding: 0 20px;
   width: 100%;
+
+  .ui_card{
+    border-radius: 0 0 2px 2px;
+  }
 
   .notifications-wrapper {
     overflow: hidden;
