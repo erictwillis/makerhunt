@@ -58,7 +58,7 @@
 		},
 		{
 			"ImportPath": "github.com/nlopes/slack",
-			"Rev": "4a78045ef8aabf726224c19fb2c91fc01a98a3c6"
+			"Rev": "b8c4312a0b54fc89302947fabe02e83c766bda50"
 		},
 		{
 			"ImportPath": "github.com/nu7hatch/gouuid",
