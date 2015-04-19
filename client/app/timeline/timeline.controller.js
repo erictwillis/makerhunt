@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('makerhuntApp')
-.controller('TimelineCtrl', function ($scope, $timeout, Post, Event, user) {
+.controller('TimelineCtrl', function ($scope, $timeout, Post, Event, Auth, user) {
     var offset = 0;
     var from_date = new Date();
 
@@ -46,7 +46,7 @@ angular.module('makerhuntApp')
     };
 
     $scope.canDelete = function(post) {
-        return (true);
+        return (Auth.getCurrentUser().user_id === post.user.user_id || Auth.isAdmin());
     };
 
     $scope.edit = function(post) {
@@ -137,13 +137,37 @@ angular.module('makerhuntApp')
 
     //// jQUERY powered notification open & closing
 
+
+
+
+});
+
+angular.module('makerhuntApp')
+.controller('NotificationsCtrl', function ($scope, $timeout, Comment, Me) {
+    $scope.notifications = [];
+    $scope.unseen_notifications = [];
+
+    Me.notifications(function(data) {
+        $scope.notifications = data;
+
+        angular.forEach($scope.notifications, function(notification) {
+            $scope.unseen_notifications.push(notification);
+        });
+    });
+
     $scope.toggleNotifications = function(){
       $('#notification-center').toggleClass('notifications-open');
       $('#right-sidebar').toggleClass('sidebar-blur');
+
+      Me.notificationsSeen(function(data) {
+        // $scope.notifications = data;
+        $scope.unseen_notifications = [];
+      });
     };
 
     ////(delayed) static notification array
 
+    /*
     $timeout(function(){
       $scope.notifications = [
         {
@@ -177,18 +201,14 @@ angular.module('makerhuntApp')
           }
         }
       ];
-
     }, 2000);
-
-
-
-
+    */
 });
 
 angular.module('makerhuntApp')
-.controller('CommentsCtrl', function ($scope, $timeout, Comment) {
-    $scope.canDelete = function(post) {
-        return (true);
+.controller('CommentsCtrl', function ($scope, $timeout, Comment, Auth) {
+    $scope.canDelete = function(comment) {
+        return (Auth.getCurrentUser().user_id === comment.user.user_id || Auth.isAdmin());
     };
 
     $scope.delete = function(comment) {

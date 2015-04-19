@@ -14,12 +14,12 @@
         </div>
       </div>
 
-      <div class="nav-action-wrapper">
+      <div class="nav-action-wrapper" ng-controller="NotificationsCtrl">
 
         <ul class="action-list">
           <li class="action-item button" ng-click="toggleNotifications()">
             <i class="fa fa-bell"></i>
-            <div class="notification-count animated rubberBand" ng-if="notifications.length > 0"><span ng-if="notifications.length < 10">{{notifications.length}}</span><span class="notifs-over-10" ng-if="notifications.length >= 10">·</span></div>
+            <div class="notification-count animated rubberBand" ng-if="unseen_notifications.length > 0"><span ng-if="unseen_notifications.length < 10">{{unseen_notifications.length}}</span><span class="notifs-over-10" ng-if="unseen_notifications.length >= 10">·</span></div>
           </li>
           <li class="action-item action-item--user button">
             <img ng-src="{{user.image_url['88px']}}" alt="" class="user-menu-img"/>
@@ -35,21 +35,24 @@
             <ul class="notifications-list">
               <li class="notification-wrapper" ng-repeat="notification in notifications">
                 <div class="notif-img-wrapper">
-                  <img ng-src="{{notification.user.img}}" alt="" class="notification-pic"/>
+                  <img ng-src="{{notification.user.image_url['88px']}}" alt="" class="notification-pic"/>
                 </div>
-                <div class="notif-content-wrapper">
+                <div class="notif-content-wrapper" ng-class="{'seen':notification.seen, 'unseen':!notification.seen}">
                   <span class="who">{{notification.user.name}}</span>
                   <span class="did">{{notification.action}}</span>
-                  <span class="what">your {{notification.target.type}}</span>.
+                  <span class="what">your {{notification.type}}</span>
+                  <span class="when"><span am-time-ago="notification.created_at"></span></span>.
                 </div>
                 <div class="notif-action-wrapper">
+                  <!--
                   <button class="notif-remove" ng-click="remove(notification); $event.stopPropagation();"><i class="fa fa-trash-o"></i></button>
+                  -->
                 </div>
               </li>
             </ul>
-
+            <!--
             <button class="notif-remove-all" ng-click="removeAll(notifications)"><i class="fa fa-trash-o"></i> remove all notifications</button>
-
+            -->
           </div>
 
         </div>
