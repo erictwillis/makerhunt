@@ -57,10 +57,6 @@
 			"Rev": "fc2542bc5f2532ed4a437960d2d51ff6e18a5cb6"
 		},
 		{
-			"ImportPath": "github.com/nlopes/slack",
-			"Rev": "ba29841331450a78131b6f24ca68809ddca36314"
-		},
-		{
 			"ImportPath": "github.com/nu7hatch/gouuid",
 			"Rev": "179d4d0c4d8d407a32af483c2354df1d2c91e6c3"
 		},
