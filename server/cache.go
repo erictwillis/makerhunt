@@ -5,7 +5,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/nlopes/slack"
+	"github.com/dutchcoders/slack"
 )
 
 type Cache struct {
