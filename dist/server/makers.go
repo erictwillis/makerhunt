@@ -3,7 +3,7 @@ package main
 import (
 	"net/http"
 
-	"github.com/nlopes/slack"
+	"github.com/dutchcoders/slack"
 )
 
 func apiMakersAll(w http.ResponseWriter, r *http.Request) {
