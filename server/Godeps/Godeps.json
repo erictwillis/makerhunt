@@ -58,7 +58,7 @@
 		},
 		{
 			"ImportPath": "github.com/nlopes/slack",
-			"Rev": "b8c4312a0b54fc89302947fabe02e83c766bda50"
+			"Rev": "ba29841331450a78131b6f24ca68809ddca36314"
 		},
 		{
 			"ImportPath": "github.com/nu7hatch/gouuid",
@@ -66,15 +66,15 @@
 		},
 		{
 			"ImportPath": "golang.org/x/net/context",
-			"Rev": "6dc0abcce25682504770fa9a7a6705bbfdebfa48"
+			"Rev": "84ba27dd5b2d8135e9da1395277f2c9333a2ffda"
 		},
 		{
 			"ImportPath": "golang.org/x/net/html",
-			"Rev": "6dc0abcce25682504770fa9a7a6705bbfdebfa48"
+			"Rev": "84ba27dd5b2d8135e9da1395277f2c9333a2ffda"
 		},
 		{
 			"ImportPath": "golang.org/x/net/websocket",
-			"Rev": "6dc0abcce25682504770fa9a7a6705bbfdebfa48"
+			"Rev": "84ba27dd5b2d8135e9da1395277f2c9333a2ffda"
 		},
 		{
 			"ImportPath": "golang.org/x/oauth2",
