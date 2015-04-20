@@ -143,18 +143,26 @@ angular.module('makerhuntApp')
 });
 
 angular.module('makerhuntApp')
-.controller('NotificationsCtrl', function ($scope, $timeout, Comment, Me) {
+.controller('NotificationsCtrl', function ($scope, $timeout, $interval, Comment, Me) {
     $scope.notifications = [];
     $scope.unseen_notifications = [];
 
-    Me.notifications(function(data) {
-        $scope.notifications = data;
+    this.update = function() {
+        Me.notifications(function(data) {
+            $scope.notifications = data;
 
-        angular.forEach($scope.notifications, function(notification) {
-            $scope.unseen_notifications.push(notification);
+            angular.forEach($scope.notifications, function(notification) {
+                if (notification.seen) {
+                    return;
+                }
+                $scope.unseen_notifications.push(notification);
+            });
         });
-    });
+    };
 
+    $interval(this.update, 30000);
+    $timeout(this.update, 0);
+    
     $scope.toggleNotifications = function(){
       $('#notification-center').toggleClass('notifications-open');
       $('#right-sidebar').toggleClass('sidebar-blur');
@@ -165,44 +173,6 @@ angular.module('makerhuntApp')
       });
     };
 
-    ////(delayed) static notification array
-
-    /*
-    $timeout(function(){
-      $scope.notifications = [
-        {
-          user: {
-            img: 'https://pbs.twimg.com/profile_images/583567395161268224/ZRqzE0zf.jpg',
-            name: 'Jonas Daniels'
-          },
-          action: 'commented on',
-          target: {
-            type: 'post'
-          }
-        },
-        {
-          user: {
-            img: 'https://pbs.twimg.com/profile_images/583567395161268224/ZRqzE0zf.jpg',
-            name: 'Jonas Daniels'
-          },
-          action: 'commented on',
-          target: {
-            type: 'post'
-          }
-        },
-        {
-          user: {
-            img: 'https://pbs.twimg.com/profile_images/583567395161268224/ZRqzE0zf.jpg',
-            name: 'Jonas Daniels'
-          },
-          action: 'commented on',
-          target: {
-            type: 'post'
-          }
-        }
-      ];
-    }, 2000);
-    */
 });
 
 angular.module('makerhuntApp')

@@ -242,16 +242,16 @@ func apiMeNotificationsSeen(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	change := mgo.Change{
-		ReturnNew: false,
-		Update: bson.M{
+	change :=
+		bson.M{
 			"$set": bson.M{
 				"seen": true,
 			},
-		}}
+		}
 
-	notifications := []Notification{}
-	resp, err := db.Notifications.Find(bson.M{"owner_id": bson.ObjectIdHex(userId.(string))}).Apply(change, &notifications)
+	// notifications := []Notification{}
+	resp, err := db.Notifications.UpdateAll(bson.M{"owner_id": bson.ObjectIdHex(userId.(string))}, change)
+	// 	.Apply(change, &notifications)
 	if err != nil {
 		fmt.Println(err)
 		http.Error(w, "Error", 500)
