@@ -180,42 +180,6 @@ angular.module('makerhuntApp')
       }
     };
 
-    ////(delayed) static notification array
-
-    $timeout(function(){
-      $scope.notifications = [
-        {
-          user: {
-            img: 'https://pbs.twimg.com/profile_images/583567395161268224/ZRqzE0zf.jpg',
-            name: 'Jonas Daniels'
-          },
-          action: 'commented on',
-          target: {
-            type: 'post'
-          }
-        },
-        {
-          user: {
-            img: 'https://pbs.twimg.com/profile_images/583567395161268224/ZRqzE0zf.jpg',
-            name: 'Jonas Daniels'
-          },
-          action: 'commented on',
-          target: {
-            type: 'post'
-          }
-        },
-        {
-          user: {
-            img: 'https://pbs.twimg.com/profile_images/583567395161268224/ZRqzE0zf.jpg',
-            name: 'Jonas Daniels'
-          },
-          action: 'commented on',
-          target: {
-            type: 'post'
-          }
-        }
-      ];
-
 });
 
 angular.module('makerhuntApp')
