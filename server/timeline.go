@@ -97,6 +97,14 @@ func apiTimelineLike(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	var user User
+	if err := db.Users.FindId(bson.ObjectIdHex(userid.(string))).One(&user); err == mgo.ErrNotFound {
+		http.NotFound(w, r)
+		return
+	} else if err != nil {
+		panic(err)
+	}
+
 	change := mgo.Change{
 		ReturnNew: true,
 	}
@@ -133,6 +141,26 @@ func apiTimelineLike(w http.ResponseWriter, r *http.Request) {
 			fmt.Println(err)
 		}
 
+	}
+
+	if post.User.UserId != user.UserId {
+		notification := Notification{}
+		notification.NotificationId = bson.NewObjectId()
+		notification.SetPost(&post)
+		notification.SetUser(&user)
+		notification.SetOwner(post.User)
+		notification.CreatedAt = time.Now()
+		notification.Action = "liked"
+		notification.Action = "liked"
+		notification.Type = "post"
+		notification.Seen = false
+
+		err = db.Notifications.Insert(notification)
+		if err != nil {
+			log.Println(err)
+			http.Error(w, "Error", 500)
+			return
+		}
 	}
 
 	WriteJSON(w, post)
@@ -436,6 +464,27 @@ func apiTimelineCommentCreate(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 		http.Error(w, "Error", 500)
 		return
+	}
+
+	post.LoadUser()
+
+	if post.User.UserId != user.UserId {
+		notification := Notification{}
+		notification.NotificationId = bson.NewObjectId()
+		notification.SetPost(&post)
+		notification.SetUser(&user)
+		notification.SetOwner(post.User)
+		notification.CreatedAt = time.Now()
+		notification.Action = "commented"
+		notification.Type = "post"
+		notification.Seen = false
+
+		err = db.Notifications.Insert(notification)
+		if err != nil {
+			log.Println(err)
+			http.Error(w, "Error", 500)
+			return
+		}
 	}
 
 	WriteJSON(w, comment)

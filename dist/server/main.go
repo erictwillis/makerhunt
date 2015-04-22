@@ -16,7 +16,7 @@ import (
 	"github.com/PuerkitoBio/ghost/handlers"
 	"github.com/kurrik/oauth1a"
 
-	"github.com/nlopes/slack"
+	"github.com/dutchcoders/slack"
 	mgo "gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 
@@ -418,6 +418,8 @@ func main() {
 	api.HandleFunc("/hooks/smtp", apiHookSmtp).Methods("POST")
 	api.HandleFunc("/me", apiMeGet).Methods("GET")
 	api.HandleFunc("/me/subscribe", apiMeSubscribe).Methods("POST")
+	api.HandleFunc("/me/notifications", apiMeNotifications).Methods("GET")
+	api.HandleFunc("/me/notifications-seen", apiMeNotificationsSeen).Methods("POST")
 	api.HandleFunc("/me/update-producthunt-data", apiMeUpdateProductHuntData).Methods("POST")
 	api.HandleFunc("/me/invite", apiMeInvite).Methods("POST")
 	api.HandleFunc("/users", accessHandler(apiUsersNew, RoleAdmin)).Methods("POST")
