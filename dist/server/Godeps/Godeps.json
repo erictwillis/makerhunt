@@ -6,11 +6,6 @@
 	],
 	"Deps": [
 		{
-			"ImportPath": "code.google.com/p/cascadia",
-			"Comment": "null-31",
-			"Rev": "5d796540e3cb93ea0556c897e6a3c7690f614d35"
-		},
-		{
 			"ImportPath": "github.com/PuerkitoBio/ghost",
 			"Rev": "a0146f2f931611b8bfe40f07018c97a7c881c76a"
 		},
@@ -20,8 +15,16 @@
 			"Rev": "4cf64c51f7e80d56d9ae2ffe7d684d3dd5dbd5d0"
 		},
 		{
+			"ImportPath": "github.com/andybalholm/cascadia",
+			"Rev": "54abbbf07a45a3ef346ebe903e0715d9a3c19352"
+		},
+		{
 			"ImportPath": "github.com/dutchcoders/gohunt/gohunt",
 			"Rev": "a66f63398bb5564e56eae3a25a468bfb1259f841"
+		},
+		{
+			"ImportPath": "github.com/dutchcoders/slack",
+			"Rev": "972fa951008f7689b9bccb863b2d30d13b9baffe"
 		},
 		{
 			"ImportPath": "github.com/garyburd/redigo/internal",
