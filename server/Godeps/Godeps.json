@@ -24,7 +24,7 @@
 		},
 		{
 			"ImportPath": "github.com/dutchcoders/slack",
-			"Rev": "8f5854d5d0683914bef19e92b1e1d40efe77a74a"
+			"Rev": "bd9670d4f0b9d65a22e77d9202e2bbfd4d384222"
 		},
 		{
 			"ImportPath": "github.com/garyburd/redigo/internal",
