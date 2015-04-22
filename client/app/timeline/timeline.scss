@@ -156,6 +156,7 @@
           font-size: 12px;
           padding-right: 5px;
           overflow: visible;
+          border: 1px solid rgba(0,0,0,.15);
 
           .user-menu-img {
             max-width: 100%;
@@ -950,7 +951,7 @@
 ///#feedView
 
 #feedView{
-  background: #fbfbfb;
+  background: #f1f1f1;
   min-height: 100vh;
   color: rgb(78, 88, 96);
 

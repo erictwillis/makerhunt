@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('makerhuntApp')
-.controller('TimelineCtrl', function ($scope, $timeout, Post, Event, Auth, user) {
+.controller('TimelineCtrl', function ($rootScope, $scope, $timeout, Post, Event, Auth, user) {
     var offset = 0;
     var from_date = new Date();
 
@@ -137,44 +137,23 @@ angular.module('makerhuntApp')
 
     //// jQUERY powered notification open & closing
 
-    $scope.toggleNotifications = function(){
-      if(!$scope.dropDown) {
-        $('#notification-center').toggleClass('is-open');
-        $('#right-sidebar').toggleClass('sidebar-blur');
-        $scope.dropDown = 'notif';
-      }else{
-        $('#notification-center').removeClass('is-open');
-        $('#userMenu').removeClass('is-open');
-        $('#right-sidebar').removeClass('sidebar-blur');
-        if($scope.dropDown === 'notif'){
-          $scope.dropDown = false;
-        }
-        else{
-          $timeout(function(){
-            $('#notification-center').toggleClass('is-open');
-            $('#right-sidebar').toggleClass('sidebar-blur');
-            $scope.dropDown = 'notif';
-          }, 300)
-        }
-      }
-    };
-    $scope.toggleuserMenu = function(){
-      if(!$scope.dropDown){
+    $rootScope.toggleuserMenu = function(){
+      if(!$rootScope.dropDown){
         $('#userMenu').toggleClass('is-open');
         $('#right-sidebar').toggleClass('sidebar-blur');
-        $scope.dropDown = 'user';
+        $rootScope.dropDown = 'user';
       }else{
-        $('#notification-center').removeClass('is-open');
+        $('#notifications').removeClass('is-open');
         $('#userMenu').removeClass('is-open');
         $('#right-sidebar').removeClass('sidebar-blur');
-        if($scope.dropDown === 'user'){
-          $scope.dropDown = false;
+        if($rootScope.dropDown === 'user'){
+          $rootScope.dropDown = false;
         }
         else{
           $timeout(function(){
             $('#userMenu').toggleClass('is-open');
             $('#right-sidebar').toggleClass('sidebar-blur');
-            $scope.dropDown = 'user';
+            $rootScope.dropDown = 'user';
           }, 300)
         }
       }
@@ -183,7 +162,7 @@ angular.module('makerhuntApp')
 });
 
 angular.module('makerhuntApp')
-.controller('NotificationsCtrl', function ($scope, $timeout, $interval, Comment, Me) {
+.controller('NotificationsCtrl', function ($rootScope, $scope, $timeout, $interval, Comment, Me) {
     $scope.notifications = [];
     $scope.unseen_notifications = [];
 
@@ -204,8 +183,25 @@ angular.module('makerhuntApp')
     $timeout(this.update, 0);
 
     $scope.toggleNotifications = function(){
-      $('#notification-center').toggleClass('notifications-open');
-      $('#right-sidebar').toggleClass('sidebar-blur');
+      if(!$rootScope.dropDown) {
+        $('#notifications').toggleClass('is-open');
+        $('#right-sidebar').toggleClass('sidebar-blur');
+        $rootScope.dropDown = 'notif';
+      }else{
+        $('#notifications').removeClass('is-open');
+        $('#userMenu').removeClass('is-open');
+        $('#right-sidebar').removeClass('sidebar-blur');
+        if($rootScope.dropDown === 'notif'){
+          $rootScope.dropDown = false;
+        }
+        else{
+          $timeout(function(){
+            $('#notifications').toggleClass('is-open');
+            $('#right-sidebar').toggleClass('sidebar-blur');
+            $rootScope.dropDown = 'notif';
+          }, 300)
+        }
+      }
 
       Me.notificationsSeen(function(data) {
         // $scope.notifications = data;
