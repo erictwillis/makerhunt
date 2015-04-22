@@ -90,7 +90,7 @@
         margin-right: 8px;
         font-size: 18px;
 
-        .fa{
+        .fa {
           width: 17px;
           //height: 18px;
           font-weight: normal;
@@ -117,19 +117,20 @@
           font-weight: 700;
           top: -3px;
           right: -3px;
-          .notifs-over-10{
+          .notifs-over-10 {
             font-size: 16px;
             display: block;
             margin-top: -2px;
           }
         }
-        &:last-child{
+        &:last-child {
           margin-right: 0;
         }
       }
-      .action-item--user{
+      .action-item--user {
         font-size: 12px;
-        padding-right: 5px;
+        padding: 0;
+        border: 0;
         overflow: visible;
 
         .user-menu-img {
@@ -137,22 +138,47 @@
           max-height: 38px;
           vertical-align: top;
           border-radius: 50%;
-          margin-top: -1px;
-          margin-left: -1px;
+          margin: 0;
         }
         .user-menu-name {
-          padding-left: 5px;
-          text-transform: none;
+          display: none;
         }
-        .fa{
-          font-size: 9px;
+        .fa {
+          display: none;
         }
 
       }
+
+      //// tablet & desktop user button
+      @media (min-width: 800px) {
+
+        .action-item--user {
+          font-size: 12px;
+          padding-right: 5px;
+          overflow: visible;
+
+          .user-menu-img {
+            max-width: 100%;
+            max-height: 38px;
+            vertical-align: top;
+            border-radius: 50%;
+            margin-top: -1px;
+            margin-left: -1px;
+          }
+          .user-menu-name {
+            padding-left: 5px;
+            text-transform: none;
+            display: inline;
+          }
+          .fa {
+            font-size: 9px;
+            display: inline-block;
+          }
+
+        }
+      }
     }
   }
-
-
 }
 .fixedNav-height{
   height: 50px;
