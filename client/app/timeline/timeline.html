@@ -21,7 +21,7 @@
             <i class="fa fa-bell"></i>
             <div class="notification-count animated rubberBand" ng-if="notifications.length > 0"><span ng-if="notifications.length < 10">{{notifications.length}}</span><span class="notifs-over-10" ng-if="notifications.length >= 10">·</span></div>
           </li>
-          <li class="action-item action-item--user button">
+          <li class="action-item action-item--user button" ng-click="toggleuserMenu()">
             <img ng-src="{{user.image_url['88px']}}" alt="" class="user-menu-img"/>
             <span class="user-menu-name">{{user.name}}</span>
             <i class="fa fa-chevron-down"></i>
@@ -49,6 +49,16 @@
             </ul>
 
             <button class="notif-remove-all" ng-click="removeAll(notifications)"><i class="fa fa-trash-o"></i> remove all notifications</button>
+
+          </div>
+
+          <div class="userMenu-wrapper ui_card popup" id="userMenu">
+
+            <ul class="userMenu">
+              <li class="userMenu-item"><a href="#" class="button button--chromeless is-disabled">Your profile</a></li>
+              <li class="userMenu-item"><a href="#" class="button button--chromeless is-disabled">Settings</a></li>
+              <li class="userMenu-item"><a href="/logout" class="button button--chromeless">Sign out</a></li>
+            </ul>
 
           </div>
 

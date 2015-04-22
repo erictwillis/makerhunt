@@ -138,8 +138,46 @@ angular.module('makerhuntApp')
     //// jQUERY powered notification open & closing
 
     $scope.toggleNotifications = function(){
-      $('#notification-center').toggleClass('notifications-open');
-      $('#right-sidebar').toggleClass('sidebar-blur');
+      if(!$scope.dropDown) {
+        $('#notification-center').toggleClass('is-open');
+        $('#right-sidebar').toggleClass('sidebar-blur');
+        $scope.dropDown = 'notif';
+      }else{
+        $('#notification-center').removeClass('is-open');
+        $('#userMenu').removeClass('is-open');
+        $('#right-sidebar').removeClass('sidebar-blur');
+        if($scope.dropDown === 'notif'){
+          $scope.dropDown = false;
+        }
+        else{
+          $timeout(function(){
+            $('#notification-center').toggleClass('is-open');
+            $('#right-sidebar').toggleClass('sidebar-blur');
+            $scope.dropDown = 'notif';
+          }, 300)
+        }
+      }
+    };
+    $scope.toggleuserMenu = function(){
+      if(!$scope.dropDown){
+        $('#userMenu').toggleClass('is-open');
+        $('#right-sidebar').toggleClass('sidebar-blur');
+        $scope.dropDown = 'user';
+      }else{
+        $('#notification-center').removeClass('is-open');
+        $('#userMenu').removeClass('is-open');
+        $('#right-sidebar').removeClass('sidebar-blur');
+        if($scope.dropDown === 'user'){
+          $scope.dropDown = false;
+        }
+        else{
+          $timeout(function(){
+            $('#userMenu').toggleClass('is-open');
+            $('#right-sidebar').toggleClass('sidebar-blur');
+            $scope.dropDown = 'user';
+          }, 300)
+        }
+      }
     };
 
     ////(delayed) static notification array
