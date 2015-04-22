@@ -23,10 +23,6 @@
 			"Rev": "a66f63398bb5564e56eae3a25a468bfb1259f841"
 		},
 		{
-			"ImportPath": "github.com/dutchcoders/slack",
-			"Rev": "972fa951008f7689b9bccb863b2d30d13b9baffe"
-		},
-		{
 			"ImportPath": "github.com/garyburd/redigo/internal",
 			"Rev": "535138d7bcd717d6531c701ef5933d98b1866257"
 		},
@@ -58,6 +54,10 @@
 		{
 			"ImportPath": "github.com/kurrik/oauth1a",
 			"Rev": "fc2542bc5f2532ed4a437960d2d51ff6e18a5cb6"
+		},
+		{
+			"ImportPath": "github.com/nlopes/slack",
+			"Rev": "3db593d794556fa859c42caf8426d4e3c8dab3b5"
 		},
 		{
 			"ImportPath": "github.com/nu7hatch/gouuid",
