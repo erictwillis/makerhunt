@@ -148,6 +148,13 @@ angular.module('makerhuntApp').filter('rootDomain', function() {
   };
 });
 
+angular.module('makerhuntApp').filter('nl2p', function() {
+  return function(input){
+    input = String(input).trim();
+    return (input.length > 0 ? '<p>' + input.replace(/[\r\n]+/g, '</p><p>') + '</p>' : null);
+  };
+});
+
 
 var regexIso8601 = /^(\d{4}|\+\d{6})(?:-(\d{2})(?:-(\d{2})(?:T(\d{2}):(\d{2}):(\d{2})\.(\d{1,})(Z|([\-+])(\d{2}):(\d{2}))?)?)?)?$/;
 

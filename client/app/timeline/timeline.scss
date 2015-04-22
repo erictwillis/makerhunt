@@ -463,7 +463,7 @@
         display: inline-block;
         vertical-align: middle;
 
-        .status {
+        p {
           padding-left: 10px;
           //font-size: 14px;
           overflow: hidden;
@@ -620,6 +620,7 @@
         min-width: 34px;
         border: 1px solid rgba(65, 170, 120, 0.4);
         position: relative;
+        vertical-align: top;
         &:focus,&:active{
           color: #41aa78;
           .heart {
@@ -761,7 +762,7 @@
       padding-left: 45px;
       padding-right: 10px;
 
-      .comment-status{
+      p{
         font-weight: 400;
         font-size: 12px;
         margin-bottom: 0;
@@ -1585,6 +1586,9 @@ $ease: .4s ease-in-out; $delay: .1s;
           .notif-action-wrapper {
             opacity: 1;
           }
+        }
+        &:last-child{
+          border: 0;
         }
       }
     }
