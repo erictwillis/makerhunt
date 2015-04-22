@@ -40,6 +40,9 @@ textarea{
   -webkit-filter: grayscale(100%) !important;
   opacity: .6!important;
   cursor: default!important;
+  &:hover{
+    color: inherit!important;
+  }
 }
 .emoji {
   max-height: 15px;
