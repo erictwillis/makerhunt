@@ -102,6 +102,12 @@
           vertical-align: top;
           line-height: 38px;
         }
+        .fa-bell{
+          font-size: 16px;
+          padding-left: 2px;
+          margin-top: -1px;
+          width: auto;
+        }
 
         .notification-count {
           background: #FF5D5D;
@@ -290,7 +296,7 @@
 }
 
 .ui_post {
-  padding: 10px;
+  padding: 12px;
   //border-bottom: 1px solid #f4f4f4;
   margin-top: 15px;
   position: relative;
@@ -495,6 +501,7 @@
       margin-top: 10px;
       cursor: pointer;
       min-height: 150px;
+      margin-bottom: 20px;
 
       .text-wrapper {
         width: 66%;
@@ -569,9 +576,11 @@
   }
 
   .ui_post-footer {
-    width: 100%;
-    margin-top: 10px;
-    margin-bottom: 5px;
+    border-top: 1px solid #f4f4f4;
+    padding-top: 10px;
+    margin-left: -12px;
+    margin-right: -12px;
+    padding: 10px 12px 0;
 
     .user-actions-wrapper {
       display: inline-block;
@@ -677,13 +686,12 @@
   -ms-transition: all 400ms ease;
   -o-transition: all 400ms ease;
   transition: all 400ms ease;
-  background: rgba(0,0,0,.01);
   border-radius: 2px;
   display: block;
   max-height: 0;
   -webkit-box-shadow: none!important;
   box-shadow: none!important;
-  background-color: #f6f7f8;
+  background-color: transparent;
   -webkit-border-radius: 0 0 2px 2px;
   margin: 8px -10px -10px;
   width: auto;
@@ -735,10 +743,12 @@
 
       .user-name {
         font-size: 14px;
-        font-weight: 400;
-        display: block;
+        font-weight: 700;
+        display: inline-block;
         margin: 0;
         line-height: 1;
+        margin-right: 2px;
+        color: rgba(0,0,0,.6);
       }
       .user-userName {
         margin: 0;
@@ -746,6 +756,7 @@
         line-height: 1.2;
         font-weight: 400;
         color: rgba(0,0,0,.5);
+        display: inline-block;
       }
       .timestamp {
         font-size: 11px;
@@ -765,7 +776,7 @@
 
       p{
         font-weight: 400;
-        font-size: 12px;
+        font-size: 13px;
         margin-bottom: 0;
         line-height: 1.2;
         white-space: pre-wrap;
@@ -808,7 +819,7 @@
     }
     .newComment-comment-wrapper {
       display: inline-block;
-      width: calc(100% - 37px);
+      width: calc(100% - 38px);
       padding-left: 5px;
       vertical-align: top;
       padding-right: 36px;
@@ -842,6 +853,7 @@
   max-height: 600px;
   overflow-y: auto;
   border-top: 1px solid #e1e2e3;
+  background-color: #f6f7f8;
 }
 
 
@@ -1525,6 +1537,10 @@ $ease: .4s ease-in-out; $delay: .1s;
       max-height: 190px;
       overflow-y: auto;
 
+      .seen{
+        opacity: .6;
+      }
+
       .notification-wrapper {
         margin: 0;
         display: block;
@@ -1610,11 +1626,11 @@ $ease: .4s ease-in-out; $delay: .1s;
     box-shadow: none;
     -webkit-box-shadow: none;
 
-    -webkit-transition: all 300ms;
-    -moz-transition: all 300ms;
-    -ms-transition: all 300ms;
-    -o-transition: all 300ms;
-    transition: all 300ms;
+    -webkit-transition: all 200ms;
+    -moz-transition: all 200ms;
+    -ms-transition: all 200ms;
+    -o-transition: all 200ms;
+    transition: all 200ms;
 
     .userMenu {
       margin: 0;
