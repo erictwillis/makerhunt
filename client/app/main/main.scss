@@ -1,5 +1,19 @@
 #mainView{
 
+  .button--signIn {
+    color: #fff;
+    border: 1px solid rgba(255,255,255,.3);
+    -webkit-transition: all 250ms;
+    -moz-transition: all 250ms;
+    -ms-transition: all 250ms;
+    -o-transition: all 250ms;
+    transition: all 250ms;
+    &:hover{
+      border: 1px solid rgba(255,255,255,.9);
+
+    }
+  }
+
   .fade {
     transition: opacity .25s ease-in-out;
     -moz-transition: opacity .25s ease-in-out;
@@ -119,7 +133,7 @@
       font-size: 25px;
       margin-bottom: 48px;
       color: rgba(255,255,255,1);
-      font-weight: 100;
+      font-weight: 300;
     }
 
 
