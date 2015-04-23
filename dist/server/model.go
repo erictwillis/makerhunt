@@ -29,6 +29,14 @@ type Notification struct {
 	CreatedAt      time.Time      `bson:"created_at" json:"created_at"`
 }
 
+func (u *User) IsEnrolledMaker() bool {
+	if len(u.PHSettings.MakerOf) == 0 {
+		return false
+	}
+
+	return u.Email != ""
+}
+
 func (c *Notification) SetOwner(user *User) {
 	c.OwnerId = user.UserId
 	c.Owner = user

@@ -146,7 +146,27 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if resp.StatusCode == 200 {
+		var twitterUser TwitterUser
+		if err := json.NewDecoder(resp.Body).Decode(&twitterUser); err != nil {
+			log.Printf("Error getting access token: %v", err)
+			http.Error(w, "Problem getting an access token", 500)
+		}
+
+		username := twitterUser.ScreenName
+
+		fmt.Println("Username %s", username)
 		// should update user here with verify credentials data
+		var user User
+		if err := db.Users.Find(bson.M{"username": username}).One(&user); err == mgo.ErrNotFound {
+		} else if err == nil {
+			if user.IsEnrolledMaker() {
+				http.Redirect(w, r, "/timeline", 302)
+				return
+			}
+		} else {
+			http.Error(w, err.Error(), 500)
+			return
+		}
 
 		url = "/signup"
 		http.Redirect(w, r, url, 302)
@@ -328,6 +348,13 @@ func authHandler(w http.ResponseWriter, r *http.Request) {
 	session.Values["access_token_key"] = userConfig.AccessTokenKey
 	session.Values["access_token_secret"] = userConfig.AccessTokenSecret
 	session.Save(r, w)
+
+	fmt.Printf("%#v ", user.IsEnrolledMaker(), user.Email)
+
+	if user.IsEnrolledMaker() {
+		http.Redirect(w, r, "/timeline", 302)
+		return
+	}
 
 	http.Redirect(w, r, "/signup", 302)
 }
