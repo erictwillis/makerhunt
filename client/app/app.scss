@@ -35,15 +35,6 @@ textarea{
 .hidden{
   display:none!important;
 }
-.is-disabled {
-  filter: grayscale(100%)!important;
-  -webkit-filter: grayscale(100%) !important;
-  opacity: .6!important;
-  cursor: default!important;
-  &:hover{
-    color: inherit!important;
-  }
-}
 .emoji {
   max-height: 15px;
   vertical-align: baseline;
@@ -80,6 +71,18 @@ textarea{
   }
 }
 
+.coming-soon{
+  text-transform: lowercase;
+}
+.is-disabled {
+  filter: grayscale(100%)!important;
+  -webkit-filter: grayscale(100%) !important;
+  opacity: .6!important;
+  cursor: default!important;
+  &:hover{
+    color: inherit!important;
+  }
+}
 
 /**
  * Font Includes
