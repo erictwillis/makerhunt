@@ -134,6 +134,12 @@
 
           </div>
 
+          <div class="ui_card new-items-bar-wrapper" ng-if="newPosts">
+            <div class="new-items-bar">
+              Show {{newPosts.length}} new post<span ng-if="newPosts.length > 1">s</span>
+            </div>
+          </div>
+
           <div class="ui_post timeline-item ui_card" ng-repeat="post in posts">
 
             <div class="ui_post-head timeline-item--meta">
@@ -235,7 +241,7 @@
                   </div>
 
                 </button>
-                <button class="comment-toggle" ng-click="openComments(post); $event.stopPropagation();"><i class="fa fa-comments-o"></i> <span ng-if="post.comments.length > 0">{{post.comments.length}} </span>Comment<span ng-hide="post.comments.length === 1">s</span></button>
+                <button class="comment-toggle" ng-click="openComments(post); $event.stopPropagation();"><i class="fa fa-comments-o"></i> <span ng-if="post.comments.length > 0">{{post.comments.length}} </span> Comment<span ng-hide="post.comments.length === 1">s</span></button>
               </div>
 
               <div class="user-actions-wrapper">

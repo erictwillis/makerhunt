@@ -1781,3 +1781,25 @@ $ease: .4s ease-in-out; $delay: .1s;
   50% {right:-20px}
   100% {right:20px}
 }
+
+.new-items-bar-wrapper {
+  margin-top: 15px;
+
+  .new-items-bar {
+    position: relative;
+    font-size: 13px;
+    display: block;
+    padding: 10px 1px;
+    cursor: pointer;
+    text-align: center;
+    font-weight: normal;
+    -webkit-transition: all 100ms;
+    -moz-transition: all 100ms;
+    -ms-transition: all 100ms;
+    -o-transition: all 100ms;
+    transition: all 100ms;
+    &:hover{
+      background-color: #54b6d0;
+    }
+  }
+}
