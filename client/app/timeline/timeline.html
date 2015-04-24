@@ -33,13 +33,18 @@
           <div class="notifications-wrapper ui_card popup" id="notifications">
 
             <ul class="notifications-list">
+              <li class="notification-wrapper" ng-if="notifications.length==0">
+                <div class="notif-content-wrapper" style="width: 100%; text-align: center;">
+                  <i>No new notifications</i>
+                </div>
+              </li>
               <li class="notification-wrapper" ng-repeat="notification in notifications" ng-class="{'seen':notification.seen, 'unseen':!notification.seen}">
                 <div class="notif-img-wrapper">
                   <img ng-src="{{notification.user.image_url['88px']}}" alt="" class="notification-pic"/>
                 </div>
                 <div class="notif-content-wrapper">
                   <span class="who">{{notification.user.name}}</span>
-                  <span class="did">{{notification.action}}</span>
+                  <span class="did">{{notification.action}}<span ng-if="notification.action==='commented'"> on</span></span>
                   <span class="what">your {{notification.type}}</span>
                   <span class="when"><span am-time-ago="notification.created_at"></span></span>.
                 </div>
@@ -76,37 +81,6 @@
   <div class="container feed-wrapper">
 
     <div class="row">
-      <div class="f_left-sidebar" ng-if="columns===3">
-
-        <div class="currentUser-card ui_card">
-
-          <div class="currentUser-card--cover">
-
-            <div class="cover-background" style="background-image: url('{{user.twitter_profile.profile_banner_url}}');"></div>
-
-            <div class="image-wrapper">
-              <img ng-src="{{user.image_url['88px']}}" alt="" class="currentUser-img"/>
-              <div class="maker-badge">M</div>
-            </div>
-            <div class="currentUser-meta">
-              <h3 class="user-name">{{user.name}}</h3>
-              <h5 class="user-username">@{{user.username}}</h5>
-            </div>
-
-          </div>
-          <div class="currentUser-card--stats">
-
-          </div>
-          <div class="currentUser-card--actions">
-            <a class="action-launch-slack" href="https://makerhunt.slack.com/messages" target="_blank"><img src="../assets/images/slack-logo.jpg" alt="" class="slack-btn"/> Launch Slack</a>
-            <button class="action-edit-profile" disabled>Edit Profile</button>
-            <button class="action-logout">Logout</button>
-          </div>
-
-
-        </div>
-
-      </div ng-i>
       <div class="f_main-content">
       <form name="form" ng-submit="share(form)" novalidate>
           <div class="newPost-wrapper ui_card">
@@ -132,6 +106,12 @@
 
             </ul>
 
+          </div>
+
+          <div class="ui_card new-items-bar-wrapper" ng-if="newPosts">
+            <div class="new-items-bar">
+              Show {{newPosts.length}} new post<span ng-if="newPosts.length > 1">s</span>
+            </div>
           </div>
 
           <div class="ui_post timeline-item ui_card" ng-repeat="post in posts">
@@ -235,7 +215,7 @@
                   </div>
 
                 </button>
-                <button class="comment-toggle" ng-click="openComments(post); $event.stopPropagation();"><i class="fa fa-comments-o"></i> <span ng-if="post.comments.length > 0">{{post.comments.length}} </span>Comment<span ng-hide="post.comments.length === 1">s</span></button>
+                <button class="comment-toggle" ng-click="openComments(post); $event.stopPropagation();"><i class="fa fa-comments-o"></i> <span ng-if="post.comments.length > 0">{{post.comments.length}} </span> Comment<span ng-hide="post.comments.length === 1">s</span></button>
               </div>
 
               <div class="user-actions-wrapper">
@@ -311,7 +291,7 @@
         </div>
 
       </div>
-      <div id="right-sidebar" class="f_right-sidebar" ng-class="{'sidebar-blur': (commentsPost != null)}">
+      <div id="right-sidebar" class="f_right-sidebar"><!--ng-class="{'sidebar-blur': (commentsPost != null)}"-->
         <div class="ui_sideBar-wrapper">
 
           <div class="currentUser-card ui_card hidden">

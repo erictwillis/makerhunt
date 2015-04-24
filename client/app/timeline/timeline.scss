@@ -160,7 +160,7 @@
 
         .action-item--user {
           font-size: 12px;
-          padding-right: 5px;
+          padding-right: 8px;
           overflow: visible;
           border: 1px solid rgba(0,0,0,.15);
 
@@ -581,6 +581,7 @@
     margin-left: -12px;
     margin-right: -12px;
     padding: 10px 12px 0;
+    margin-top: 20px;
 
     .user-actions-wrapper {
       display: inline-block;
@@ -1779,4 +1780,26 @@ $ease: .4s ease-in-out; $delay: .1s;
   0% {right:20px}
   50% {right:-20px}
   100% {right:20px}
+}
+
+.new-items-bar-wrapper {
+  margin-top: 15px;
+
+  .new-items-bar {
+    position: relative;
+    font-size: 13px;
+    display: block;
+    padding: 10px 1px;
+    cursor: pointer;
+    text-align: center;
+    font-weight: normal;
+    -webkit-transition: all 100ms;
+    -moz-transition: all 100ms;
+    -ms-transition: all 100ms;
+    -o-transition: all 100ms;
+    transition: all 100ms;
+    &:hover{
+      background-color: #54b6d0;
+    }
+  }
 }
