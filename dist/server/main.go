@@ -23,6 +23,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
+
 	/*
 			"github.com/goamz/goamz/aws"
 		"github.com/goamz/goamz/sqs"
@@ -91,12 +92,11 @@ func init() {
 
 }
 
-func signoutHandler(w http.ResponseWriter, req *http.Request) {
-	session, _ := store.Get(req, config.SessionName)
-	session.Options.MaxAge = -1
-	session.Save(req, w)
+func signoutHandler(w http.ResponseWriter, r *http.Request) {
+	cookie, _ := GetSessionCookie(r)
+	cookie.Delete(w, r)
 
-	http.Redirect(w, req, "/", 302)
+	http.Redirect(w, r, "/", 302)
 }
 
 func loginHandler(w http.ResponseWriter, r *http.Request) {
@@ -105,28 +105,15 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 
 	client := http.Client{}
 
-	session, _ := store.Get(r, config.SessionName)
-	session.Options = &sessions.Options{
-		Path:     "/",
-		MaxAge:   86400 * 7,
-		HttpOnly: true,
-	}
+	cookie, _ := GetSessionCookie(r)
 
 	userConfig := &oauth1a.UserConfig{}
-
-	// verify credentials
-
-	var err error
-	if _, ok := session.Values["access_token_key"]; ok {
-		userConfig.AccessTokenKey = session.Values["access_token_key"].(string)
-	}
-
-	if _, ok := session.Values["access_token_secret"]; ok {
-		userConfig.AccessTokenSecret = session.Values["access_token_secret"].(string)
-	}
+	userConfig.AccessTokenKey = cookie.AccessTokenKey()
+	userConfig.AccessTokenSecret = cookie.AccessTokenSecret()
 
 	url := fmt.Sprintf("https://api.twitter.com/1.1/account/verify_credentials.json")
 
+	var err error
 	r, err = http.NewRequest("GET", url, nil)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
@@ -150,6 +137,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 		if err := json.NewDecoder(resp.Body).Decode(&twitterUser); err != nil {
 			log.Printf("Error getting access token: %v", err)
 			http.Error(w, "Problem getting an access token", 500)
+			return
 		}
 
 		username := twitterUser.ScreenName
@@ -190,25 +178,25 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Printf("%#v", userConfig)
 
-	session, _ = store.Get(r, "oauth")
-	session.Options = &sessions.Options{
-		Path:     "/",
-		HttpOnly: true,
-	}
-
-	session.Values["request_token_key"] = userConfig.RequestTokenKey
-	session.Values["request_token_secret"] = userConfig.RequestTokenSecret
-	session.Save(r, w)
+	ac, _ := GetOAuthCookie(r)
+	ac.SetRequestTokenKey(userConfig.RequestTokenKey)
+	ac.SetRequestTokenSecret(userConfig.RequestTokenSecret)
+	ac.Save(w, r)
 
 	http.Redirect(w, r, url, 302)
 }
 
 func authHandler(w http.ResponseWriter, r *http.Request) {
-	session, _ := store.Get(r, "oauth")
-
 	if r.FormValue("denied") != "" {
 		http.Error(w, "Twitter oauth request denied.", 500)
 		return
+	}
+
+	ac, _ := GetOAuthCookie(r)
+
+	userConfig := &oauth1a.UserConfig{
+		RequestTokenKey:    ac.RequestTokenKey(),
+		RequestTokenSecret: ac.RequestTokenSecret(),
 	}
 
 	var (
@@ -216,13 +204,6 @@ func authHandler(w http.ResponseWriter, r *http.Request) {
 		verifier string
 		err      error
 	)
-
-	fmt.Printf("SESSION: %#v", session)
-
-	userConfig := &oauth1a.UserConfig{
-		RequestTokenKey:    session.Values["request_token_key"].(string),
-		RequestTokenSecret: session.Values["request_token_secret"].(string),
-	}
 
 	if token, verifier, err = userConfig.ParseAuthorize(r, config.Twitter.Service); err != nil {
 		log.Printf("Could not parse authorization: %v", err)
@@ -337,17 +318,11 @@ func authHandler(w http.ResponseWriter, r *http.Request) {
 		// or merge?
 
 	*/
-	session, _ = store.Get(r, config.SessionName)
-	session.Options = &sessions.Options{
-		Path:     "/",
-		MaxAge:   86400 * 7,
-		HttpOnly: true,
-	}
-
-	session.Values["userid"] = user.UserId.Hex()
-	session.Values["access_token_key"] = userConfig.AccessTokenKey
-	session.Values["access_token_secret"] = userConfig.AccessTokenSecret
-	session.Save(r, w)
+	cookie, _ := GetSessionCookie(r)
+	cookie.SetUserId(user.UserId)
+	cookie.SetAccessTokenKey(userConfig.AccessTokenKey)
+	cookie.SetAccessTokenSecret(userConfig.AccessTokenSecret)
+	cookie.Save(w, r)
 
 	fmt.Printf("%#v ", user.IsEnrolledMaker(), user.Email)
 
@@ -389,17 +364,17 @@ type HandlerFunc func(Context, http.ResponseWriter, *http.Request)
 func accessHandler(h http.HandlerFunc, roles ...Role) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// context := Context{}
+		cookie, _ := GetSessionCookie(r)
 
-		session, _ := store.Get(r, config.SessionName)
-
-		userid := session.Values["userid"]
-		if userid == nil {
+		if !cookie.IsAuthenticated() {
 			http.Error(w, "Unauthorized", 401)
 			return
 		}
 
+		userid := cookie.UserId()
+
 		var user User
-		if err := db.Users.FindId(bson.ObjectIdHex(userid.(string))).One(&user); err == mgo.ErrNotFound {
+		if err := db.Users.FindId(userid).One(&user); err == mgo.ErrNotFound {
 			http.NotFound(w, r)
 			return
 		} else if err != nil {

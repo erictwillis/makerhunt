@@ -35,9 +35,8 @@ func recoverHandler(next http.Handler) http.Handler {
 		defer func() {
 			if err := recover(); err != nil {
 				log.Printf("panic: %+v\n%s\n", err, debug.Stack())
-				// http.Error(w, http.StatusText(500), 500) // What we had before
-				http.Error(w, http.StatusText(500), http.StatusInternalServerError)
 
+				w.WriteHeader(http.StatusInternalServerError)
 				if err := templates.ExecuteTemplate(w, "index.html", nil); err != nil {
 				}
 				return
