@@ -429,7 +429,7 @@ func main() {
 	api.HandleFunc("/timeline", accessHandler(apiTimelineCreate, RoleAdmin, RoleUser)).Methods("POST")
 	api.HandleFunc("/timeline/{id}/comments", accessHandler(apiTimelineCommentCreate, RoleAdmin, RoleUser)).Methods("POST")
 	api.HandleFunc("/timeline/{post_id}/comments/{comment_id}", accessHandler(apiTimelineCommentDelete, RoleAdmin, RoleUser)).Methods("DELETE")
-	api.HandleFunc("/timeline", apiTimelineAll).Methods("GET")
+	api.HandleFunc("/timeline", accessHandler(apiTimelineAll, RoleAdmin, RoleUser)).Methods("GET")
 	api.HandleFunc("/timeline/{id}", accessHandler(apiTimelineGet, RoleAdmin, RoleUser)).Methods("GET")
 	api.HandleFunc("/timeline/{id}", accessHandler(apiTimelineUpdate, RoleAdmin, RoleUser)).Methods("PUT")
 	api.HandleFunc("/timeline/{id}", accessHandler(apiTimelinePatch, RoleAdmin, RoleUser)).Methods("PATCH")
