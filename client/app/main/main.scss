@@ -1,5 +1,19 @@
 #mainView{
 
+  .button--signIn {
+    color: #fff;
+    border: 1px solid rgba(255,255,255,.3);
+    -webkit-transition: all 250ms;
+    -moz-transition: all 250ms;
+    -ms-transition: all 250ms;
+    -o-transition: all 250ms;
+    transition: all 250ms;
+    &:hover{
+      border: 1px solid rgba(255,255,255,.9);
+
+    }
+  }
+
   .fade {
     transition: opacity .25s ease-in-out;
     -moz-transition: opacity .25s ease-in-out;
@@ -18,8 +32,9 @@
 
     .makerFaces-face{
       display: inline-block;
-      width: calc(100% / 6);
-      height: calc(100% / 6);
+      width: calc(100vw / 6);
+      height: calc(100vw / 6);
+      max-width: calc(100% / 6);
       background-image: url('../assets/images/slack_bg.png');
       background-size: cover;
       filter: grayscale(80%);
@@ -29,8 +44,9 @@
     /* Larger than mobile */
     @media (min-width: 400px) {
       .makerFaces-face{
-        width: calc(100% / 6);
-        height: calc(100% / 6);
+        width: calc(100vw / 6);
+        height: calc(100vw / 6);
+        max-width: calc(100% / 6);
       }
     }
 
@@ -38,16 +54,18 @@
     /* Larger than tablet */
     @media (min-width: 750px) {
       .makerFaces-face{
-        width: calc(100% / 10);
-        height: calc(100% / 10);
+        width: calc(100vw / 10);
+        height: calc(100vw / 10);
+        max-width: calc(100% / 10);
       }
     }
 
     /* Larger than desktop */
     @media (min-width: 1000px) {
       .makerFaces-face {
-        width: calc(100% / 12);
-        height: calc(100% / 12);
+        width: calc(100vw / 12);
+        height: calc(100vw / 12);
+        max-width: calc(100% / 12);
       }
     }
   }
@@ -89,7 +107,7 @@
 
           &:hover, &:active{
             color: rgba(255,255,255,1);
-            border-bottom: 1px solid;
+            //border-bottom: 1px solid;
           }
         }
       }
@@ -115,7 +133,7 @@
       font-size: 25px;
       margin-bottom: 48px;
       color: rgba(255,255,255,1);
-      font-weight: 100;
+      font-weight: 300;
     }
 
 

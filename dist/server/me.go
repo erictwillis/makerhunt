@@ -7,10 +7,12 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"reflect"
 	"strings"
 	"time"
 
 	"github.com/dutchcoders/gohunt/gohunt"
+	"github.com/gorilla/mux"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
@@ -97,6 +99,7 @@ func apiMeSubscribe(w http.ResponseWriter, r *http.Request) {
 	//{"status":"error","code":200,"name":"List_DoesNotExist","error":"Invalid MailChimp List ID: 57413"}
 	// WriteJSON(w, user)
 }
+
 func apiMeUpdateProductHuntData(w http.ResponseWriter, r *http.Request) {
 	session, _ := store.Get(r, config.SessionName)
 
@@ -156,6 +159,106 @@ func apiMeUpdateProductHuntData(w http.ResponseWriter, r *http.Request) {
 	}
 
 	WriteJSON(w, user)
+}
+
+func apiMeNotifications(w http.ResponseWriter, r *http.Request) {
+	session, _ := store.Get(r, config.SessionName)
+
+	userid := session.Values["userid"]
+	if userid == nil {
+		http.Error(w, "Unauthorized", 401)
+		return
+	}
+
+	var user User
+	if err := db.Users.FindId(bson.ObjectIdHex(userid.(string))).One(&user); err == mgo.ErrNotFound {
+		http.NotFound(w, r)
+		return
+	} else if err != nil {
+		panic(err)
+	}
+
+	vars := mux.Vars(r)
+
+	fromDate := time.Now()
+	if _, ok := vars["from_date"]; !ok {
+		//	fromDate = val
+	}
+
+	notifications := []Notification{}
+	iter := db.Notifications.
+		Find(bson.M{"created_at": bson.M{"$lt": fromDate}, "owner_id": user.UserId}).
+		Sort("-created_at").
+		Limit(20).Iter()
+
+	defer iter.Close()
+
+	notification := Notification{}
+	for iter.Next(&notification) {
+		notification.LoadUser()
+
+		notifications = append(notifications, notification)
+	}
+
+	if err := iter.Close(); err != nil {
+	}
+
+	Filter(notifications, func(path string, value reflect.Value) error {
+		fmt.Println(path)
+		/*
+			if path == "[].PhProfile.Votes" {
+				v := reflect.ValueOf([]gohunt.Vote{})
+				value.Set(v)
+			}
+			if path == "[].PhProfile.Posts" {
+				v := reflect.ValueOf([]gohunt.Post{})
+				value.Set(v)
+			}
+			if path == "[].PhProfile.Followers" {
+				v := reflect.ValueOf([]gohunt.User{})
+				value.Set(v)
+			}
+			if path == "[].PhProfile.Following" {
+				v := reflect.ValueOf([]gohunt.User{})
+				value.Set(v)
+			}
+			if path == "[].PhProfile.MakerOf[].Makers" {
+				v := reflect.ValueOf([]gohunt.User{})
+				value.Set(v)
+			}
+		*/
+		return nil
+	})
+
+	WriteJSON(w, notifications)
+}
+
+func apiMeNotificationsSeen(w http.ResponseWriter, r *http.Request) {
+	session, _ := store.Get(r, config.SessionName)
+
+	userId := session.Values["userid"]
+	if userId == nil {
+		http.Error(w, "Unauthorized", 401)
+		return
+	}
+
+	change :=
+		bson.M{
+			"$set": bson.M{
+				"seen": true,
+			},
+		}
+
+	// notifications := []Notification{}
+	resp, err := db.Notifications.UpdateAll(bson.M{"owner_id": bson.ObjectIdHex(userId.(string))}, change)
+	// 	.Apply(change, &notifications)
+	if err != nil {
+		fmt.Println(err)
+		http.Error(w, "Error", 500)
+		return
+	}
+	fmt.Printf("%#v", resp)
+
 }
 
 func apiMeInvite(w http.ResponseWriter, r *http.Request) {

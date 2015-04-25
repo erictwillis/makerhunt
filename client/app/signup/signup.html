@@ -104,9 +104,13 @@
             </div>
           </div>
 
-          <a href="/" class="goHomeBtn">
+          <a href="/" class="goHomeBtn" ng-if="!isMaker()">
             <i class="fa fa-home"></i>
             Back To Home
+          </a>
+          <a href="/timeline" class="goHomeBtn" ng-if="isMaker()">
+            Continue to the timeline
+            <i class="fa fa-arrow-right"></i>
           </a>
 
         </div>

@@ -180,7 +180,7 @@ func apiEventsAll(w http.ResponseWriter, r *http.Request) {
 	WriteJSON(w, events)
 }
 
-func apiEventsNew(w http.ResponseWriter, r *http.Request) {
+func apiEventsCreate(w http.ResponseWriter, r *http.Request) {
 	event := Event{}
 	if err := json.NewDecoder(r.Body).Decode(&event); err != nil {
 		log.Println(err)

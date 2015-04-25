@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/dutchcoders/gohunt/gohunt"
-	"gopkg.in/mgo.v2"
+	mgo "gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
 

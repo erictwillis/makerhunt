@@ -8,8 +8,99 @@ import (
 	"time"
 
 	"github.com/dutchcoders/gohunt/gohunt"
+	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
+
+type Notification struct {
+	NotificationId bson.ObjectId  `bson:"_id" json:"notification_id"`
+	Date           *time.Time     `bson:"date" json:"date"`
+	Type           string         `bson:"type" json:"type"`
+	Action         string         `bson:"action" json:"action"`
+	UserId         bson.ObjectId  `bson:"user_id" json:"user_id"`
+	User           *User          `bson:"-" json:"user"`
+	OwnerId        bson.ObjectId  `bson:"owner_id" json:"owner_id"`
+	Owner          *User          `bson:"-" json:"owner"`
+	Seen           bool           `bson:"seen" json:"seen"`
+	PostId         *bson.ObjectId `bson:"post_id" json:"post_id"`
+	Post           *Post          `bson:"-" json:"post"`
+	CommentId      *bson.ObjectId `bson:"comment_id" json:"comment_id"`
+	Comment        *Comment       `bson:"-" json:"comment"`
+	CreatedAt      time.Time      `bson:"created_at" json:"created_at"`
+}
+
+func (u *User) IsEnrolledMaker() bool {
+	if len(u.PHSettings.MakerOf) == 0 {
+		return false
+	}
+
+	return u.Email != ""
+}
+
+func (c *Notification) SetOwner(user *User) {
+	c.OwnerId = user.UserId
+	c.Owner = user
+}
+
+func (c *Notification) LoadOwner() error {
+	var user User
+	if err := db.Users.FindId(c.OwnerId).One(&user); err == mgo.ErrNotFound {
+		return nil
+	} else if err != nil {
+		return err
+	}
+	c.Owner = &user
+	return nil
+}
+
+func (c *Notification) SetUser(user *User) {
+	c.UserId = user.UserId
+	c.User = user
+}
+
+func (c *Notification) LoadUser() error {
+	var user User
+	if err := db.Users.FindId(c.UserId).One(&user); err == mgo.ErrNotFound {
+		return nil
+	} else if err != nil {
+		return err
+	}
+	c.User = &user
+	return nil
+}
+
+func (c *Notification) SetPost(post *Post) {
+	c.PostId = &post.PostId
+	c.Post = post
+}
+
+func (c *Notification) LoadPost() error {
+	var post Post
+	if err := db.Posts.FindId(c.PostId).One(&post); err == mgo.ErrNotFound {
+		return nil
+	} else if err != nil {
+		return err
+	}
+	c.Post = &post
+	return nil
+}
+
+/*
+func (c *Notification) SetComment(comment Comment) {
+	c.CommentId = user.CommentId
+	c.Comment = &comment
+}
+
+func (c *Notification) LoadComment() error {
+	var comment Comment
+	if err := db.Comments.FindId(c.CommentId).One(&post); err == mgo.ErrNotFound {
+		return nil
+	} else if err != nil {
+		return err
+	}
+	c.Comment = &comment
+	return nil
+}*/
 
 type Event struct {
 	EventId bson.ObjectId `bson:"_id" json:"event_id"`

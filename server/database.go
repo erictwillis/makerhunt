@@ -1,12 +1,16 @@
 package main
 
-import "gopkg.in/mgo.v2"
+import (
+	mgo "gopkg.in/mgo.v2"
+)
 
 type Database struct {
 	*mgo.Database
-	Events *mgo.Collection
-	Makers *mgo.Collection
-	Users  *mgo.Collection
+	Events        *mgo.Collection
+	Makers        *mgo.Collection
+	Users         *mgo.Collection
+	Posts         *mgo.Collection
+	Notifications *mgo.Collection
 }
 
 func (d *Database) Open() error {
@@ -29,5 +33,7 @@ func (d *Database) Open() error {
 	d.Makers = d.Database.C("makers")
 	d.Users = d.Database.C("users")
 	d.Events = d.Database.C("events")
+	d.Posts = d.Database.C("posts")
+	d.Notifications = d.Database.C("notifications")
 	return nil
 }

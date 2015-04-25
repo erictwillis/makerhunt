@@ -562,7 +562,7 @@ module.exports = function (grunt) {
       var spawn = require('child_process').spawn;
       grunt.log.writeln('Starting Flask development server.');
       var PIPE = {stdio: 'inherit'};
-      spawn('go', ['run', 'server/events.go', 'server/slack.go', 'server/hooks.go', 'server/config.go', 'server/database.go', 'server/handlers.go', 'server/logging.go', 'server/main.go', 'server/model.go', 'server/makers.go', 'server/utils.go', 'server/cache.go', 'server/me.go', 'server/users.go', 'server/twitter.go'], PIPE);
+      spawn('go', ['run', 'server/events.go', 'server/cookie.go', 'server/timeline.go', 'server/slack.go', 'server/hooks.go', 'server/config.go', 'server/database.go', 'server/handlers.go', 'server/logging.go', 'server/main.go', 'server/model.go', 'server/makers.go', 'server/utils.go', 'server/cache.go', 'server/me.go', 'server/users.go', 'server/twitter.go'], PIPE);
   });
 
   // Used for delaying livereload until after server has restarted

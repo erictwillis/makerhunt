@@ -6,11 +6,6 @@
 	],
 	"Deps": [
 		{
-			"ImportPath": "code.google.com/p/cascadia",
-			"Comment": "null-31",
-			"Rev": "5d796540e3cb93ea0556c897e6a3c7690f614d35"
-		},
-		{
 			"ImportPath": "github.com/PuerkitoBio/ghost",
 			"Rev": "a0146f2f931611b8bfe40f07018c97a7c881c76a"
 		},
@@ -20,8 +15,16 @@
 			"Rev": "4cf64c51f7e80d56d9ae2ffe7d684d3dd5dbd5d0"
 		},
 		{
+			"ImportPath": "github.com/andybalholm/cascadia",
+			"Rev": "54abbbf07a45a3ef346ebe903e0715d9a3c19352"
+		},
+		{
 			"ImportPath": "github.com/dutchcoders/gohunt/gohunt",
 			"Rev": "a66f63398bb5564e56eae3a25a468bfb1259f841"
+		},
+		{
+			"ImportPath": "github.com/dutchcoders/slack",
+			"Rev": "bd9670d4f0b9d65a22e77d9202e2bbfd4d384222"
 		},
 		{
 			"ImportPath": "github.com/garyburd/redigo/internal",
@@ -57,24 +60,20 @@
 			"Rev": "fc2542bc5f2532ed4a437960d2d51ff6e18a5cb6"
 		},
 		{
-			"ImportPath": "github.com/nlopes/slack",
-			"Rev": "4a78045ef8aabf726224c19fb2c91fc01a98a3c6"
-		},
-		{
 			"ImportPath": "github.com/nu7hatch/gouuid",
 			"Rev": "179d4d0c4d8d407a32af483c2354df1d2c91e6c3"
 		},
 		{
 			"ImportPath": "golang.org/x/net/context",
-			"Rev": "6dc0abcce25682504770fa9a7a6705bbfdebfa48"
+			"Rev": "84ba27dd5b2d8135e9da1395277f2c9333a2ffda"
 		},
 		{
 			"ImportPath": "golang.org/x/net/html",
-			"Rev": "6dc0abcce25682504770fa9a7a6705bbfdebfa48"
+			"Rev": "84ba27dd5b2d8135e9da1395277f2c9333a2ffda"
 		},
 		{
 			"ImportPath": "golang.org/x/net/websocket",
-			"Rev": "6dc0abcce25682504770fa9a7a6705bbfdebfa48"
+			"Rev": "84ba27dd5b2d8135e9da1395277f2c9333a2ffda"
 		},
 		{
 			"ImportPath": "golang.org/x/oauth2",

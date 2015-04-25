@@ -7,7 +7,9 @@ angular.module('makerhuntApp', [
         'ngSanitize',
         'angularMoment',
         'angularytics',
-        'ui.router'
+        'ui.router',
+        'sc.twemoji',
+        'monospaced.elastic'
 ]).config(function ($locationProvider, $httpProvider, $stateProvider, $urlRouterProvider, $compileProvider, AngularyticsProvider) {
     $urlRouterProvider
         .otherwise("/");
@@ -65,17 +67,55 @@ angular.module('makerhuntApp', [
                 return;
             }
 
-
             $state.go("main");
         });
     });
-}).run(function($window){
+}).run(function($window, $rootScope){
 
   if ($window.navigator.userAgent.match(/OS X.*Safari/) && ! $window.navigator.userAgent.match(/Chrome/)) {
     $('body').addClass('safari');
   }
 
+  $rootScope.goExternal = function(url, source, medium, campaign){
+
+    if(!source){
+      source = 'makerhunt'
+    }
+    if(!medium){
+      medium = 'timeline'
+    }
+    if(!campaign){
+      campaign = 'user_post'
+    }
+
+    url = encodeURI(url);
+
+    $window.open(url+'?utm_source='+source+'&utm_medium='+medium+'&utm_campaign='+campaign, '_blank');
+  }
+
 });
+
+angular.module('makerhuntApp').
+    directive('closeAll', [
+      '$rootScope', '$window', '$timeout', '$log' , function($rootScope, $window, $timeout,$log) {
+    return {
+      restrict: 'A',
+      scope: false,
+      link: function closeAll(scope, elem, attrs) {
+            var $target = angular.element($window);
+            $target.on('click', function($event) {
+                var $target = $($event.target);
+                if ($target.closest('.popup').length!=0) {
+                    return (true);
+                }
+
+                $rootScope.$apply(function() {
+                    $rootScope.$broadcast('closeAll');
+                });
+            });
+        }
+    }
+}]);
 
 
 angular.module('makerhuntApp').filter('firstname', function() {
@@ -96,6 +136,23 @@ angular.module('makerhuntApp').filter('utc', function() {
 
           return moment(input).utc();
     };
+});
+
+angular.module('makerhuntApp').filter('rootDomain', function() {
+  return function(input) {
+    if (angular.isUndefined(input)) {
+      return "";
+    }
+
+    return input.replace('http://','').replace('https://','').replace('www.','').split(/[/?#]/)[0];
+  };
+});
+
+angular.module('makerhuntApp').filter('nl2p', function() {
+  return function(input){
+    input = String(input).trim();
+    return (input.length > 0 ? '<p>' + input.replace(/[\r\n]+/g, '</p><p>') + '</p>' : null);
+  };
 });
 
 
