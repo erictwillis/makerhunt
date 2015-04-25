@@ -577,7 +577,7 @@ func apiTimelineCreate(w http.ResponseWriter, r *http.Request) {
 			post.Cards = append(post.Cards, card)
 		}
 
-		post.Status += fmt.Sprintf("<a href='%s'>%s</a> ", word, word)
+		post.Status += fmt.Sprintf("<a href='%s' target='_blank'>%s</a> ", word, word)
 	}
 
 	err := db.Posts.Insert(&post)
