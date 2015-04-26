@@ -70,9 +70,46 @@ textarea{
     border-color: rgba(0,0,0,0.3);
   }
 }
+.user-badge{
+  border-radius: 50%;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  height: 15px;
+  right: -3px;
+  line-height: 16px;
+  position: absolute;
+  text-align: center;
+  top: -1px;
+  width: 15px;
+}
+.user-badge--maker{
+  background: #00b27f;
+}
+.user-badge--large{
+  font-size: 19px;
+  height: 30px;
+  line-height: 30px;
+  width: 30px;
+  font-weight: 700;
+}
 
 .coming-soon{
   text-transform: lowercase;
+}
+.coming-soon-overlay{
+  background: rgba(0, 0, 0, .8);
+  position: absolute;
+  top: -1px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  color: #fff;
+  text-align: center;
+  line-height: 50px;
+  z-index: 1;
+  font-weight: 400;
 }
 .is-disabled {
   filter: grayscale(100%)!important;

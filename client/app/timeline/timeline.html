@@ -5,7 +5,10 @@
     <div class="container">
 
       <div class="logo-wrapper">
-        <h1 class="logo">MakerHunt</h1>
+        <h1 class="logo" style="font-size: 0;">
+          <img src="../assets/images/M_logo_alternate.png" alt="" class="logo-img"/>
+          MakerHunt
+        </h1>
       </div>
 
       <div class="search-wrapper" style="opacity: 0;">
@@ -63,6 +66,10 @@
           <div class="userMenu-wrapper ui_card popup" id="userMenu">
 
             <ul class="userMenu">
+              <li class="userMenu-item userMenu-item--dark userMenu-item--slack">
+                <a href="https://makerhunt.slack.com/messages/makers/" target="_blank" class="button button--chromeless button--slack"><i class="fa fa-slack"></i> Launch Slack</a>
+              </li>
+              <li class="userMenu-item userMenu--item--separator"></li>
               <li class="userMenu-item"><a href="#" class="button button--chromeless is-disabled">Your profile <small class="coming-soon">(coming soon)</small></a></li>
               <li class="userMenu-item"><a href="#" class="button button--chromeless is-disabled">Settings <small class="coming-soon">(coming soon)</small></a></li>
               <li class="userMenu-item"><a href="/logout" class="button button--chromeless">Sign out</a></li>
@@ -82,17 +89,17 @@
 
     <div class="row">
       <div class="f_main-content">
-      <form name="form" ng-submit="share(form)" novalidate>
+        <form name="form" ng-submit="share(form)" novalidate>
           <div class="newPost-wrapper ui_card">
-              <div class="newPost-inner">
-                  <textarea ng-model="currentPost.status" msd-elastic="\n" name="status" placeholder="Have something to share?" id="status" class="textarea-autogrow" role="textbox" required></textarea>
-                  <span class="error-txt hidden" ng-show="form.status.$error.required && !form.$pristine">Common', don't you have anything to share?</span>
-              </div>
-              <div class="newPost-actions">
-                  <button id="newPost-submit" class="newPost-postBtn" ng-class="{'is-disabled' : form.$invalid}" type='submit' ng-disabled='form.$invalid'><div class="outline"><div class="pulse"></div></div> Post</button>
-              </div>
-        </div>
-      </form>
+            <div class="newPost-inner">
+              <textarea ng-model="currentPost.status" msd-elastic="\n" name="status" placeholder="Have something to share?" id="status" class="textarea-autogrow" role="textbox" required></textarea>
+              <span class="error-txt hidden" ng-show="form.status.$error.required && !form.$pristine">Common', don't you have anything to share?</span>
+            </div>
+            <div class="newPost-actions">
+              <button id="newPost-submit" class="newPost-postBtn" ng-class="{'is-disabled' : form.$invalid}" type='submit' ng-disabled='form.$invalid'><div class="outline"><div class="pulse"></div></div> Post</button>
+            </div>
+          </div>
+        </form>
 
         <div class="main-timeline">
 
@@ -120,33 +127,95 @@
 
               <div class="meta-who-did-what">
 
-                <img ng-src="{{post.user.image_url['88px']}}" class="user-pic"/>
+                <img ng-src="{{post.user.image_url['88px']}}" class="user-pic" ng-click="openUserDetails(post.post_id);"/>
                 <p class="who-did-what">
-                  <span class="who">{{post.user.name}}</span>
+                  <span class="who" ng-click="openUserDetails(post.post_id);">{{post.user.name}}</span>
                   <span class="did"><span ng-if="!post.cards[0]">posted</span><span ng-if="post.cards[0]">shared</span></span>
                   <span class="what">a<span ng-if="post.cards[0].type==='article' || !post.cards[0]">n</span> <span ng-if="post.cards[0]">{{post.cards[0].type || 'link'}}</span><span ng-if="!post.cards[0]">update</span></span>.
                 </p>
 
-                <!--<div class="user-detail-card ui_card" style="background-image: url({{post.user.image_url['88px']}});">
+                <div id="{{post.post_id}}" class="ui_user-card-wrapper">
 
-                  <div class="detail-wrapper">
 
-                    <div class="name-wrapper">
-                      <h4 class="userName">{{post.user.name}}</h4>
+                  <div class="user-card--nav-column">
+
+                    <div class="user-card--nav-item" ng-class="{'active' : userDetailState==='profile'}" ng-click="userDetailState='profile'">
+                      <i class="fa fa-user"></i>
+                      <span>Profile</span>
                     </div>
-                    <div class="badge-wrapper" ng-repeat="badge in post.user.ph_settings.maker_of">
-                      <div class="badgeItemName"><a ng-href="{{badge.discussion_url}}" target="_blank">{{badge.name}}</a> <span class="makerBadge">M</span></div>
+                    <div class="user-card--nav-item" ng-class="{'active' : userDetailState==='products'}" ng-click="userDetailState='products'">
+                      <span class="PH-logo">P</span>
+                      <span>Products</span>
+                    </div>
+                    <div class="user-card--nav-item hidden" ng-class="{'active' : userDetailState==='skills'}">
+                      <i class="fa fa-folder-open"></i>
+                      <span>Skills</span>
+                    </div>
+
+                  </div>
+
+                  <div class="user-card--content-column">
+
+                    <div class="close-wrapper" ng-click="closeUserDetails(post.post_id)">
+                      <i class="fa fa-times"></i>
+                    </div>
+                    <div class="user-card--content-background" style="background-image: url('{{post.user.twitter_profile.profile_banner_url}}');"></div>
+                    <div class="profile-content-wrapper" ng-class="{'is-content' : userDetailState==='profile'}">
+                      <div class="user-card--image-wrapper">
+                        <div class="user-badge user-badge--maker user-badge--large">M</div>
+                        <img ng-src="{{post.user.image_url['88px']}}" alt="" class="user-card--img"/>
+                      </div>
+                      <div class="user-card--name-wrapper">
+                        <h4 class="user-card--name">{{post.user.name}}</h4>
+                        <h5 class="user-card--username">@{{post.user.username}}</h5>
+                      </div>
+                    </div>
+                    <div class="products-content-wrapper" ng-class="{'is-content' : userDetailState==='products'}">
+
+                      <div class="user-card-products-wrapper">
+                          <h4 class="user-card-products--maker-of">Maker of</h4>
+                        <ul class="user-card-products--product-list">
+                          <li class="user-card-products--list-item" ng-repeat="product in post.user.ph_profile.maker_of">
+                            test
+                          </li>
+                        </ul>
+                      </div>
+
+                    </div>
+                    <div class="user-card--meta-wrapper">
+
+                      <div class="coming-soon-overlay coming-soon">
+                        coming soon
+                      </div>
+                      <div class="user-card--meta--item is-disabled">
+                        <span class="numbers">0</span>
+                        <span>posts</span>
+                      </div>
+                      <div class="user-card--meta--item is-disabled">
+                        <span class="numbers">0</span>
+                        <span>followers</span>
+                      </div>
+                      <div class="user-card--meta--item is-disabled">
+                        <i class="fa fa-comment-o"></i>
+                        <span>message</span>
+                      </div>
+                      <div class="user-card--meta--item is-disabled">
+                        <i class="fa fa-plus-circle"></i>
+                        <span>follow</span>
+                      </div>
+
+
                     </div>
 
 
                   </div>
 
 
-                </div>-->
+                </div>
 
               </div>
               <div class="meta-timestamp">
-                  <p class="timestamp" am-time-ago="post.created_at"></p>
+                <p class="timestamp" am-time-ago="post.created_at"></p>
               </div>
 
             </div>
@@ -228,61 +297,61 @@
             <div class="ui_comments-container ui_card popup" ng-class="{'comments-open': isCommentsPost(post)}" ng-controller="CommentsCtrl">
 
 
-                <h4 class="comments-headline"><i class="fa fa-comments-o"></i> Comments</h4>
-                <div class="comment-wrapper hidden" ng-if="post.comments.length == 0">
-                    <p class="be-first-to-comment">write the first comment</p>
+              <h4 class="comments-headline"><i class="fa fa-comments-o"></i> Comments</h4>
+              <div class="comment-wrapper hidden" ng-if="post.comments.length == 0">
+                <p class="be-first-to-comment">write the first comment</p>
+              </div>
+              <div class="comment-wrapper" ng-repeat="comment in post.comments | orderBy:sortComments:false">
+                <div class="img-wrapper">
+                  <img ng-src="{{comment.user.image_url['88px']}}" alt="" class="user-img"/>
                 </div>
-                <div class="comment-wrapper" ng-repeat="comment in post.comments | orderBy:sortComments:false">
-                  <div class="img-wrapper">
-                    <img ng-src="{{comment.user.image_url['88px']}}" alt="" class="user-img"/>
-                  </div>
-                  <div class="comment-meta">
-                    <h5 class="user-name" ng-bind="comment.user.name"></h5>
-                    <h6 class="user-userName">@{{ comment.user.username }}</h6>
-                    <div class="timestamp hidden" am-time-ago="comment.created_at"></div>
-                  </div>
-                  <div class="comment-actions-wrapper">
-                    <button class="action-delete" ng-show="canDelete(comment)" ng-click="delete(comment)"><i class="fa fa-trash-o"></i></button>
-                  </div>
-                  <div class="comment-status-wrapper" ng-bind-html="comment.body | twemoji | nl2p">
-
-                  </div>
+                <div class="comment-meta">
+                  <h5 class="user-name" ng-bind="comment.user.name"></h5>
+                  <h6 class="user-userName">@{{ comment.user.username }}</h6>
+                  <div class="timestamp hidden" am-time-ago="comment.created_at"></div>
                 </div>
-                <div class="newComment-wrapper">
-
-                  <div class="newComment-img-wrapper">
-                    <img ng-src="{{user.image_url['88px']}}" alt="" class="newComment-user-img"/>
-                  </div>
-                  <div class="newComment-comment-wrapper" ng-controller="CommentCtrl">
-                    <form name="form" ng-submit="submit(form)" novalidate>
-                      <textarea msd-elastic name="body" ng-model="comment.body" placeholder="Write a comment..." class="textarea-autogrow newComment" type="text" required></textarea>
-                      <!--<span class="error-txt" ng-show="form.body.$error.required && !form.$pristine">Common', don't you have anything to share?</span>-->
-                      <button id="newComment-submit" class="newComment-postBtn" ng-class="{'is-disabled' : form.$invalid}" type='submit' ng-disabled='form.$invalid'>Post</button>
-                    </form>
-                  </div>
+                <div class="comment-actions-wrapper">
+                  <button class="action-delete" ng-show="canDelete(comment)" ng-click="delete(comment)"><i class="fa fa-trash-o"></i></button>
+                </div>
+                <div class="comment-status-wrapper" ng-bind-html="comment.body | twemoji | nl2p">
 
                 </div>
+              </div>
+              <div class="newComment-wrapper">
+
+                <div class="newComment-img-wrapper">
+                  <img ng-src="{{user.image_url['88px']}}" alt="" class="newComment-user-img"/>
+                </div>
+                <div class="newComment-comment-wrapper" ng-controller="CommentCtrl">
+                  <form name="form" ng-submit="submit(form)" novalidate>
+                    <textarea msd-elastic name="body" ng-model="comment.body" placeholder="Write a comment..." class="textarea-autogrow newComment" type="text" required></textarea>
+                    <!--<span class="error-txt" ng-show="form.body.$error.required && !form.$pristine">Common', don't you have anything to share?</span>-->
+                    <button id="newComment-submit" class="newComment-postBtn" ng-class="{'is-disabled' : form.$invalid}" type='submit' ng-disabled='form.$invalid'>Post</button>
+                  </form>
+                </div>
+
+              </div>
 
 
             </div>
 
           </div>
           <div ng-switch="state">
-              <div ng-switch-when='loading'>
-                <div class="loader-height"></div>
-                <div class="ui_content-loader">
-                  <div class='bar'></div>
-                  <div class='bar'></div>
-                  <div class='bar'></div>
-                  <div class='bar'></div>
-                  <div class='bar'></div>
-                </div>
+            <div ng-switch-when='loading'>
+              <div class="loader-height"></div>
+              <div class="ui_content-loader">
+                <div class='bar'></div>
+                <div class='bar'></div>
+                <div class='bar'></div>
+                <div class='bar'></div>
+                <div class='bar'></div>
               </div>
-              <div ng-switch-when='no-more'>
-                <p class="no-more">You've reached the end of MakerHunt! &#9737;_&#9737;</p>
-              </div>
+            </div>
+            <div ng-switch-when='no-more'>
+              <p class="no-more">You've reached the end of MakerHunt! &#9737;_&#9737;</p>
+            </div>
 
-              <p ng-switch-when='error'>Error</p>
+            <p ng-switch-when='error'>Error</p>
           </div>
           <!--
           <div ng-if="loadingPosts && !noMorePosts">Loading</div>
