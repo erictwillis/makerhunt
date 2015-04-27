@@ -371,10 +371,8 @@ func accessHandler(h http.HandlerFunc, roles ...Role) http.HandlerFunc {
 			return
 		}
 
-		userid := cookie.UserId()
-
-		var user User
-		if err := db.Users.FindId(userid).One(&user); err == mgo.ErrNotFound {
+		_, err := cookie.User()
+		if err == mgo.ErrNotFound {
 			http.NotFound(w, r)
 			return
 		} else if err != nil {
@@ -450,6 +448,7 @@ func main() {
 	r.HandleFunc("/me", pageHandler("index.html"))
 	r.HandleFunc("/signup", pageHandler("index.html"))
 	r.HandleFunc("/timeline", pageHandler("index.html"))
+	r.HandleFunc("/{user}/{postid}", pageHandler("index.html"))
 	r.HandleFunc("/error", pageHandler("index.html"))
 	r.HandleFunc("/", pageHandler("index.html"))
 

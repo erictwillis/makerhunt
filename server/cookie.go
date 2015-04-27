@@ -69,6 +69,12 @@ func (cookie *SessionCookie) SetUserId(v bson.ObjectId) {
 	cookie.s.Values["userid"] = v.Hex()
 }
 
+func (cookie *SessionCookie) User() (*User, error) {
+	var user User
+	err := db.Users.FindId(cookie.UserId()).One(&user)
+	return &user, err
+}
+
 func (cookie *SessionCookie) Save(w http.ResponseWriter, r *http.Request) {
 	cookie.s.Save(r, w)
 }

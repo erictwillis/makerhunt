@@ -19,22 +19,29 @@ import (
 )
 
 func apiTimelineGet(w http.ResponseWriter, r *http.Request) {
-	/*
-		vars := mux.Vars(r)
-		if id, ok := vars["id"]; ok {
-			event := Event{}
-			id := bson.ObjectIdHex(id)
-			err := db.Events.FindId(id).One(&event)
-			if err != nil {
-				panic(err)
+	vars := mux.Vars(r)
+	if id, ok := vars["id"]; ok {
+		post := Post{}
+		id := bson.ObjectIdHex(id)
+		err := db.Posts.FindId(id).One(&post)
+		if err != nil {
+			panic(err)
+		}
+
+		post.LoadUser()
+
+		for idx, _ := range post.Comments {
+			if err := post.Comments[idx].LoadUser(); err != nil {
+				fmt.Println(err)
 			}
 
-			WriteJSON(w, event)
-		} else {
-			http.Error(w, "Error", 500)
-			return
 		}
-	*/
+
+		WriteJSON(w, post)
+	} else {
+		http.Error(w, "Error", 500)
+		return
+	}
 }
 
 func apiTimelineUpdate(w http.ResponseWriter, r *http.Request) {
@@ -239,7 +246,7 @@ func filter(value reflect.Value, path string, fn func(path string, value reflect
 type Comment struct {
 	CommentId bson.ObjectId `bson:"_id" json:"comment_id"`
 	Body      string        `bson:"body" json:"body"`
-	UserId    bson.ObjectId `bson:"user_id"`
+	UserId    bson.ObjectId `bson:"user_id" json:"user_id"`
 	User      *User         `bson:"-" json:"user"`
 	PostId    bson.ObjectId `bson:"post_id" json:"post_id"`
 	CreatedAt time.Time     `bson:"created_at" json:"created_at"`
