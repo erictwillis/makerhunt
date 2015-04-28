@@ -7,15 +7,46 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
-	"reflect"
 	"strings"
 	"time"
 
 	"github.com/dutchcoders/gohunt/gohunt"
 	"github.com/gorilla/mux"
-	"gopkg.in/mgo.v2"
+	mgo "gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
+
+type UserDTO struct {
+	UserId     bson.ObjectId     `json:"user_id"`
+	Username   string            `json:"username"`
+	Name       string            `json:"name"`
+	Email      string            `json:"email"`
+	Location   string            `json:"location"`
+	Headline   string            `json:"headline"`
+	ProfileUrl string            `json:"profile_url"`
+	WebsiteUrl string            `json:"website_url"`
+	ImageUrl   map[string]string `json:"image_url"`
+	CreatedAt  time.Time         `json:"created_at"`
+	// PHSettings gohunt.UserSettings `bson:"ph_settings" json:"ph_settings"`
+	// Twitter    TwitterUser         `bson:"twitter" json:"twitter_profile"`
+}
+
+type NotificationDTO struct {
+	NotificationId bson.ObjectId `json:"notification_id"`
+	Date           *time.Time    `json:"date"`
+	Type           string        `json:"type"`
+	Action         string        `json:"action"`
+	User           *struct {
+		Name     string            `json:"name"`
+		Username string            `json:"username"`
+		ImageUrl map[string]string `json:"image_url"`
+	} `json:"user"`
+	Owner *User `json:"owner"`
+	Seen  bool  `json:"seen"`
+	// Post           *Post          `json:"post"`
+	Comment   *CommentDTO `json:"comment"`
+	CreatedAt time.Time   `json:"created_at"`
+}
 
 func apiMeSubscribe(w http.ResponseWriter, r *http.Request) {
 	session, _ := store.Get(r, config.SessionName)
@@ -203,34 +234,10 @@ func apiMeNotifications(w http.ResponseWriter, r *http.Request) {
 	if err := iter.Close(); err != nil {
 	}
 
-	Filter(notifications, func(path string, value reflect.Value) error {
-		fmt.Println(path)
-		/*
-			if path == "[].PhProfile.Votes" {
-				v := reflect.ValueOf([]gohunt.Vote{})
-				value.Set(v)
-			}
-			if path == "[].PhProfile.Posts" {
-				v := reflect.ValueOf([]gohunt.Post{})
-				value.Set(v)
-			}
-			if path == "[].PhProfile.Followers" {
-				v := reflect.ValueOf([]gohunt.User{})
-				value.Set(v)
-			}
-			if path == "[].PhProfile.Following" {
-				v := reflect.ValueOf([]gohunt.User{})
-				value.Set(v)
-			}
-			if path == "[].PhProfile.MakerOf[].Makers" {
-				v := reflect.ValueOf([]gohunt.User{})
-				value.Set(v)
-			}
-		*/
-		return nil
-	})
+	var notifications_o []NotificationDTO
+	Merge(&notifications_o, notifications)
 
-	WriteJSON(w, notifications)
+	WriteJSON(w, notifications_o)
 }
 
 func apiMeNotificationsSeen(w http.ResponseWriter, r *http.Request) {
@@ -317,8 +324,10 @@ func apiMeInvite(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// check {"ok":false,"error":"already_in_team"}
+	var user_o UserDTO
+	Merge(&user_o, user)
 
-	WriteJSON(w, user)
+	WriteJSON(w, user_o)
 }
 
 func apiMeGet(w http.ResponseWriter, r *http.Request) {
@@ -341,5 +350,8 @@ func apiMeGet(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	WriteJSON(w, user)
+	var user_o UserDTO
+	Merge(&user_o, user)
+
+	WriteJSON(w, user_o)
 }

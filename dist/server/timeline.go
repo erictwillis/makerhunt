@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
-	"reflect"
 	"strconv"
 	"strings"
 	"time"
@@ -18,6 +16,47 @@ import (
 	mgo "gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
+
+type PostDTO struct {
+	PostId bson.ObjectId `json:"post_id"`
+	User   *struct {
+		Name     string            `json:"name"`
+		Username string            `json:"username"`
+		ImageUrl map[string]string `json:"image_url"`
+	} `json:"user"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+	Status    string    `json:"status"`
+	Cards     []struct {
+		CardId   bson.ObjectId `json:"card_id"`
+		Type     string        `json:"type"`
+		Source   string        `json:"source"`
+		Headline string        `json:"headline"`
+		Text     string        `json:"text"`
+		Url      string        `json:"url"`
+		Icon     string        `json:"icon"`
+		Image    string        `json:"img"`
+	} `json:"cards"`
+	LikedBy []bson.ObjectId `json:"liked_by"`
+	Type    string          `json:"type"`
+	Via     struct {
+		ProviderId string `json:"provider_id"`
+		Provider   string `json:"provider"`
+		Url        string `json:"url"`
+	} `json:"via"`
+	Comments []CommentDTO `json:"comments"`
+}
+
+type CommentDTO struct {
+	CommentId bson.ObjectId `json:"comment_id"`
+	Body      string        `json:"body"`
+	User      *struct {
+		UserId   bson.ObjectId     `json:"user_id"`
+		Name     string            `json:"name"`
+		Username string            `json:"username"`
+		ImageUrl map[string]string `json:"image_url"`
+	} `json:"user"`
+}
 
 func apiTimelineGet(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
@@ -38,27 +77,8 @@ func apiTimelineGet(w http.ResponseWriter, r *http.Request) {
 
 		}
 
-		var post_o struct {
-			PostId bson.ObjectId `json:"post_id"`
-			User   *struct {
-				Name     string `json:"name"`
-				Username string `json:"username"`
-			} `json:"user"`
-			CreatedAt time.Time `json:"created_at"`
-			UpdatedAt time.Time `json:"updated_at"`
-			Status    string    `json:"status"`
-			Type      string    `json:"type"`
-			Comments  []struct {
-				Body string `json:"body"`
-				User *struct {
-					Name     string `json:"name"`
-					Username string `json:"username"`
-				} `json:"user"`
-			} `json:"comments"`
-		}
-
+		var post_o PostDTO
 		err = Merge(&post_o, post)
-
 		WriteJSON(w, post_o)
 	} else {
 		http.Error(w, "Error", 500)
@@ -224,131 +244,6 @@ func apiTimelinePatch(w http.ResponseWriter, r *http.Request) {
 	*/
 }
 
-func Merge(dest interface{}, src interface{}) error {
-	vSrc := reflect.ValueOf(src)
-	vDst := reflect.ValueOf(dest)
-	if vDst.Kind() == reflect.Ptr {
-		vDst = vDst.Elem()
-	}
-	return merge(vDst, vSrc)
-}
-
-func merge(dest reflect.Value, src reflect.Value) error {
-	if dest.Kind() == reflect.Ptr {
-		// dest = dest.Elem()
-	}
-
-	tField := src.Type()
-	destField := dest
-
-	fmt.Println("src:", tField.Name)
-	switch src.Kind() {
-	case reflect.Struct:
-
-		if src.Type() == dest.Type() {
-			dest.Set(src)
-			return nil
-		}
-
-		for i := 0; i < src.NumField(); i++ {
-
-			tField := src.Type().Field(i)
-
-			fmt.Println("Struct", tField.Name)
-
-			df := dest.FieldByName(tField.Name)
-			if df.Kind() == 0 {
-				fmt.Println("Zerovalue", tField.Name)
-				continue
-			}
-
-			fmt.Println("Traversing ", tField.Name)
-			if err := merge(df, src.Field(i)); err != nil {
-				fmt.Println("Traversing error", tField.Name, err)
-				return err
-			}
-		}
-
-	case reflect.Map:
-	case reflect.Slice:
-		fmt.Println("Slice dest:", tField.Name, src.Len())
-		x := reflect.New(destField.Type()).Elem()
-
-		for j := 0; j < src.Len(); j++ {
-			fmt.Println("Slice dest:", tField.Name, j)
-			destFieldSlice := reflect.New(destField.Type().Elem()).Elem()
-			merge(destFieldSlice, src.Index(j))
-			fmt.Printf("comm %#v\n", destFieldSlice)
-			x = reflect.Append(x, destFieldSlice)
-		}
-		fmt.Printf("DestF commen :%#v\n", destField)
-
-		destField.Set(x)
-	case reflect.Chan:
-	case reflect.Ptr:
-		fmt.Println("Ptr dest:", tField.Name)
-		if !src.IsNil() && destField.CanSet() {
-			x := reflect.New(destField.Type().Elem())
-			merge(x.Elem(), src.Elem())
-			fmt.Println("Ptr dest 2:", tField.Name, x)
-			dest.Set(x)
-
-			json.NewEncoder(os.Stdout).Encode(x.Interface())
-			// destField.Set(reflect.New(destField.Type()).Ptr())
-			_ = x
-		}
-	default:
-		if destField.CanSet() {
-			destField.Set(src)
-		} else {
-			fmt.Println("Cannot set dest")
-		}
-	}
-
-	return nil
-}
-
-/*
-var ErrNotSupported = errors.New("Not Supported")
-
-
-func Filter(value interface{}, fn func(path string, value reflect.Value) error) error {
-	switch reflect.ValueOf(value).Kind() {
-	case reflect.Struct:
-		fallthrough
-	case reflect.Slice:
-	default:
-		return ErrNotSupported
-	}
-	return filter(reflect.ValueOf(value), "", fn)
-}
-
-func filter(value reflect.Value, path string, fn func(path string, value reflect.Value) error) error {
-	if err := fn(path, value); err != nil {
-		return err
-	}
-	switch value.Kind() {
-	case reflect.Struct:
-		for i := 0; i < value.NumField(); i++ {
-			tField := value.Type().Field(i)
-
-			if err := filter(value.Field(i), fmt.Sprintf("%s.%s", path, tField.Name), fn); err != nil {
-				return err
-			}
-		}
-	case reflect.Slice:
-		for i := 0; i < value.Len(); i++ {
-			if err := filter(value.Index(i), fmt.Sprintf("%s[]", path), fn); err != nil {
-				return err
-			}
-		}
-	default:
-	}
-
-	return nil
-}
-*/
-
 type Comment struct {
 	CommentId bson.ObjectId `bson:"_id" json:"comment_id"`
 	Body      string        `bson:"body" json:"body"`
@@ -469,65 +364,7 @@ func apiTimelineAll(w http.ResponseWriter, r *http.Request) {
 	if err := iter.Close(); err != nil {
 	}
 
-	Filter(posts, func(path string, value reflect.Value) error {
-		fmt.Println(path)
-		/*
-			if path == "[].PhProfile.Votes" {
-				v := reflect.ValueOf([]gohunt.Vote{})
-				value.Set(v)
-			}
-			if path == "[].PhProfile.Posts" {
-				v := reflect.ValueOf([]gohunt.Post{})
-				value.Set(v)
-			}
-			if path == "[].PhProfile.Followers" {
-				v := reflect.ValueOf([]gohunt.User{})
-				value.Set(v)
-			}
-			if path == "[].PhProfile.Following" {
-				v := reflect.ValueOf([]gohunt.User{})
-				value.Set(v)
-			}
-			if path == "[].PhProfile.MakerOf[].Makers" {
-				v := reflect.ValueOf([]gohunt.User{})
-				value.Set(v)
-			}
-		*/
-		return nil
-	})
-
-	var posts_o []struct {
-		PostId bson.ObjectId `json:"post_id"`
-		User   *struct {
-			Name     string `json:"name"`
-			Username string `json:"username"`
-		} `json:"user"`
-		CreatedAt time.Time `json:"created_at"`
-		UpdatedAt time.Time `json:"updated_at"`
-		Status    string    `json:"status"`
-		Cards     []struct {
-			CardId   bson.ObjectId `json:"card_id"`
-			Type     string        `json:"type"`
-			Source   string        `json:"source"`
-			Headline string        `json:"headline"`
-			Text     string        `json:"text"`
-			Url      string        `json:"url"`
-			Icon     string        `json:"icon"`
-			Image    string        `json:"img"`
-		} `json:"cards"`
-		LikedBy  []bson.ObjectId `json:"liked_by"`
-		Type     string          `json:"type"`
-		Comments []struct {
-			CommentId bson.ObjectId `json:"comment_id"`
-			Body      string        `json:"body"`
-			User      *struct {
-				UserId   bson.ObjectId `json:"user_id"`
-				Name     string        `json:"name"`
-				Username string        `json:"username"`
-			} `json:"user"`
-		} `json:"comments"`
-	}
-
+	var posts_o []PostDTO
 	err := Merge(&posts_o, posts)
 	_ = err
 
@@ -675,6 +512,7 @@ func apiTimelineCreate(w http.ResponseWriter, r *http.Request) {
 		return unicode.IsSpace(c)
 	})
 
+	// goroutine to execute parallel, use IndexFunc
 	post.Status = ""
 	for _, word := range words {
 		if !strings.HasPrefix(word, "http://") && !strings.HasPrefix(word, "https://") {
@@ -735,5 +573,9 @@ func apiTimelineCreate(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error", 500)
 		return
 	}
-	WriteJSON(w, post)
+
+	var post_o PostDTO
+	Merge(&post_o, post)
+
+	WriteJSON(w, post_o)
 }
