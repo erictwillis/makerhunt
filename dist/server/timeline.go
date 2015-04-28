@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"reflect"
 	"strconv"
 	"strings"
@@ -19,22 +20,50 @@ import (
 )
 
 func apiTimelineGet(w http.ResponseWriter, r *http.Request) {
-	/*
-		vars := mux.Vars(r)
-		if id, ok := vars["id"]; ok {
-			event := Event{}
-			id := bson.ObjectIdHex(id)
-			err := db.Events.FindId(id).One(&event)
-			if err != nil {
-				panic(err)
+	vars := mux.Vars(r)
+	if id, ok := vars["id"]; ok {
+		post := Post{}
+		id := bson.ObjectIdHex(id)
+		err := db.Posts.FindId(id).One(&post)
+		if err != nil {
+			panic(err)
+		}
+
+		post.LoadUser()
+
+		for idx, _ := range post.Comments {
+			if err := post.Comments[idx].LoadUser(); err != nil {
+				fmt.Println(err)
 			}
 
-			WriteJSON(w, event)
-		} else {
-			http.Error(w, "Error", 500)
-			return
 		}
-	*/
+
+		var post_o struct {
+			PostId bson.ObjectId `json:"post_id"`
+			User   *struct {
+				Name     string `json:"name"`
+				Username string `json:"username"`
+			} `json:"user"`
+			CreatedAt time.Time `json:"created_at"`
+			UpdatedAt time.Time `json:"updated_at"`
+			Status    string    `json:"status"`
+			Type      string    `json:"type"`
+			Comments  []struct {
+				Body string `json:"body"`
+				User *struct {
+					Name     string `json:"name"`
+					Username string `json:"username"`
+				} `json:"user"`
+			} `json:"comments"`
+		}
+
+		err = Merge(&post_o, post)
+
+		WriteJSON(w, post_o)
+	} else {
+		http.Error(w, "Error", 500)
+		return
+	}
 }
 
 func apiTimelineUpdate(w http.ResponseWriter, r *http.Request) {
@@ -195,6 +224,90 @@ func apiTimelinePatch(w http.ResponseWriter, r *http.Request) {
 	*/
 }
 
+func Merge(dest interface{}, src interface{}) error {
+	vSrc := reflect.ValueOf(src)
+	vDst := reflect.ValueOf(dest)
+	if vDst.Kind() == reflect.Ptr {
+		vDst = vDst.Elem()
+	}
+	return merge(vDst, vSrc)
+}
+
+func merge(dest reflect.Value, src reflect.Value) error {
+	if dest.Kind() == reflect.Ptr {
+		// dest = dest.Elem()
+	}
+
+	tField := src.Type()
+	destField := dest
+
+	fmt.Println("src:", tField.Name)
+	switch src.Kind() {
+	case reflect.Struct:
+
+		if src.Type() == dest.Type() {
+			dest.Set(src)
+			return nil
+		}
+
+		for i := 0; i < src.NumField(); i++ {
+
+			tField := src.Type().Field(i)
+
+			fmt.Println("Struct", tField.Name)
+
+			df := dest.FieldByName(tField.Name)
+			if df.Kind() == 0 {
+				fmt.Println("Zerovalue", tField.Name)
+				continue
+			}
+
+			fmt.Println("Traversing ", tField.Name)
+			if err := merge(df, src.Field(i)); err != nil {
+				fmt.Println("Traversing error", tField.Name, err)
+				return err
+			}
+		}
+
+	case reflect.Map:
+	case reflect.Slice:
+		fmt.Println("Slice dest:", tField.Name, src.Len())
+		x := reflect.New(destField.Type()).Elem()
+
+		for j := 0; j < src.Len(); j++ {
+			fmt.Println("Slice dest:", tField.Name, j)
+			destFieldSlice := reflect.New(destField.Type().Elem()).Elem()
+			merge(destFieldSlice, src.Index(j))
+			fmt.Printf("comm %#v\n", destFieldSlice)
+			x = reflect.Append(x, destFieldSlice)
+		}
+		fmt.Printf("DestF commen :%#v\n", destField)
+
+		destField.Set(x)
+	case reflect.Chan:
+	case reflect.Ptr:
+		fmt.Println("Ptr dest:", tField.Name)
+		if !src.IsNil() && destField.CanSet() {
+			x := reflect.New(destField.Type().Elem())
+			merge(x.Elem(), src.Elem())
+			fmt.Println("Ptr dest 2:", tField.Name, x)
+			dest.Set(x)
+
+			json.NewEncoder(os.Stdout).Encode(x.Interface())
+			// destField.Set(reflect.New(destField.Type()).Ptr())
+			_ = x
+		}
+	default:
+		if destField.CanSet() {
+			destField.Set(src)
+		} else {
+			fmt.Println("Cannot set dest")
+		}
+	}
+
+	return nil
+}
+
 /*
 var ErrNotSupported = errors.New("Not Supported")
 
@@ -239,7 +352,7 @@ func filter(value reflect.Value, path string, fn func(path string, value reflect
 type Comment struct {
 	CommentId bson.ObjectId `bson:"_id" json:"comment_id"`
 	Body      string        `bson:"body" json:"body"`
-	UserId    bson.ObjectId `bson:"user_id"`
+	UserId    bson.ObjectId `bson:"user_id" json:"user_id"`
 	User      *User         `bson:"-" json:"user"`
 	PostId    bson.ObjectId `bson:"post_id" json:"post_id"`
 	CreatedAt time.Time     `bson:"created_at" json:"created_at"`
@@ -263,6 +376,7 @@ func (c *Comment) LoadUser() error {
 }
 
 type Post struct {
+	PostId2   string
 	PostId    bson.ObjectId   `bson:"_id" json:"post_id"`
 	UserId    bson.ObjectId   `bson:"user_id"`
 	User      *User           `bson:"-" json:"user"`
@@ -382,7 +496,42 @@ func apiTimelineAll(w http.ResponseWriter, r *http.Request) {
 		return nil
 	})
 
-	WriteJSON(w, posts)
+	var posts_o []struct {
+		PostId bson.ObjectId `json:"post_id"`
+		User   *struct {
+			Name     string `json:"name"`
+			Username string `json:"username"`
+		} `json:"user"`
+		CreatedAt time.Time `json:"created_at"`
+		UpdatedAt time.Time `json:"updated_at"`
+		Status    string    `json:"status"`
+		Cards     []struct {
+			CardId   bson.ObjectId `json:"card_id"`
+			Type     string        `json:"type"`
+			Source   string        `json:"source"`
+			Headline string        `json:"headline"`
+			Text     string        `json:"text"`
+			Url      string        `json:"url"`
+			Icon     string        `json:"icon"`
+			Image    string        `json:"img"`
+		} `json:"cards"`
+		LikedBy  []bson.ObjectId `json:"liked_by"`
+		Type     string          `json:"type"`
+		Comments []struct {
+			CommentId bson.ObjectId `json:"comment_id"`
+			Body      string        `json:"body"`
+			User      *struct {
+				UserId   bson.ObjectId `json:"user_id"`
+				Name     string        `json:"name"`
+				Username string        `json:"username"`
+			} `json:"user"`
+		} `json:"comments"`
+	}
+
+	err := Merge(&posts_o, posts)
+	_ = err
+
+	WriteJSON(w, posts_o)
 }
 
 func apiTimelineCommentDelete(w http.ResponseWriter, r *http.Request) {
@@ -577,7 +726,7 @@ func apiTimelineCreate(w http.ResponseWriter, r *http.Request) {
 			post.Cards = append(post.Cards, card)
 		}
 
-		post.Status += fmt.Sprintf("<a href='%s'>%s</a> ", word, word)
+		post.Status += fmt.Sprintf("<a href='%s' target='_blank'>%s</a> ", word, word)
 	}
 
 	err := db.Posts.Insert(&post)

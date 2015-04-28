@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 	"reflect"
 	"strconv"
 	"strings"
@@ -227,82 +226,122 @@ func apiTimelinePatch(w http.ResponseWriter, r *http.Request) {
 func Merge(dest interface{}, src interface{}) error {
 	vSrc := reflect.ValueOf(src)
 	vDst := reflect.ValueOf(dest)
-	if vDst.Kind() == reflect.Ptr {
-		vDst = vDst.Elem()
-	}
 	return merge(vDst, vSrc)
 }
 
 func merge(dest reflect.Value, src reflect.Value) error {
-	if dest.Kind() == reflect.Ptr {
-		// dest = dest.Elem()
+	if src.Kind() == reflect.Ptr {
+		src = src.Elem()
 	}
 
-	tField := src.Type()
-	destField := dest
+	if dest.Kind() == reflect.Ptr {
+		dest = dest.Elem()
+	}
 
-	fmt.Println("src:", tField.Name)
 	switch src.Kind() {
 	case reflect.Struct:
-
-		if src.Type() == dest.Type() {
-			dest.Set(src)
-			return nil
-		}
-
 		for i := 0; i < src.NumField(); i++ {
 
 			tField := src.Type().Field(i)
 
-			fmt.Println("Struct", tField.Name)
-
+			if dest.Kind() == 0 {
+				fmt.Printf("Zerovalue %#v\n", dest, dest.Kind())
+				continue
+			}
 			df := dest.FieldByName(tField.Name)
 			if df.Kind() == 0 {
 				fmt.Println("Zerovalue", tField.Name)
 				continue
 			}
 
+			_ = df
+			destField := df
+			// t := reflect.TypeOf(df)
+			// destField := reflect.New(t)
+
+			fmt.Printf("%#v %#v %#v %s %s %#v %#v %#v\n", src.Field(i), tField, destField, tField.Name, destField.CanSet(), src.Field(i).Kind().String())
+
+			switch src.Field(i).Kind() {
+			case reflect.Map:
+				continue
+			case reflect.Slice:
+				fmt.Println("Slice dest:", tField.Name, src.Field(i).Len())
+				x := reflect.New(destField.Type()).Elem()
+
+				for j := 0; j < src.Field(i).Len(); j++ {
+					fmt.Println("Slice dest:", tField.Name, j)
+					destFieldSlice := reflect.New(destField.Type().Elem()).Elem()
+					merge(destFieldSlice, src.Field(i).Index(j))
+					fmt.Printf("comm %#v\n", destFieldSlice)
+					x = reflect.Append(x, destFieldSlice)
+				}
+				fmt.Printf("DestF commen :%#v\n", destField)
+
+				destField.Set(x)
+				continue
+			case reflect.Chan:
+				continue
+			case reflect.Struct:
+				fmt.Println("Struct dest:", tField.Name)
+				if destField.CanSet() {
+					destField.Set(src.Field(i))
+				}
+				continue
+			case reflect.Ptr:
+				fmt.Println("Ptr dest:", tField.Name, destField.IsNil())
+				if destField.IsNil() && destField.CanSet() {
+					x := reflect.New(destField.Type().Elem())
+					destField.Set(x)
+					// destField.Set(reflect.New(destField.Type()).Ptr())
+					_ = x
+				}
+			default:
+				if destField.CanSet() {
+					destField.Set(src.Field(i))
+				} else {
+					fmt.Println("Cannot set dest")
+				}
+				continue
+			}
+
 			fmt.Println("Traversing ", tField.Name)
-			if err := merge(df, src.Field(i)); err != nil {
+			if err := merge(destField, src.Field(i)); err != nil {
 				fmt.Println("Traversing error", tField.Name, err)
 				return err
 			}
-		}
+			/*
+				    switch tField.Kind() {
+					case reflect.Map:
+					  f.Set(reflect.MakeMap(ft.Type))
+					case reflect.Slice:
+					  f.Set(reflect.MakeSlice(ft.Type, 0, 0))
+					case reflect.Chan:
+					  f.Set(reflect.MakeChan(ft.Type, 0))
+					case reflect.Struct:
+					  initializeStruct(ft.Type, f)
+					case reflect.Ptr:
+					  fv := reflect.New(ft.Type.Elem())
+					  initializeStruct(ft.Type.Elem(), fv.Elem())
+					  f.Set(fv)
+					default:
+					}
+			*/
 
-	case reflect.Map:
+			// destField := string("")
+			/*
+				if err := merge(destField, src.Field(i)); err != nil {
+					return err
+				}*/
+		}
 	case reflect.Slice:
-		fmt.Println("Slice dest:", tField.Name, src.Len())
-		x := reflect.New(destField.Type()).Elem()
-
-		for j := 0; j < src.Len(); j++ {
-			fmt.Println("Slice dest:", tField.Name, j)
-			destFieldSlice := reflect.New(destField.Type().Elem()).Elem()
-			merge(destFieldSlice, src.Index(j))
-			fmt.Printf("comm %#v\n", destFieldSlice)
-			x = reflect.Append(x, destFieldSlice)
-		}
-		fmt.Printf("DestF commen :%#v\n", destField)
-
-		destField.Set(x)
-	case reflect.Chan:
-	case reflect.Ptr:
-		fmt.Println("Ptr dest:", tField.Name)
-		if !src.IsNil() && destField.CanSet() {
-			x := reflect.New(destField.Type().Elem())
-			merge(x.Elem(), src.Elem())
-			fmt.Println("Ptr dest 2:", tField.Name, x)
-			dest.Set(x)
-
-			json.NewEncoder(os.Stdout).Encode(x.Interface())
-			// destField.Set(reflect.New(destField.Type()).Ptr())
-			_ = x
+		for i := 0; i < src.Len(); i++ {
+			/*
+				// dest := ""
+					if err := merge(reflect.Value(dest), src.Index(i)); err != nil {
+						return err
+					}*/
 		}
 	default:
-		if destField.CanSet() {
-			destField.Set(src)
-		} else {
-			fmt.Println("Cannot set dest")
-		}
 	}
 
 	return nil
@@ -505,25 +544,12 @@ func apiTimelineAll(w http.ResponseWriter, r *http.Request) {
 		CreatedAt time.Time `json:"created_at"`
 		UpdatedAt time.Time `json:"updated_at"`
 		Status    string    `json:"status"`
-		Cards     []struct {
-			CardId   bson.ObjectId `json:"card_id"`
-			Type     string        `json:"type"`
-			Source   string        `json:"source"`
-			Headline string        `json:"headline"`
-			Text     string        `json:"text"`
-			Url      string        `json:"url"`
-			Icon     string        `json:"icon"`
-			Image    string        `json:"img"`
-		} `json:"cards"`
-		LikedBy  []bson.ObjectId `json:"liked_by"`
-		Type     string          `json:"type"`
-		Comments []struct {
-			CommentId bson.ObjectId `json:"comment_id"`
-			Body      string        `json:"body"`
-			User      *struct {
-				UserId   bson.ObjectId `json:"user_id"`
-				Name     string        `json:"name"`
-				Username string        `json:"username"`
+		Type      string    `json:"type"`
+		Comments  []struct {
+			Body string `json:"body"`
+			User *struct {
+				Name     string `json:"name"`
+				Username string `json:"username"`
 			} `json:"user"`
 		} `json:"comments"`
 	}
