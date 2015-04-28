@@ -163,7 +163,10 @@ func apiTimelineLike(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	WriteJSON(w, post)
+	var post_o PostDTO
+	Merge(&post_o, post)
+
+	WriteJSON(w, post_o)
 }
 
 func apiTimelinePatch(w http.ResponseWriter, r *http.Request) {
