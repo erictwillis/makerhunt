@@ -1,0 +1,17 @@
+///#postView
+
+#postView{
+  background: #f1f1f1;
+  min-height: 100vh;
+  color: rgb(78, 88, 96);
+
+  .container{
+    //max-width: 1160px;
+  }
+  .main-timeline{
+    padding: 0;
+    .ui_post{
+      margin-top:0;
+    }
+  }
+}
