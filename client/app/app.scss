@@ -142,6 +142,8 @@ body{
 // Component styles are injected through grunt
 // injector
 @import 'admin/admin.scss';
+@import 'components/mh-comment/mh-comment.scss';
+@import 'components/mh-post/mh-post.scss';
 @import 'directives/modal/modal.scss';
 @import 'main/main.scss';
 @import 'post/post.scss';

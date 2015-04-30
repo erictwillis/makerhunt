@@ -121,7 +121,7 @@
             </div>
           </div>
 
-          <div class="ui_post timeline-item ui_card">
+          <div class="ui_post timeline-item ui_card animated fadeIn" ng-if="post.user">
 
             <div class="ui_post-head timeline-item--meta">
 
@@ -337,23 +337,14 @@
             </div>
 
           </div>
-          <div ng-switch="state">
-            <div ng-switch-when='loading'>
               <div class="loader-height"></div>
-              <div class="ui_content-loader">
+              <div class="ui_content-loader" ng-if="!post.user">
                 <div class='bar'></div>
                 <div class='bar'></div>
                 <div class='bar'></div>
                 <div class='bar'></div>
                 <div class='bar'></div>
               </div>
-            </div>
-            <div ng-switch-when='no-more'>
-              <p class="no-more">You've reached the end of MakerHunt! &#9737;_&#9737;</p>
-            </div>
-
-            <p ng-switch-when='error'>Error</p>
-          </div>
           <!--
           <div ng-if="loadingPosts && !noMorePosts">Loading</div>
           <div ng-if="!loadingPosts && noMorePosts">No More Posts</div>

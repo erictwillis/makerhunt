@@ -1,0 +1,16 @@
+<div class="comment-wrapper">
+  <div class="img-wrapper">
+    <img ng-src="{{comment.user.image_url['88px']}}" alt="" class="user-img"/>
+  </div>
+  <div class="comment-meta">
+    <h5 class="user-name" ng-bind="comment.user.name"></h5>
+    <h6 class="user-userName">@{{ comment.user.username }}</h6>
+    <div class="timestamp hidden" am-time-ago="comment.created_at"></div>
+  </div>
+  <div class="comment-actions-wrapper">
+    <button class="action-delete" ng-show="canDelete(comment)" ng-click="delete(comment)"><i class="fa fa-trash-o"></i></button>
+  </div>
+  <div class="comment-status-wrapper" ng-bind-html="comment.body | twemoji | nl2p">
+
+  </div>
+</div>

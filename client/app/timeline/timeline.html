@@ -121,7 +121,7 @@
             </div>
           </div>
 
-          <div class="ui_post timeline-item ui_card" ng-repeat="post in posts">
+          <div mh-post post="post" ng-repeat="post in posts">
 
             <div class="ui_post-head timeline-item--meta">
 
@@ -131,7 +131,11 @@
                 <p class="who-did-what">
                   <span class="who" ng-click="openUserDetails(post.post_id);">{{post.user.name}}</span>
                   <span class="did"><span ng-if="!post.cards[0]">posted</span><span ng-if="post.cards[0]">shared</span></span>
-                  <span class="what">a<span ng-if="post.cards[0].type==='article' || !post.cards[0]">n</span> <span ng-if="post.cards[0]">{{post.cards[0].type || 'link'}}</span><span ng-if="!post.cards[0]">update</span></span>.
+                  <span class="what">
+                    <a ng-href="/@{{ post.user.username }}/{{ post.post_id }}">
+                      a<span ng-if="post.cards[0].type==='article' || !post.cards[0]">n</span> <span ng-if="post.cards[0]">{{post.cards[0].type || 'link'}}</span><span ng-if="!post.cards[0]">update</span>
+                    </a>
+                  </span>.
                 </p>
 
                 <div id="{{post.post_id}}" class="ui_user-card-wrapper">
@@ -215,7 +219,9 @@
 
               </div>
               <div class="meta-timestamp">
-                <p class="timestamp" am-time-ago="post.created_at"></p>
+                <a ng-href="/@{{ post.user.username }}/{{ post.post_id }}">
+                  <p class="timestamp" am-time-ago="post.created_at"></p>
+                </a>
               </div>
 
             </div>
@@ -288,7 +294,7 @@
               </div>
 
               <div class="user-actions-wrapper">
-                  <button class="action-link" ng-href="/@{{ post.user.username }}/{{ post.post_id }}"><i class="fa fa-link"></i></button>
+                  <button class="action-link hidden" ng-href="/@{{ post.user.username }}/{{ post.post_id }}"><i class="fa fa-link"></i></button>
                 <button class="action-edit" ng-show="canEdit(post)" ng-click="edit(post)"><i class="fa fa-pencil"></i></button>
                 <button class="action-delete" ng-show="canDelete(post)" ng-click="delete(post)"><i class="fa fa-trash-o"></i></button>
               </div>
