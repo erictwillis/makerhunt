@@ -137,6 +137,20 @@ body{
   //hack to get safari to be nice to css animations (fuck safari, seriously!)
   -webkit-transform: translateZ(0);
 }
+/**
+ * GENERAL STUFF
+**/
+
+.ui_card {
+  background: #fff;
+  //padding: 0;
+  box-shadow: 0 0 0 1px rgba(0,0,0,.01) , 0 1px 1px 0 rgba(0,0,0,.1);
+  -webkit-box-shadow: 0 0 0 1px rgba(0,0,0,.01) , 0 1px 1px 0 rgba(0,0,0,.1);
+  border-radius: 2px;
+  zoom: 1;
+  //float: left;
+  width: 100%;
+}
 
 
 // Component styles are injected through grunt

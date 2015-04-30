@@ -8,7 +8,7 @@ angular.module('makerhuntApp').
         var checkWhenEnabled, handler, scrollDistance, scrollEnabled;
         var $target = angular.element(document.querySelector(attrs.infiniteScrollTarget) || $window);
 
-        scrollDistance = 0;
+        scrollDistance = 200;
         if (attrs.infiniteScrollDistance != null) {
           scope.$watch(attrs.infiniteScrollDistance, function(value) {
             scrollDistance = parseFloat(value);

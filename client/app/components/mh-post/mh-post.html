@@ -167,7 +167,7 @@
         </div>
 
       </button>
-      <button class="comment-toggle" ng-click="openComments(post); $event.stopPropagation();"><i class="fa fa-comments-o"></i> <span ng-if="post.comments.length > 0">{{post.comments.length}} </span> Comment<span ng-hide="post.comments.length === 1">s</span></button>
+      <button class="comment-toggle" ng-class="{'hidden': isSinglePost()}" ng-click="openComments(post); $event.stopPropagation();"><i class="fa fa-comments-o"></i> <span ng-if="post.comments.length > 0">{{post.comments.length}} </span> Comment<span ng-hide="post.comments.length === 1">s</span></button>
     </div>
 
     <div class="user-actions-wrapper">
@@ -178,7 +178,7 @@
 
   </div>
 
-  <div class="ui_comments-container ui_card popup" ng-class="{'comments-open': isCommentsPost(post)}" ng-controller="CommentsCtrl">
+  <div class="ui_comments-container ui_card popup" ng-class="{'comments-open': isCommentsPost(post) || isSinglePost()}" ng-controller="CommentsCtrl">
 
 
     <div class="comment-wrapper hidden" ng-if="post.comments.length == 0">
