@@ -20,9 +20,25 @@ import (
 type PostDTO struct {
 	PostId bson.ObjectId `json:"post_id"`
 	User   *struct {
-		Name     string            `json:"name"`
-		Username string            `json:"username"`
-		ImageUrl map[string]string `json:"image_url"`
+		Name      string            `json:"name"`
+		Username  string            `json:"username"`
+		ImageUrl  map[string]string `json:"image_url"`
+		BannerUrl map[string]string `json:"banner_url"`
+		Twitter   struct {
+			ProfileBackgroundColor         string `json:"profile_background_color"`
+			ProfileBackgroundImageUrl      string `json:"profile_background_image_url"`
+			ProfileBackgroundImageUrlHttps string `json:"profile_background_image_url_https"`
+			ProfileBannerUrl               string `json:"profile_banner_url"`
+		} `json:"twitter_profile"`
+		PHSettings struct {
+			MakerOf []struct {
+				Name          string            `json:"name"`
+				Tagline       string            `json:"tagline"`
+				DiscussionUrl string            `json:"discussion_url"`
+				RedirectUrl   string            `json:"redirect_url"`
+				ScreenshotUrl map[string]string `json:"screenshot_url"`
+			} `json:"maker_of"`
+		} `json:"ph_settings"`
 	} `json:"user"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
@@ -76,6 +92,8 @@ func apiTimelineGet(w http.ResponseWriter, r *http.Request) {
 			}
 
 		}
+
+		fmt.Printf("Post REMCO %#v \n ", post)
 
 		var post_o PostDTO
 		err = Merge(&post_o, post)

@@ -24,5 +24,6 @@
   },
   "_source": "git://github.com/mgonto/angularytics.git",
   "_target": "~0.3.0",
-  "_originalSource": "angularytics"
+  "_originalSource": "angularytics",
+  "_direct": true
 }
