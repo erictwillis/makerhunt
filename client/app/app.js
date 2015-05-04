@@ -9,8 +9,9 @@ angular.module('makerhuntApp', [
         'angularytics',
         'ui.router',
         'sc.twemoji',
+        'LocalStorageModule',
         'monospaced.elastic'
-]).config(function ($locationProvider, $httpProvider, $stateProvider, $urlRouterProvider, $compileProvider, AngularyticsProvider) {
+]).config(function ($locationProvider, $httpProvider, $stateProvider, $urlRouterProvider, $compileProvider, AngularyticsProvider, localStorageServiceProvider) {
     $urlRouterProvider
         .otherwise("/");
 
@@ -20,6 +21,10 @@ angular.module('makerhuntApp', [
 
     $locationProvider.html5Mode(true);
     $httpProvider.interceptors.push('authInterceptor');
+
+    localStorageServiceProvider
+        .setPrefix('makerhunt');
+
 }).factory('authInterceptor', function ($rootScope, $q, $cookieStore, $location) {
         return {
             // Add authorization token to headers

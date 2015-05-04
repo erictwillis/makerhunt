@@ -1,8 +1,19 @@
 'use strict';
 
 angular.module('makerhuntApp')
-    .controller('PostCtrl', function ($rootScope, $scope, $timeout, Post, Event, Auth, user, $stateParams) {
+    .controller('PostCtrl', function ($rootScope, $scope, $timeout, Post, Event, Auth, user, $stateParams, localStorageService) {
     $scope.post = {};
+
+    $scope.posts = localStorageService.get("posts") || [];
+
+    angular.forEach($scope.posts, function(post) {
+        if (!angular.equals(post.post_id, $stateParams.post_id)) {
+            return;
+        }
+
+        $scope.post = post;
+    });
+
     $scope.user = user;
 
     $timeout(function() {

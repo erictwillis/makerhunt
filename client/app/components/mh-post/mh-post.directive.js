@@ -7,21 +7,11 @@ angular.module('makerhuntApp')
       restrict: 'A',
       scope: {
         post: '=',
-        context: '@'
+        type: '@'
       },
       link: function (scope, element, attrs) {
-
-
-        //// PURELY BAD TEST INTEGRATION THIS CAN PROBABLY BE DONE MUCH BETTER!
-
         scope.isSinglePost = function(){
-          if(scope.context=='single'){
-            console.log('single');
-            return true;
-          }else{
-            console.log('timeline');
-            return false;
-          }
+            return scope.type === 'single';
         };
 
         scope.isCommentsPost = function(post){

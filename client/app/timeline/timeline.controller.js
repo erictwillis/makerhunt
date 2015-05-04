@@ -1,12 +1,12 @@
 'use strict';
 
 angular.module('makerhuntApp')
-.controller('TimelineCtrl', function ($rootScope, $scope, $timeout, Post, Event, Auth, user) {
+.controller('TimelineCtrl', function ($rootScope, $scope, $timeout, Post, Event, Auth, user, localStorageService) {
     var offset = 0;
     var from_date = new Date();
 
     $scope.user = user;
-    $scope.posts = [];
+    $scope.posts = localStorageService.get("posts") || [];
     $scope.currentPost = new Post();
     $scope.commentsPost = null;
     $scope.state = null;
@@ -67,6 +67,8 @@ angular.module('makerhuntApp')
             $scope.posts.push.apply($scope.posts, posts);
             $scope.state = null;
             offset += posts.length;
+
+            localStorageService.set('posts', $scope.posts);
         }, function(error) {
             $scope.state = 'error';
         });
