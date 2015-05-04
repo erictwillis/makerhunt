@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('makerhuntApp')
-  .directive('mhPost', function () {
+  .directive('mhPost', function (Auth) {
     return {
       templateUrl: 'app/components/mh-post/mh-post.html',
       restrict: 'A',
@@ -10,6 +10,8 @@ angular.module('makerhuntApp')
         type: '@'
       },
       link: function (scope, element, attrs) {
+        scope.user = Auth.getCurrentUser();
+
         scope.isSinglePost = function(){
             return scope.type === 'single';
         };
