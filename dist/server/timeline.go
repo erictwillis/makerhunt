@@ -342,26 +342,26 @@ func (p *Post) LoadUser() error {
 }
 
 func apiTimelineAll(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-
+	limit := 20
 	skip := 0
+
 	if val, err := strconv.Atoi(r.FormValue("offset")); err == nil {
 		skip = val
 	}
 
-	fromDate := time.Now()
-	if _, ok := vars["from_date"]; !ok {
-		//	fromDate = val
+	params := bson.M{}
+
+	if from, err := time.Parse(time.RFC3339Nano, r.FormValue("from_date")); err == nil {
+		params = bson.M{"created_at": bson.M{"$lt": from}}
 	}
 
-	limit := 20
+	if since, err := time.Parse(time.RFC3339Nano, r.FormValue("since")); err == nil {
+		params = bson.M{"created_at": bson.M{"$gt": since}}
+	}
 
 	posts := []Post{}
-
-	fmt.Println(skip)
-
 	iter := db.Posts.
-		Find(bson.M{"created_at": bson.M{"$lt": fromDate}}).
+		Find(params).
 		Sort("-created_at").
 		Skip(skip).
 		Limit(limit).Iter()

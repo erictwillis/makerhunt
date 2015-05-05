@@ -4,15 +4,38 @@ angular.module('makerhuntApp')
 .controller('TimelineCtrl', function ($rootScope, $scope, $timeout, Post, Event, Auth, user, localStorageService) {
     var offset = 0;
     var from_date = new Date();
+    var since = new Date(1971, 1, 1);
 
     $scope.user = user;
     $scope.posts = localStorageService.get("posts") || [];
+
+    if ($scope.posts.length > 0) {
+        // update from_date with last post
+        since = $scope.posts[0].created_at;
+        from_date = $scope.posts[$scope.posts.length-1].created_at;
+    }
+
     $scope.currentPost = new Post();
     $scope.commentsPost = null;
     $scope.state = null;
 
     $timeout(function() {
-        $scope.load();
+        // load posts since date
+        if ($scope.state !== null) {
+            return
+        }
+
+        $scope.state = 'loading';
+        Post.query({ since: since },function (posts) {
+            $scope.posts = posts.concat($scope.posts);
+
+            // check if last post compares to first local storage post, check for gap.
+            $scope.state = null;
+
+            localStorageService.set('posts', $scope.posts);
+        }, function(error) {
+            $scope.state = 'error';
+        });
     });
 
     $scope.$on('closeAll', function() {
@@ -64,10 +87,12 @@ angular.module('makerhuntApp')
                 $scope.state='no-more';
                 return;
             }
+
             $scope.posts.push.apply($scope.posts, posts);
             $scope.state = null;
-            offset += posts.length;
 
+            // update from_date with last post
+            from_date = $scope.posts[$scope.posts.length-1].created_at;
             localStorageService.set('posts', $scope.posts);
         }, function(error) {
             $scope.state = 'error';
