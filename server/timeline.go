@@ -351,8 +351,9 @@ func apiTimelineAll(w http.ResponseWriter, r *http.Request) {
 
 	params := bson.M{}
 
-	if from, err := time.Parse(time.RFC3339Nano, r.FormValue("from_date")); err == nil {
-		params = bson.M{"created_at": bson.M{"$lt": from}}
+	marker := r.FormValue("marker")
+	if bson.IsObjectIdHex(marker) {
+		params = bson.M{"_id": bson.M{"$lt": bson.ObjectIdHex(marker)}}
 	}
 
 	if since, err := time.Parse(time.RFC3339Nano, r.FormValue("since")); err == nil {

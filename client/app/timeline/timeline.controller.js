@@ -2,7 +2,7 @@
 
 angular.module('makerhuntApp')
 .service('PostsService', function($http, $timeout, Post, $q, $filter) {
-    this.from_date = new Date();
+    this.marker = null;
     this.since = new Date(1971, 1, 1);
     this.state = null;
     this.items = {};
@@ -26,7 +26,7 @@ angular.module('makerhuntApp')
 
     this.load = function() {
         var deferred = $q.defer();
-        if (this.state !== null && false) {
+        if (this.state !== null) {
             deferred.reject();
             return deferred.promise;
         }
@@ -39,13 +39,19 @@ angular.module('makerhuntApp')
             deferred.notify(self.getPosts());
         });
 
-        Post.query({ since: this.since },function (posts) {
+        Post.query({ marker: self.marker },function (posts) {
             angular.forEach(posts, function(post) {
                 self.items[post.post_id] = angular.extend(self.items[post.post_id] || new Post(), post)
             });
 
             var items = self.getPosts();
-            self.from_date = items[items.length-1].created_at;
+            if (posts.length == 0) {
+                self.state = 'no-more';
+                deferred.resolve(items);
+                return
+            }
+
+            self.marker = items[items.length-1].post_id;
             self.state = null;
             deferred.resolve(items);
         }, function(error) {
@@ -110,6 +116,15 @@ angular.module('makerhuntApp')
     }, function notify(items) {
         $scope.posts = items;
     });
+
+    $scope.loadMore = function() {
+        PostsService.load().then(function success(items) {
+            $scope.posts = items;
+        }, function error(error) {
+        }, function notify(items) {
+            $scope.posts = items;
+        });
+    }
 
     $scope.getState = function() {
         return (PostsService.state);
