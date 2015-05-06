@@ -48,8 +48,8 @@
                 <div class="notif-content-wrapper">
                     <a ng-href="/@{{ notification.post.user.username }}/{{ notification.post.post_id }}">
                         <span class="who">{{notification.user.name}}</span>
-                        <span class="did">{{notification.action}} <span ng-if="notification.action==='commented'"> on</span></span>
-                        <span class="what">your {{notification.type}}></span>
+                        <span class="did">{{notification.action}}<span ng-if="notification.action==='commented'"> on</span> </span>
+                        <span class="what">your {{notification.type}}</span>
                         <span class="when"><span am-time-ago="notification.created_at"></span>.</span>
                     </a>
                 </div>
