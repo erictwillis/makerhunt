@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('makerhuntApp')
-  .directive('mhPost', function (Auth) {
+  .directive('mhPost', function (Auth, PostsService) {
     return {
       templateUrl: 'app/components/mh-post/mh-post.html',
       restrict: 'A',
