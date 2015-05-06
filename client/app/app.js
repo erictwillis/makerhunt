@@ -165,7 +165,7 @@ angular.module('makerhuntApp').filter('nl2p', function() {
 });
 
 
-var regexIso8601 = /^(\d{4}|\+\d{6})(?:-(\d{2})(?:-(\d{2})(?:T(\d{2}):(\d{2}):(\d{2})\.(\d{1,})(Z|([\-+])(\d{2}):(\d{2}))?)?)?)?$/;
+var regexIso8601 = /\d{4}\-\d{2}\-\d{2}T\d{2}\:\d{2}\:\d{2}(?:\.\d{1,3})?[+-]\d{2}\:\d{2}/;
 
 
 function convertDateStringsToDates(input) {
@@ -178,7 +178,7 @@ function convertDateStringsToDates(input) {
         var value = input[key];
         var match;
         // Check for string properties which look like dates.
-        if (typeof value === "string" && (match = value.match(/\d{4}\-\d{2}\-\d{2}T\d{2}\:\d{2}\:\d{2}(\.\d{3})?[+-]\d{2}\:\d{2}/))) {
+        if (typeof value === "string" && (match = value.match(regexIso8601))) {
             input[key] = moment(value).toDate();
         } else if (typeof value === "object") {
             // Recurse into object
