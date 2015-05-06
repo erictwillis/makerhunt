@@ -24,6 +24,18 @@ angular.module('makerhuntApp')
           scope.commentsPost = post;
         };
 
+
+        //// JQUERY POWERED USER CARD
+        scope.openUserDetails = function(pID){
+          if(scope.userDetailOpen){
+            $('.ui_user-card-wrapper').removeClass('user-card-open');
+            scope.userDetailOpen = false;
+          }
+          scope.userDetailState = 'profile';
+          $('#'+pID).addClass('user-card-open');
+          scope.userDetailOpen = true;
+        };
+
       }
     };
   });

@@ -75,7 +75,7 @@ angular.module('makerhuntApp', [
             $state.go("main");
         });
     });
-}).run(function($window, $rootScope){
+}).run(function($window, $rootScope, $location){
 
   if ($window.navigator.userAgent.match(/OS X.*Safari/) && ! $window.navigator.userAgent.match(/Chrome/)) {
     $('body').addClass('safari');
@@ -96,6 +96,10 @@ angular.module('makerhuntApp', [
     url = encodeURI(url);
 
     $window.open(url+'?utm_source='+source+'&utm_medium='+medium+'&utm_campaign='+campaign, '_blank');
+  };
+
+  $rootScope.goHome = function(){
+    $location.path('timeline');
   }
 
 });
