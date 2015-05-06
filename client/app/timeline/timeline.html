@@ -47,8 +47,8 @@
                 </div>
                 <div class="notif-content-wrapper">
                   <span class="who">{{notification.user.name}}</span>
-                  <span class="did">{{notification.action}}<span ng-if="notification.action==='commented'"> on</span></span>
-                  <span class="what">your {{notification.type}}</span>
+                  <span class="did">{{notification.action}} <span ng-if="notification.action==='commented'"> on</span></span>
+                  <span class="what">your <a ng-href="/@{{ notification.post.user.username }}/{{ notification.post.post_id }}">{{notification.type}}</a></span>
                   <span class="when"><span am-time-ago="notification.created_at"></span></span>.
                 </div>
                 <div class="notif-action-wrapper">
@@ -121,7 +121,7 @@
             </div>
           </div>
 
-          <div mh-post post="post" type="multi" ng-repeat="post in posts">
+          <div mh-post post="post" type="multi" ng-repeat="post in posts | orderBy:sortPosts:true">
 
             <div class="ui_post-head timeline-item--meta">
 
@@ -343,7 +343,7 @@
             </div>
 
           </div>
-          <div ng-switch="state">
+          <div ng-switch="getState()">
             <div ng-switch-when='loading'>
               <div class="loader-height"></div>
               <div class="ui_content-loader">

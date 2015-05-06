@@ -43,7 +43,13 @@ type NotificationDTO struct {
 	} `json:"user"`
 	Owner *User `json:"owner"`
 	Seen  bool  `json:"seen"`
-	// Post           *Post          `json:"post"`
+	Post  *struct {
+		PostId bson.ObjectId `json:"post_id"`
+		User   *struct {
+			Name     string `json:"name"`
+			Username string `json:"username"`
+		} `json:"user"`
+	} `json:"post"`
 	Comment   *CommentDTO `json:"comment"`
 	CreatedAt time.Time   `json:"created_at"`
 }
@@ -226,8 +232,17 @@ func apiMeNotifications(w http.ResponseWriter, r *http.Request) {
 
 	notification := Notification{}
 	for iter.Next(&notification) {
-		notification.LoadUser()
-
+		if err := notification.LoadUser(); err != nil {
+			fmt.Println(err)
+		}
+		if err := notification.LoadPost(); err != nil {
+			fmt.Println(err)
+		}
+		if notification.Post != nil {
+			if err := notification.Post.LoadUser(); err != nil {
+				fmt.Println(err)
+			}
+		}
 		notifications = append(notifications, notification)
 	}
 

@@ -1,42 +1,122 @@
 'use strict';
 
 angular.module('makerhuntApp')
-.controller('TimelineCtrl', function ($rootScope, $scope, $timeout, Post, Event, Auth, user, localStorageService) {
-    var offset = 0;
-    var from_date = new Date();
-    var since = new Date(1971, 1, 1);
+.service('PostsService', function($http, $timeout, Post, $q, $filter) {
+    this.from_date = new Date();
+    this.since = new Date(1971, 1, 1);
+    this.state = null;
+    this.items = {};
+    
+    this.getPosts = function() {
+        var items = [];
+        angular.forEach(this.items, function(post) {
+            items.push(post);
+        });
 
+        return (items);
+    };
+
+    this.add = function(post) {
+        this.items[post.post_id] = post;
+    }
+
+    this.delete = function(post) {
+        this.items[post.post_id];
+    }
+
+    this.load = function() {
+        var deferred = $q.defer();
+        if (this.state !== null && false) {
+            deferred.reject();
+            return deferred.promise;
+        }
+
+        this.state = 'loading';
+
+        var self = this;
+
+        $timeout(function() {
+            deferred.notify(self.getPosts());
+        });
+
+        Post.query({ since: this.since },function (posts) {
+            angular.forEach(posts, function(post) {
+                self.items[post.post_id] = angular.extend(self.items[post.post_id] || new Post(), post)
+            });
+
+            var items = self.getPosts();
+            self.from_date = items[items.length-1].created_at;
+            self.state = null;
+            deferred.resolve(items);
+        }, function(error) {
+            self.state = 'error';
+            deferred.reject();
+        });
+
+        return deferred.promise;
+    };
+
+
+    this.get = function(params) {
+        var deferred = $q.defer();
+        if (this.state !== null && false) {
+            deferred.reject();
+            return deferred.promise;
+        }
+
+        this.state = 'loading';
+
+        var self = this;
+
+        // check if in cache
+        $timeout(function() {
+            var post = self.items[params.post_id];
+            if (!angular.isDefined(post)) {
+                return;
+            }
+
+            deferred.notify(post);
+        });
+
+        Post.get(params,function (data) {
+            self.state = null;
+            var post = self.items[data.post_id] || data;
+            angular.extend(post, data);
+            deferred.resolve(post);
+        }, function(error) {
+            self.state = 'error';
+            deferred.reject();
+        });
+
+        return deferred.promise;
+    };
+});
+
+
+angular.module('makerhuntApp')
+.controller('TimelineCtrl', function ($rootScope, $scope, $timeout, Post, Event, Auth, user, localStorageService, PostsService) {
     $scope.user = user;
-    $scope.posts = localStorageService.get("posts") || [];
+    $scope.posts = PostsService.getPosts();
+    $scope.state = PostsService.state;
 
-    if ($scope.posts.length > 0) {
-        // update from_date with last post
-        since = $scope.posts[0].created_at;
-        from_date = $scope.posts[$scope.posts.length-1].created_at;
+    /*
+    $scope.$watch(PostsService.state, function() {
+        $scope.state = PostsService.state;
+    });*/
+
+    PostsService.load().then(function success(items) {
+        $scope.posts = items;
+    }, function error(error) {
+    }, function notify(items) {
+        $scope.posts = items;
+    });
+
+    $scope.getState = function() {
+        return (PostsService.state);
     }
 
     $scope.currentPost = new Post();
     $scope.commentsPost = null;
-    $scope.state = null;
-
-    $timeout(function() {
-        // load posts since date
-        if ($scope.state !== null) {
-            return
-        }
-
-        $scope.state = 'loading';
-        Post.query({ since: since },function (posts) {
-            $scope.posts = posts.concat($scope.posts);
-
-            // check if last post compares to first local storage post, check for gap.
-            $scope.state = null;
-
-            localStorageService.set('posts', $scope.posts);
-        }, function(error) {
-            $scope.state = 'error';
-        });
-    });
 
     $scope.$on('closeAll', function() {
         $scope.commentsPost = null;
@@ -56,6 +136,10 @@ angular.module('makerhuntApp')
             return (moment(item.from_date).isAfter(moment()));
     };
 
+    $scope.sortPosts = function(post) {
+           return post.created_at;
+    };
+
     $scope.sortEvents = function(event) {
            return event.from_date;
     };
@@ -64,71 +148,8 @@ angular.module('makerhuntApp')
            return comment.created_at;
     };
 
-    $scope.canEdit = function(post) {
-        return (false);
-    };
-
-    $scope.canDelete = function(post) {
-        return (Auth.getCurrentUser().user_id === post.user.user_id || Auth.isAdmin());
-    };
-
     $scope.edit = function(post) {
         alert("edit");
-    };
-
-    $scope.load = function() {
-        if ($scope.state !== null) {
-            return
-        }
-
-        $scope.state = 'loading';
-        Post.query({ from_date: from_date, offset: offset },function (posts) {
-            if (posts.length == 0) {
-                $scope.state='no-more';
-                return;
-            }
-
-            $scope.posts.push.apply($scope.posts, posts);
-            $scope.state = null;
-
-            // update from_date with last post
-            from_date = $scope.posts[$scope.posts.length-1].created_at;
-            localStorageService.set('posts', $scope.posts);
-        }, function(error) {
-            $scope.state = 'error';
-        });
-    };
-
-    $scope.hasLiked = function(post) {
-        return (post.liked_by.indexOf($scope.user.user_id)!=-1);
-    };
-
-    $scope.like = function(post) {
-        if ($scope.hasLiked(post)) {
-            post.$unlike().then(function(data) {
-                angular.extend(post, data);
-            }).catch(function(e) {
-                console.debug(e);
-            }).finally(function() {
-            });
-        } else {
-            post.$like().then(function(data) {
-                angular.extend(post, data);
-            }).catch(function(e) {
-                console.debug(e);
-            }).finally(function() {
-            });
-        }
-    };
-
-    $scope.delete = function(post) {
-        post.$delete().then(function(post) {
-            var index = $scope.posts.indexOf(post);
-            $scope.posts.splice(index, 1);
-        }).catch(function(e) {
-            console.debug(e);
-        }).finally(function() {
-        });
     };
 
     $scope.share = function(form) {
@@ -138,7 +159,10 @@ angular.module('makerhuntApp')
 
         $('#newPost-submit').addClass('newPost-posting');
         $scope.currentPost.$create().then(function(post) {
-            $scope.posts.unshift(post);
+            PostsService.add(post);
+
+            $scope.posts = PostsService.getPosts();
+
             $scope.currentPost = new Post();
             form.$setPristine();
             $('#newPost-submit').removeClass('newPost-posting');
