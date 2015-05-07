@@ -6,7 +6,7 @@ angular.module('makerhuntApp')
     this.since = new Date(1971, 1, 1);
     this.state = null;
     this.items = {};
-    
+
     this.getPosts = function() {
         var items = [];
         angular.forEach(this.items, function(post) {
@@ -100,7 +100,7 @@ angular.module('makerhuntApp')
 
 
 angular.module('makerhuntApp')
-.controller('TimelineCtrl', function ($rootScope, $scope, $timeout, Post, Event, Auth, user, localStorageService, PostsService) {
+.controller('TimelineCtrl', function ($rootScope, $scope, $timeout, Post, Event, Auth, user, localStorageService, PostsService, $http, $interval) {
     $scope.user = user;
     $scope.posts = PostsService.getPosts();
     $scope.state = PostsService.state;
@@ -224,6 +224,29 @@ angular.module('makerhuntApp')
         }
       }
     };
+
+
+    //// BLABBER widget
+
+    $http.get('https://api.blab.im/stream/makerhunt')
+      .success(function(data){
+        console.log(data);
+        $scope.blab = data;
+      })
+      .error(function(data){
+        console.log(data);
+      });
+
+    $interval(function(){
+      $http.get('https://api.blab.im/stream/makerhunt')
+        .success(function(data){
+          console.log(data);
+          $scope.blab = data;
+        })
+        .error(function(data){
+          console.log(data);
+        })
+    }, 60000);
 
 
 });

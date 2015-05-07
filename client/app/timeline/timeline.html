@@ -399,7 +399,7 @@
 
           </div>
 
-          <div class="ui_card">
+          <div class="ui_card sidebar-widget">
 
             <h4 class="ui_sideBar-headline">Upcoming Events</h4>
 
@@ -423,6 +423,40 @@
                       ·
                       <i class="fa fa-slack"></i>MakerHunt
                     </p>
+                  </div>
+
+                </li>
+              </ul>
+
+            </div>
+
+
+          </div>
+
+          <div class="ui_card sidebar-widget blab-widget">
+
+            <h4 class="ui_sideBar-headline">Currently Blabbing</h4>
+
+            <a ng-href="https://blab.im/{{blab.stream_id}}" target="_blank" class="join-blab">join</a>
+
+            <div class="ui_sideBar-section">
+
+              <ul class="sideBar-list">
+                <li class="sideBar-list--item blabberMouth" ng-if="blab.creator.image_url">
+
+                  <img ng-src="{{blab.creator.image_url}}" alt="" class="blabberMouth-img"/>
+
+                  <div class="blab-user">
+                    <h4 class="blab-user--name">{{blab.creator.fullname}}</h4>
+                  </div>
+
+                </li>
+                <li class="sideBar-list--item blabberMouth" ng-repeat="viewer in blab.viewers" ng-if="viewer.fullname != 'Slacker' && viewer.image_url">
+
+                  <img ng-src="{{viewer.image_url}}" alt="" class="blabberMouth-img"/>
+
+                  <div class="blab-user">
+                    <h4 class="blab-user--name">{{viewer.fullname}}</h4>
                   </div>
 
                 </li>
