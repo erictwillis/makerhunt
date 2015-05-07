@@ -4,6 +4,10 @@
   margin-top: 15px;
   position: relative;
 
+  &:hover{
+    z-index: 1;
+  }
+
   .ui_post-head {
     width: 100%;
     display: block;
