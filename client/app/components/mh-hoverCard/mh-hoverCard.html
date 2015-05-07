@@ -38,7 +38,7 @@
         <h4 class="user-card-products--maker-of">Maker of</h4>
         <ul class="user-card-products--product-list">
           <li class="user-card-products--list-item" ng-repeat="product in user.ph_settings.maker_of">
-            <a target="_blank" ng-href="product.discussion_url" class="maker-of-url">{{product.name}}</a>
+            <a target="_blank" ng-href="{{product.discussion_url}}" class="maker-of-url">{{product.name}}</a>
           </li>
         </ul>
       </div>
