@@ -435,9 +435,13 @@
 
           <div class="ui_card sidebar-widget blab-widget">
 
-            <h4 class="ui_sideBar-headline">Currently Blabbing</h4>
+            <h4 class="ui_sideBar-headline"><span ng-if="blab.creator.state > -1">Currently</span><span ng-if="blab.creator.state < 0">Previously</span> Blabbing</h4>
 
-            <a ng-href="https://blab.im/{{blab.stream_id}}" target="_blank" class="join-blab">join</a>
+            <a ng-href="https://blab.im/{{blab.stream_id}}" target="_blank" class="join-blab">
+
+              <span ng-if="blab.creator.state > -1">join blab</span><span ng-if="blab.creator.state < 0">start blab</span>
+
+            </a>
 
             <div class="ui_sideBar-section">
 
