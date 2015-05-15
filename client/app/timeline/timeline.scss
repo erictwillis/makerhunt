@@ -1292,7 +1292,7 @@ $ease: .4s ease-in-out; $delay: .1s;
     margin: 0;
     padding: 2px;
     position: relative;
-    &:nth-child(odd){
+    &:nth-child(even){
       float: left;
     }
     .blabberMouth-img {
@@ -1344,4 +1344,28 @@ $ease: .4s ease-in-out; $delay: .1s;
       }
     }
   }
+}
+
+.noLiveBlab--item{
+  text-align: center;
+  .noLiveBlab {
+    width: 100px;
+    padding: 10px;
+  }
+  .noliveBlab-txt {
+    font-size: 12px;
+    opacity: .8;
+  }
+  .start-blab-btn {
+    color: #fff!important;
+    text-decoration: none!important;
+    font-size: 25px;
+    text-transform: capitalize;
+    background: rgb(65, 170, 120);
+    padding: 5px 20px;
+    border-radius: 500px;
+    font-weight: 400;
+    line-height: 1;
+  }
+
 }

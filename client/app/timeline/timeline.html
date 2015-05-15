@@ -435,27 +435,18 @@
 
           <div class="ui_card sidebar-widget blab-widget">
 
-            <h4 class="ui_sideBar-headline"><span ng-if="blab.creator.state > -1">Currently</span><span ng-if="blab.creator.state < 0">Previously</span> Blabbing</h4>
+            <h4 class="ui_sideBar-headline">blab</h4>
 
-            <a ng-href="https://blab.im/{{blab.stream_id}}" target="_blank" class="join-blab">
+            <a ng-href="https://blab.im/{{blab.stream_id}}" target="_blank" class="join-blab" ng-if="blab.creator.state > -1">
 
-              <span ng-if="blab.creator.state > -1">join blab</span><span ng-if="blab.creator.state < 0">start blab</span>
+              join blab
 
             </a>
 
             <div class="ui_sideBar-section">
 
               <ul class="sideBar-list">
-                <li class="sideBar-list--item blabberMouth" ng-if="blab.creator.image_url">
-
-                  <img ng-src="{{blab.creator.image_url}}" alt="" class="blabberMouth-img"/>
-
-                  <div class="blab-user">
-                    <h4 class="blab-user--name">{{blab.creator.fullname}}</h4>
-                  </div>
-
-                </li>
-                <li class="sideBar-list--item blabberMouth" ng-repeat="viewer in blab.viewers" ng-if="viewer.fullname != 'Slacker' && viewer.image_url">
+                <li class="sideBar-list--item blabberMouth" ng-repeat="viewer in blab.viewers" ng-if="viewer.fullname != 'Slacker' && viewer.image_url && viewer.state > -1 && blab.creator.state > -1">
 
                   <img ng-src="{{viewer.image_url}}" alt="" class="blabberMouth-img"/>
 
@@ -463,6 +454,11 @@
                     <h4 class="blab-user--name">{{viewer.fullname}}</h4>
                   </div>
 
+                </li>
+                <li class="sideBar-list--item noLiveBlab--item" ng-if="blab.creator.state < 0">
+                  <img src="https://s3-us-west-1.amazonaws.com/shelby-games/blab-assets/end_2.png" alt="" class="noLiveBlab"/>
+                  <p class="noliveBlab-txt">no blab live right now, why not start one?</p>
+                  <a href="https://blab.im/makerhunt" target="_blank" class="start-blab-btn">Start Blab</a>
                 </li>
               </ul>
 
