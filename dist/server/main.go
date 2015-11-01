@@ -16,7 +16,7 @@ import (
 	"github.com/PuerkitoBio/ghost/handlers"
 	"github.com/kurrik/oauth1a"
 
-	"github.com/nlopes/slack"
+	"github.com/dutchcoders/slack"
 	mgo "gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 
