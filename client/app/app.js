@@ -167,7 +167,6 @@ angular.module('makerhuntApp').filter('nl2p', function() {
 
 var regexIso8601 = /\d{4}\-\d{2}\-\d{2}T\d{2}\:\d{2}\:\d{2}(?:\.\d{1,3})?[+-]\d{2}\:\d{2}/;
 
-
 function convertDateStringsToDates(input) {
     // Ignore things that aren't objects.
     if (typeof input !== "object") return input;

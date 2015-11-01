@@ -98,7 +98,7 @@ angular.module('makerhuntApp')
        * @return {Boolean}
        */
       isAdmin: function() {
-        return (['sleinadsanoj', 'erictwillis', 'remco_verhoef'].indexOf(currentUser.username)!=-1);
+        return (['sleinadsanoj', 'erictwillis', 'bentossell', 'remco_verhoef'].indexOf(currentUser.username)!=-1);
       }
     };
   });
