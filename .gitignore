@@ -8,3 +8,6 @@ client/bower_components
 run.sh
 /server/bin/
 /server/pkg/
+compile.sh
+sprite.sh
+conf/
