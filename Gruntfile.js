@@ -367,8 +367,7 @@ module.exports = function (grunt) {
           dest: '<%= yeoman.dist %>',
           src: [
             'package.json',
-            '.godir',
-            'server/**/*'
+            'server/bin/makerhunt-server-linux-amd64',
           ]
         }]
       },

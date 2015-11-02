@@ -1,0 +1,138 @@
+{
+	"version": 0,
+	"dependencies": [
+		{
+			"importpath": "github.com/PuerkitoBio/ghost",
+			"repository": "https://github.com/PuerkitoBio/ghost",
+			"revision": "a0146f2f931611b8bfe40f07018c97a7c881c76a",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/PuerkitoBio/ghost/handlers",
+			"repository": "https://github.com/PuerkitoBio/ghost",
+			"revision": "a0146f2f931611b8bfe40f07018c97a7c881c76a",
+			"branch": "master",
+			"path": "/handlers"
+		},
+		{
+			"importpath": "github.com/PuerkitoBio/goquery",
+			"repository": "https://github.com/PuerkitoBio/goquery",
+			"revision": "417cce822c7b9a379df5824be95228d177c5698b",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/andybalholm/cascadia",
+			"repository": "https://github.com/andybalholm/cascadia",
+			"revision": "3ad29d1ad1c4f2023e355603324348cf1f4b2d48",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/dutchcoders/gohunt/gohunt",
+			"repository": "https://github.com/dutchcoders/gohunt",
+			"revision": "a66f63398bb5564e56eae3a25a468bfb1259f841",
+			"branch": "master",
+			"path": "/gohunt"
+		},
+		{
+			"importpath": "github.com/dutchcoders/slack",
+			"repository": "https://github.com/dutchcoders/slack",
+			"revision": "bd9670d4f0b9d65a22e77d9202e2bbfd4d384222",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/garyburd/redigo/internal",
+			"repository": "https://github.com/garyburd/redigo",
+			"revision": "6ece6e0a09f28cc399b21550cbf37ab39ba63cce",
+			"branch": "master",
+			"path": "/internal"
+		},
+		{
+			"importpath": "github.com/garyburd/redigo/redis",
+			"repository": "https://github.com/garyburd/redigo",
+			"revision": "6ece6e0a09f28cc399b21550cbf37ab39ba63cce",
+			"branch": "master",
+			"path": "/redis"
+		},
+		{
+			"importpath": "github.com/go-sql-driver/mysql",
+			"repository": "https://github.com/go-sql-driver/mysql",
+			"revision": "69e3ed7607d7c139386480824801584c947c67cf",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/gorilla/context",
+			"repository": "https://github.com/gorilla/context",
+			"revision": "1c83b3eabd45b6d76072b66b746c20815fb2872d",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/gorilla/mux",
+			"repository": "https://github.com/gorilla/mux",
+			"revision": "ad4d7a5882b961e07e2626045eb995c022ac6664",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/gorilla/securecookie",
+			"repository": "https://github.com/gorilla/securecookie",
+			"revision": "e95799a481bbcc3d01c2ad5178524cb8bec9f370",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/gorilla/sessions",
+			"repository": "https://github.com/gorilla/sessions",
+			"revision": "f7261893ca3ea922c30eabe742c036d2c1de6e0a",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/kurrik/oauth1a",
+			"repository": "https://github.com/kurrik/oauth1a",
+			"revision": "cb1b80e32dd4385099f8d09312e4bcf6bdc993ec",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/nu7hatch/gouuid",
+			"repository": "https://github.com/nu7hatch/gouuid",
+			"revision": "179d4d0c4d8d407a32af483c2354df1d2c91e6c3",
+			"branch": "master"
+		},
+		{
+			"importpath": "golang.org/x/net/context",
+			"repository": "https://go.googlesource.com/net",
+			"revision": "b4e17d61b15679caf2335da776c614169a1b4643",
+			"branch": "master",
+			"path": "/context"
+		},
+		{
+			"importpath": "golang.org/x/net/html",
+			"repository": "https://go.googlesource.com/net",
+			"revision": "b4e17d61b15679caf2335da776c614169a1b4643",
+			"branch": "master",
+			"path": "/html"
+		},
+		{
+			"importpath": "golang.org/x/net/websocket",
+			"repository": "https://go.googlesource.com/net",
+			"revision": "b4e17d61b15679caf2335da776c614169a1b4643",
+			"branch": "master",
+			"path": "/websocket"
+		},
+		{
+			"importpath": "golang.org/x/oauth2",
+			"repository": "https://go.googlesource.com/oauth2",
+			"revision": "038cb4adce85ed41e285c2e7cc6221a92bfa44aa",
+			"branch": "master"
+		},
+		{
+			"importpath": "gopkg.in/mgo.v2",
+			"repository": "https://gopkg.in/mgo.v2",
+			"revision": "4d04138ffef2791c479c0c8bbffc30b34081b8d9",
+			"branch": "v2"
+		},
+		{
+			"importpath": "gopkg.in/tomb.v2",
+			"repository": "https://gopkg.in/tomb.v2",
+			"revision": "14b3d72120e8d10ea6e6b7f87f7175734b1faab8",
+			"branch": "v2"
+		}
+	]
+}
