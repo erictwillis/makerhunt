@@ -197,9 +197,9 @@ func apiMeInvite(w http.ResponseWriter, r *http.Request) {
 
 	v := url.Values{}
 	v.Set("email", user.Email)
-	v.Set("channels", "C03PM0S6Y")
+	v.Set("channels", "C03PM0S6S")
 	v.Set("first_name", strings.Split(user.Name, " ")[0])
-	v.Set("token", "xoxp-3803026192-3803026200-3879665935-c62c8e")
+	v.Set("token", config.SlackToken)
 	v.Set("set_active", "true")
 	v.Set("_attempts", "1")
 
