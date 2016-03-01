@@ -107,6 +107,7 @@ func apiMeUpdateProductHuntData(w http.ResponseWriter, r *http.Request) {
 
 	var user User
 	if err := db.Users.FindId(bson.ObjectIdHex(userid.(string))).One(&user); err == mgo.ErrNotFound {
+		fmt.Println("User not found", userid)
 		http.NotFound(w, r)
 		return
 	} else if err != nil {
@@ -115,11 +116,13 @@ func apiMeUpdateProductHuntData(w http.ResponseWriter, r *http.Request) {
 
 	// get product hunt data
 	err := func() error {
+		fmt.Println("NewOAuthClient")
 		client, err := gohunt.NewOAuthClient(config.ClientId, config.ClientSecret)
 		if err != nil {
 			return err
 		}
 
+		fmt.Println("GetUser", user.Username)
 		u, err := client.GetUser(user.Username)
 		if err != nil {
 			return err
