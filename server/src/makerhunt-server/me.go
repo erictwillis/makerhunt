@@ -11,7 +11,6 @@ import (
 	"time"
 
 	"github.com/dutchcoders/gohunt/gohunt"
-	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -146,6 +145,7 @@ func apiMeUpdateProductHuntData(w http.ResponseWriter, r *http.Request) {
 	}()
 
 	if err != nil {
+		fmt.Printf("Error producthunt: %#v", err.Error())
 		http.Error(w, err.Error(), 500)
 		return
 	}
