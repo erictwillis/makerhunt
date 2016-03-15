@@ -154,6 +154,7 @@ func apiMeUpdateProductHuntData(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := db.Users.UpdateId(user.UserId, &user); err != nil {
+		fmt.Printf("Error producthunt: %#v", err.Error())
 		http.Error(w, err.Error(), 500)
 		return
 	}
