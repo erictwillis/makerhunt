@@ -11,7 +11,8 @@ import (
 	"time"
 
 	"github.com/dutchcoders/gohunt/gohunt"
-	"gopkg.in/mgo.v2/bson"
+	mgo "gopkg.in/mgo.v2"
+	bson "gopkg.in/mgo.v2/bson"
 )
 
 func apiMeSubscribe(w http.ResponseWriter, r *http.Request) {
